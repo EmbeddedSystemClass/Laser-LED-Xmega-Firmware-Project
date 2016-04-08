@@ -4,7 +4,9 @@ PICFIX=1
 SCREENDSIZE=800X600
 SPADDRESS=5000
 [IMG]
-0=0_FastMenu.bmp
-1=1_MediumMenu.bmp
-2=2_SlowMenu.bmp
-3=3_PressMenu.bmp
+0=0_Logo.bmp
+1=1_FastMenu.bmp
+2=2_MediumMenu.bmp
+3=3_SlowMenu.bmp
+4=4_PressMenu.bmp
+5=5_ReadyMenu.bmp
