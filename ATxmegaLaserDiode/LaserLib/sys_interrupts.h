@@ -3,7 +3,7 @@
 
 typedef void (*ISRCallback)(void* sender);
 
-#include "int8a.h"
+#include "intx128.h"
 /*
 #if defined (__AVR_ATmega128__)
 #  include "int128a.h"

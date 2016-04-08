@@ -12,6 +12,9 @@
 #include <math.h>
 #include <util/delay.h>
 
+#include "LaserLib/CUSART.h"
+#include "CDGUSUSART.h"
+
 #define LEDS_NUM 8
 
 uint16_t sine_wave[256] = 
@@ -284,6 +287,9 @@ int main(void)
 	InitializeTIMC_PWM();
 	//InitializeDMA();
 	//InitializeTIME();
+	
+	CDGUSUSART usart;
+	usart.Initialize(BAUD_115200_ERM0P1, PARITY_DISABLE, STOPBITS_1BIT, true);
 	
 	// Enable low level interrupts
 	PMIC.CTRL |= PMIC_LOLVLEN_bm;
