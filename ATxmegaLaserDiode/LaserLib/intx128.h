@@ -12,7 +12,7 @@
 #include "avr/interrupt.h"
 #include "sys_interrupts.h"
 
-#define NUM_INERRUPTS	34
+#define NUM_INERRUPTS	122
 
 extern void* InterruptSenderTable[NUM_INERRUPTS+1];
 extern ISRCallback InterruptFuncTable[NUM_INERRUPTS+1];
