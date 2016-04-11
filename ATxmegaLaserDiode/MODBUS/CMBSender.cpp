@@ -47,20 +47,24 @@ void CMBSender::Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx
 		CallbackHandler = this;
 } //CMBSender
 
-// default destructor
-CMBSender::~CMBSender()
+void CMBSender::Deinitialize()
 {
 	free(rx_buffer);
 	free(tx_buffer);
+}
+
+// default destructor
+CMBSender::~CMBSender()
+{
 } //~CMBSender
 
-// MODBUS write data to register command
-void CMBSender::WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length)
+// local methods
+void CMBSender::FillRegDataTx(uint8_t addr, uint8_t* data, uint8_t length)
 {
-	// Frame header
+		// Frame header
 	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
 	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-	// Frame size
+		// Frame size
 #ifdef USE_CRC
 	tx_buffer[2] = length + 4; //CMD (1) + DATA(length) + CRC(2) + ADDR(1)
 #else
@@ -69,13 +73,13 @@ void CMBSender::WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length)
 	tx_buffer[3] = 0x80;	// Frame command
 	tx_buffer[4] = addr;	// Register address
 	tx_frame_length = length + 5;
-	
+		
 	// Frame data
 	for (uint16_t i = 0; i < length; i++)
 		tx_buffer[i+5] = data[i];
 		
 #ifdef USE_CRC
-	// Calculate CRC
+		// Calculate CRC
 	uint16_t crc = 0;
 	for (uint16_t i = 5; i < tx_frame_length; i++)
 		crc = _crc16_update(crc, tx_buffer[i]);
@@ -83,49 +87,9 @@ void CMBSender::WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length)
 	tx_buffer[tx_frame_length+1] = crc & 0xff;
 	tx_frame_length = length + 7;
 #endif
-	
-	// Start transition
-	StartMODBUSTransmitter();
 }
 
-void CMBSender::WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length)
-{
-	// Frame header
-	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
-	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-	// Frame size
-#ifdef USE_CRC
-	tx_buffer[2] = length * 2 + 5; //CMD (1) + DATA(length * 2) + CRC(2) + ADDR(2)
-#else
-	tx_buffer[2] = length * 2 + 3; //CMD (1) + DATA(length * 2) + ADDR(2)
-#endif
-	tx_buffer[3] = 0x82;	// Frame command
-	tx_buffer[4] = addr >> 8;
-	tx_buffer[5] = addr & 0xff;
-	tx_frame_length = length * 2 + 6;
-	
-	// Frame data
-	for (uint16_t i = 0; i < length; i++)
-	{
-		tx_buffer[6 + i*2 + 0] = data[i] >> 8;
-		tx_buffer[6 + i*2 + 1] = data[i] & 0xff;
-	}
-	
-#ifdef USE_CRC
-	// Calculate CRC
-	uint16_t crc = 0;
-	for (int i = 6; i < tx_frame_length; i++)
-		crc = _crc16_update(crc, tx_buffer[i]);
-	tx_buffer[tx_frame_length] = crc >> 8;
-	tx_buffer[tx_frame_length+1] = crc & 0xff;
-	this->tx_frame_length = length * 2 + 8;
-#endif
-
-	// Start transition
-	StartMODBUSTransmitter();
-}
-
-void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length)
+void CMBSender::FillRegDataRq(uint8_t addr, uint8_t length)
 {
 	// Frame header
 	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
@@ -140,7 +104,7 @@ void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length)
 	tx_buffer[4] = addr;	// Register address
 	tx_buffer[5] = length;	// Data
 	tx_frame_length = 6;
-		
+	
 #ifdef USE_CRC
 	// Calculate CRC
 	uint16_t crc = 0;
@@ -150,12 +114,43 @@ void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length)
 	tx_buffer[tx_frame_length+1] = crc & 0xff;
 	tx_frame_length = length + 8;
 #endif
-	
-	// Start transition
-	StartMODBUSTransmitter();
 }
 
-void CMBSender::RequestDataFromSRAM(uint16_t addr, uint8_t length)
+void CMBSender::FillVarDataTx(uint16_t addr, uint16_t* data, uint16_t length)
+{
+	// Frame header
+	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
+	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
+		// Frame size
+#ifdef USE_CRC
+	tx_buffer[2] = length * 2 + 5; //CMD (1) + DATA(length * 2) + CRC(2) + ADDR(2)
+#else
+	tx_buffer[2] = length * 2 + 3; //CMD (1) + DATA(length * 2) + ADDR(2)
+#endif
+	tx_buffer[3] = 0x82;	// Frame command
+	tx_buffer[4] = addr >> 8;
+	tx_buffer[5] = addr & 0xff;
+	tx_frame_length = length * 2 + 6;
+		
+	// Frame data
+	for (uint16_t i = 0; i < length; i++)
+	{
+		tx_buffer[6 + i*2 + 0] = data[i] >> 8;
+		tx_buffer[6 + i*2 + 1] = data[i] & 0xff;
+	}
+		
+#ifdef USE_CRC
+	// Calculate CRC
+	uint16_t crc = 0;
+	for (int i = 6; i < tx_frame_length; i++)
+		crc = _crc16_update(crc, tx_buffer[i]);
+	tx_buffer[tx_frame_length] = crc >> 8;
+	tx_buffer[tx_frame_length+1] = crc & 0xff;
+	this->tx_frame_length = length * 2 + 8;
+#endif
+}
+
+void CMBSender::FillVarDataRq(uint16_t addr, uint16_t length)
 {
 	// Frame header
 	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
@@ -180,11 +175,75 @@ void CMBSender::RequestDataFromSRAM(uint16_t addr, uint8_t length)
 	tx_buffer[tx_frame_length]   = crc >> 8;
 	tx_buffer[tx_frame_length+1] = crc & 0xff;
 	tx_frame_length = 9;
-#endif
+#endif	
+}
+
+// MODBUS write data to register command
+void CMBSender::WriteDataToRegisterAsync(uint8_t addr, uint8_t* data, uint8_t length)
+{
+	// Fill data transmit buffer
+	FillRegDataTx(addr, data, length);
 	
 	// Start transition
 	StartMODBUSTransmitter();
 }
+
+void CMBSender::WriteDataToSRAMAsync(uint16_t addr, uint16_t* data, uint16_t length)
+{
+	// Fill data transmit buffer
+	FillVarDataTx(addr, data, length);
+		
+	// Start transition
+	StartMODBUSTransmitter();
+}
+
+void CMBSender::RequestDataFromRegisterAsync(uint8_t addr, uint8_t length)
+{
+	// Fill data transmit buffer
+	FillRegDataRq(addr, length);
+	
+	// Start transition
+	StartMODBUSTransmitter();
+}
+
+void CMBSender::RequestDataFromSRAMAsync(uint16_t addr, uint8_t length)
+{
+	// Fill data transmit buffer
+	FillVarDataRq(addr, length);
+	
+	// Start transition
+	StartMODBUSTransmitter();
+}
+
+// Send data methods synchronous
+void CMBSender::WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length)
+{
+	// Fill data transmit buffer
+	FillRegDataTx(addr, data, length);
+	
+	// Send data asynchronous
+	for (uint16_t i = 0; i < tx_frame_length; i++)
+	{
+		while (pUSART->IsDataEmpty());
+		pUSART->SetTransmittingByte(tx_buffer[i]);
+	}
+}
+
+void CMBSender::WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length)
+{
+	// Fill data transmit buffer
+	FillVarDataTx(addr, data, length);
+	
+	// Send data asynchronous
+	for (uint16_t i = 0; i < tx_frame_length; i++)
+	{
+		while (pUSART->IsDataEmpty());
+		pUSART->SetTransmittingByte(tx_buffer[i]);
+	}
+}
+
+//void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length);
+//void CMBSender::RequestDataFromSRAM(uint16_t addr, uint8_t length);
 
 void CMBSender::OnReceiveByte(uint8_t data)
 {
@@ -360,13 +419,13 @@ void CMBSender::OnUSARTTxInterrupt(void* sender)
 void CMBSender::StartMODBUSRegisterTransaction(uint8_t addr, uint8_t length)
 {
 	isTransaction = true;
-	RequestDataFromRegister(addr, length);
+	RequestDataFromRegisterAsync(addr, length);
 }
 
 void CMBSender::StartMODBUSVariableTransaction(uint16_t addr, uint8_t length)
 {
 	isTransaction = true;
-	RequestDataFromSRAM(addr, length);
+	RequestDataFromSRAMAsync(addr, length);
 }
 
 void CMBSender::ProcessTransaction(uint8_t* data, uint16_t length)

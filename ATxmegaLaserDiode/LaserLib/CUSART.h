@@ -78,6 +78,9 @@ public:
 	// Data operations
 	virtual uint8_t GetReceivedByte() { return 0; };
 	virtual void SetTransmittingByte(uint8_t data) {};
+	virtual bool IsTransmitting() { return false; };
+	virtual bool IsReceiving() { return false; };
+	virtual bool IsDataEmpty() { return false; };
 	
 	// Interrupt control
 	virtual void SetRxInterruptionCallback(void* sender, ISRCallback callback) {};

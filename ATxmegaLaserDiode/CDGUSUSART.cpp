@@ -55,11 +55,14 @@ CDGUSUSART::~CDGUSUSART()
 
 void CDGUSUSART::Initialize(BAUDRATE baud, PARITY parity, STOPBITS stopbits, bool Async)
 {
-	PORTD.DIR |=  PIN3_bm; // Set TX to output
-	PORTD.DIR &= ~PIN2_bm; // Set RX to input
+	PORTD.DIRSET = PIN3_bm; // Set TX to output
+	PORTD.DIRCLR = PIN2_bm; // Set RX to input
+	
+	PORTD.PIN2CTRL = PORT_OPC_TOTEM_gc;	// | PORT_SRLEN_bm;
+	PORTD.PIN3CTRL = PORT_OPC_TOTEM_gc;	// | PORT_SRLEN_bm;
 	
 	// Turn on interrupts
-	//USARTD0.CTRLA = USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_LO_gc | USART_DREINTLVL_LO_gc;
+	USARTD0.CTRLA = USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_LO_gc/* | USART_DREINTLVL_LO_gc*/;
 	
 	// Enable RX, TX
 	USARTD0.CTRLB = USART_RXEN_bm | USART_TXEN_bm | USART_RXEN_bm;
@@ -98,11 +101,11 @@ void CDGUSUSART::Initialize(BAUDRATE baud, PARITY parity, STOPBITS stopbits, boo
 	}
 	
 	// USART mode asynchronous, 8bit
-	USARTD0.CTRLC = USART_CMODE_ASYNCHRONOUS_gc | USART_CHSIZE_8BIT_gc | temp;
+	USARTD0.CTRLC = (Async?USART_CMODE_ASYNCHRONOUS_gc:USART_CMODE_SYNCHRONOUS_gc) | USART_CHSIZE_8BIT_gc | temp;
 	
 	// Set baud rate
 	USARTD0.BAUDCTRLA = bsel_table[baud];
-	USARTD0.BAUDCTRLB = (((int8_t)(8 + bscale_table[baud]) ^ 0x08) << USART_BSCALE0_bp) | ((bsel_table[baud] >> 8) & 0x0F);
+	USARTD0.BAUDCTRLB = (((int8_t)(16 + bscale_table[baud])) << USART_BSCALE0_bp) | ((bsel_table[baud] >> 8) & 0x0F);	
 } //CUSART
 
 uint8_t CDGUSUSART::GetReceivedByte()
@@ -112,8 +115,23 @@ uint8_t CDGUSUSART::GetReceivedByte()
 
 void CDGUSUSART::SetTransmittingByte(uint8_t data)
 {
-	while ( !( USARTD0.STATUS & (1<<USART_RXCIF_bm)) );
+	//while ( !( USARTD0.STATUS & (1<<USART_TXCIF_bm)) );
 	USARTD0.DATA = data;
+}
+
+bool CDGUSUSART::IsTransmitting()
+{
+	return !( USARTD0.STATUS & USART_TXCIF_bm);
+}
+
+bool CDGUSUSART::IsReceiving()
+{
+	return !( USARTD0.STATUS & USART_RXCIF_bm);
+}
+
+bool CDGUSUSART::IsDataEmpty()
+{
+	return !( USARTD0.STATUS & USART_DREIF_bm);
 }
 
 void CDGUSUSART::SetRxInterruptionCallback(void* sender, ISRCallback callback)

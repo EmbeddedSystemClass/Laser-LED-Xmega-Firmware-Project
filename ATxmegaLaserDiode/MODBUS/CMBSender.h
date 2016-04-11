@@ -64,12 +64,19 @@ public:
 	~CMBSender();
 	
 	void Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize);
+	void Deinitialize();
 	
-	// Send data methods
+	// Send data methods asynchronous
+	void WriteDataToRegisterAsync(uint8_t addr, uint8_t* data, uint8_t length);
+	void WriteDataToSRAMAsync(uint16_t addr, uint16_t* data, uint16_t length);
+	void RequestDataFromRegisterAsync(uint8_t addr, uint8_t length);
+	void RequestDataFromSRAMAsync(uint16_t addr, uint8_t length);
+	
+	// Send data methods synchronous
 	void WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length);
 	void WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length);
-	void RequestDataFromRegister(uint8_t addr, uint8_t length);
-	void RequestDataFromSRAM(uint16_t addr, uint8_t length);
+	//void RequestDataFromRegister(uint8_t addr, uint8_t length);
+	//void RequestDataFromSRAM(uint16_t addr, uint8_t length);
 	
 	// Receive data methods
 	void StartMODBUSListener();
@@ -96,6 +103,12 @@ protected:
 	virtual void OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t length);
 	
 private:
+	// local methods
+	void FillRegDataTx(uint8_t addr, uint8_t* data, uint8_t length);
+	void FillRegDataRq(uint8_t addr, uint8_t length);
+	void FillVarDataTx(uint16_t addr, uint16_t* data, uint16_t length);
+	void FillVarDataRq(uint16_t addr, uint16_t length);
+	
 	// main receive byte FSM function
 	void OnReceiveByte(uint8_t data);
 	void OnTransmitByte();

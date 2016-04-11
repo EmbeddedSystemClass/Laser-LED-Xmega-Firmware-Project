@@ -22,6 +22,9 @@ public:
 
 	virtual uint8_t GetReceivedByte();
 	virtual void SetTransmittingByte(uint8_t data);
+	virtual bool IsTransmitting();
+	virtual bool IsReceiving();
+	virtual bool IsDataEmpty();
 
 	virtual void SetRxInterruptionCallback(void* sender, ISRCallback callback);
 	virtual void SetTxInterruptionCallback(void* sender, ISRCallback callback);
