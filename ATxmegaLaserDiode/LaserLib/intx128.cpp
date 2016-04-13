@@ -12,8 +12,8 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-void* InterruptSenderTable[NUM_INERRUPTS+1];
-ISRCallback InterruptFuncTable[NUM_INERRUPTS+1];
+void* InterruptSenderTable[NUM_INERRUPTS+1] = {0};
+ISRCallback InterruptFuncTable[NUM_INERRUPTS+1] = {0};
 
 #define SYS_INTERRUPT_VECTOR_HANDLER_MACRO(vector_id)										\
 	ISR(vector_id)																			\

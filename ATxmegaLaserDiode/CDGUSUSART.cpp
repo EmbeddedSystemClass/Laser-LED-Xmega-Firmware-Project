@@ -65,7 +65,7 @@ void CDGUSUSART::Initialize(BAUDRATE baud, PARITY parity, STOPBITS stopbits, boo
 	USARTD0.CTRLA = USART_RXCINTLVL_LO_gc | USART_TXCINTLVL_LO_gc/* | USART_DREINTLVL_LO_gc*/;
 	
 	// Enable RX, TX
-	USARTD0.CTRLB = USART_RXEN_bm | USART_TXEN_bm | USART_RXEN_bm;
+	USARTD0.CTRLB = USART_RXEN_bm | USART_TXEN_bm;
 	
 	// Double transmission speed
 #ifdef U2X
@@ -115,7 +115,7 @@ uint8_t CDGUSUSART::GetReceivedByte()
 
 void CDGUSUSART::SetTransmittingByte(uint8_t data)
 {
-	//while ( !( USARTD0.STATUS & (1<<USART_TXCIF_bm)) );
+	//while ( ( USARTD0.STATUS & (1<<USART_DREIF_bm)) );
 	USARTD0.DATA = data;
 }
 
@@ -144,4 +144,20 @@ void CDGUSUSART::SetTxInterruptionCallback(void* sender, ISRCallback callback)
 {
 	InterruptSenderTable[USARTD0_TXC_vect_num] = sender;
 	InterruptFuncTable[USARTD0_TXC_vect_num] = callback;
+}
+
+void CDGUSUSART::SetDMARxTrig(DMA_CH_t *dma_channel)
+{
+	dma_channel->TRIGSRC = DMA_CH_TRIGSRC_USARTD0_RXC_gc;
+	dma_channel->SRCADDR0 = (int)&USARTD0.DATA;
+	dma_channel->SRCADDR1 = (int)&USARTD0.DATA >> 8;
+	dma_channel->SRCADDR2 = 0;
+}
+
+void CDGUSUSART::SetDMATxTrig(DMA_CH_t *dma_channel)
+{
+	dma_channel->TRIGSRC = DMA_CH_TRIGSRC_USARTD0_DRE_gc;
+	dma_channel->DESTADDR0 = (int)&USARTD0.DATA;
+	dma_channel->DESTADDR1 = (int)&USARTD0.DATA >> 8;
+	dma_channel->DESTADDR2 = 0;
 }

@@ -28,6 +28,10 @@ public:
 
 	virtual void SetRxInterruptionCallback(void* sender, ISRCallback callback);
 	virtual void SetTxInterruptionCallback(void* sender, ISRCallback callback);
+	
+	// DMA control
+	virtual void SetDMARxTrig(DMA_CH_t *dma_channel);
+	virtual void SetDMATxTrig(DMA_CH_t *dma_channel);
 protected:
 private:
 

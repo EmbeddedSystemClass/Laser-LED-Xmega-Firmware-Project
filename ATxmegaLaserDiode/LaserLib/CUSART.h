@@ -73,18 +73,22 @@ public:
 	~CUSART();
 	
 	// Initialization
-	virtual void Initialize(BAUDRATE baud, PARITY parity, STOPBITS stopbits, bool Async) {};
+	virtual void Initialize(BAUDRATE baud, PARITY parity, STOPBITS stopbits, bool Async) = 0;// {};
 	
 	// Data operations
-	virtual uint8_t GetReceivedByte() { return 0; };
-	virtual void SetTransmittingByte(uint8_t data) {};
-	virtual bool IsTransmitting() { return false; };
-	virtual bool IsReceiving() { return false; };
-	virtual bool IsDataEmpty() { return false; };
+	virtual uint8_t GetReceivedByte() = 0;// { return 0; };
+	virtual void SetTransmittingByte(uint8_t data) = 0;// {};
+	virtual bool IsTransmitting() = 0;// { return false; };
+	virtual bool IsReceiving() = 0;// { return false; };
+	virtual bool IsDataEmpty() = 0;// { return false; };
 	
 	// Interrupt control
-	virtual void SetRxInterruptionCallback(void* sender, ISRCallback callback) {};
-	virtual void SetTxInterruptionCallback(void* sender, ISRCallback callback) {};
+	virtual void SetRxInterruptionCallback(void* sender, ISRCallback callback) = 0;// {};
+	virtual void SetTxInterruptionCallback(void* sender, ISRCallback callback) = 0;// {};
+		
+	// DMA control
+	virtual void SetDMARxTrig(DMA_CH_t *dma_channel)=0;// {};
+	virtual void SetDMATxTrig(DMA_CH_t *dma_channel)=0;// {};
 protected:
 private:
 }; //CUSART

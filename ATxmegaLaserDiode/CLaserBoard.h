@@ -20,6 +20,9 @@ public:
 	
 	void InitializeIO();
 	void InitializeClock();
+	
+	void Beep();
+	void BeepClassError();
 protected:
 private:
 

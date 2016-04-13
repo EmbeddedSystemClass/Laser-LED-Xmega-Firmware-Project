@@ -7,7 +7,9 @@
 
 
 #include "CLaserBoard.h"
+#include <avr/interrupt.h>
 #include <avr/io.h>
+#include <util/delay.h>
 
 // default constructor
 CLaserBoard::CLaserBoard()
@@ -64,9 +66,9 @@ void CLaserBoard::InitializeClock()
 		// PLL multiplication factor: 2
 		// PLL frequency: 32.000000 MHz
 		// Set the PLL clock source and multiplication factor
-		unsigned char n = (OSC.PLLCTRL & (~(OSC_PLLSRC_gm | OSC_PLLFAC_gm))) |    OSC_PLLSRC_XOSC_gc | 2;
+		unsigned char n = (OSC.PLLCTRL & (~(OSC_PLLSRC_gm | OSC_PLLFAC_gm))) |    OSC_PLLSRC_XOSC_gc | OSC_PLLFAC2_bm;
 		CCP = CCP_IOREG_gc;
-		OSC.PLLCTRL = n;
+		OSC.PLLCTRL = OSC_PLLSRC_XOSC_gc | OSC_PLLFAC2_bm;//n;
 		// Enable the PLL
 		OSC.CTRL |= OSC_PLLEN_bm;
 		// System Clock prescaler A division factor: 1
@@ -78,7 +80,7 @@ void CLaserBoard::InitializeClock()
 		n = (CLK.PSCTRL & (~(CLK_PSADIV_gm | CLK_PSBCDIV1_bm | CLK_PSBCDIV0_bm))) |
 		CLK_PSADIV_1_gc | CLK_PSBCDIV_1_1_gc;
 		CCP = CCP_IOREG_gc;
-		CLK.PSCTRL = n;
+		CLK.PSCTRL = CLK_PSADIV_1_gc | CLK_PSBCDIV_1_1_gc;//n;
 		// Wait for the PLL to stabilize
 		while ((OSC.STATUS & OSC_PLLRDY_bm)==0);
 		// Select the system clock source: Phase Locked Loop
@@ -90,8 +92,42 @@ void CLaserBoard::InitializeClock()
 		// Lock the CLK.CTRL and CLK.PSCTRL registers
 		n = CLK.LOCK | CLK_LOCK_bm;
 		CCP = CCP_IOREG_gc;
-		CLK.LOCK = n;
+		CLK.LOCK = CLK_LOCK_bm;//n;
 		// Peripheral Clock output: Disabled
 		PORTCFG.CLKEVOUT = (PORTCFG.CLKEVOUT & (~PORTCFG_CLKOUT_gm)) | PORTCFG_CLKOUT_OFF_gc;
 		//-----------------------
+}
+
+void CLaserBoard::Beep()
+{
+	cli();
+	
+	for (int i = 0; i < 1000; i++)
+	{
+		PORTE.OUTSET = PIN3_bm;
+		_delay_us(500);
+		PORTE.OUTCLR = PIN3_bm;
+		_delay_us(500);
+	}
+	
+	sei();
+}
+
+void CLaserBoard::BeepClassError()
+{
+	cli();
+	
+	for (int j = 0; j < 5; j++)
+	{
+		for (int i = 0; i < 100; i++)
+		{
+			PORTE.OUTSET = PIN3_bm;
+			_delay_us(500);
+			PORTE.OUTCLR = PIN3_bm;
+			_delay_us(500);
+		}
+		_delay_ms(100);
+	}
+	
+	sei();
 }

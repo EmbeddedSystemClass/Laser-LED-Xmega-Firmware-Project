@@ -58,126 +58,6 @@ CMBSender::~CMBSender()
 {
 } //~CMBSender
 
-// local methods
-void CMBSender::FillRegDataTx(uint8_t addr, uint8_t* data, uint8_t length)
-{
-		// Frame header
-	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
-	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-		// Frame size
-#ifdef USE_CRC
-	tx_buffer[2] = length + 4; //CMD (1) + DATA(length) + CRC(2) + ADDR(1)
-#else
-	tx_buffer[2] = length + 2; //CMD (1) + DATA(length) + ADDR(1)
-#endif
-	tx_buffer[3] = 0x80;	// Frame command
-	tx_buffer[4] = addr;	// Register address
-	tx_frame_length = length + 5;
-		
-	// Frame data
-	for (uint16_t i = 0; i < length; i++)
-		tx_buffer[i+5] = data[i];
-		
-#ifdef USE_CRC
-		// Calculate CRC
-	uint16_t crc = 0;
-	for (uint16_t i = 5; i < tx_frame_length; i++)
-		crc = _crc16_update(crc, tx_buffer[i]);
-	tx_buffer[tx_frame_length]   = crc >> 8;
-	tx_buffer[tx_frame_length+1] = crc & 0xff;
-	tx_frame_length = length + 7;
-#endif
-}
-
-void CMBSender::FillRegDataRq(uint8_t addr, uint8_t length)
-{
-	// Frame header
-	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
-	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-	// Frame size
-#ifdef USE_CRC
-	tx_buffer[2] = 5; //CMD(1) + DATA(2) + CRC(2)
-#else
-	tx_buffer[2] = 3; //CMD(1) + DATA(2)
-#endif
-	tx_buffer[3] = 0x81;	// Frame command
-	tx_buffer[4] = addr;	// Register address
-	tx_buffer[5] = length;	// Data
-	tx_frame_length = 6;
-	
-#ifdef USE_CRC
-	// Calculate CRC
-	uint16_t crc = 0;
-	for (uint16_t i = 3; i < tx_frame_length; i++)
-		crc = _crc16_update(crc, tx_buffer[i]);
-	tx_buffer[tx_frame_length]   = crc >> 8;
-	tx_buffer[tx_frame_length+1] = crc & 0xff;
-	tx_frame_length = length + 8;
-#endif
-}
-
-void CMBSender::FillVarDataTx(uint16_t addr, uint16_t* data, uint16_t length)
-{
-	// Frame header
-	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
-	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-		// Frame size
-#ifdef USE_CRC
-	tx_buffer[2] = length * 2 + 5; //CMD (1) + DATA(length * 2) + CRC(2) + ADDR(2)
-#else
-	tx_buffer[2] = length * 2 + 3; //CMD (1) + DATA(length * 2) + ADDR(2)
-#endif
-	tx_buffer[3] = 0x82;	// Frame command
-	tx_buffer[4] = addr >> 8;
-	tx_buffer[5] = addr & 0xff;
-	tx_frame_length = length * 2 + 6;
-		
-	// Frame data
-	for (uint16_t i = 0; i < length; i++)
-	{
-		tx_buffer[6 + i*2 + 0] = data[i] >> 8;
-		tx_buffer[6 + i*2 + 1] = data[i] & 0xff;
-	}
-		
-#ifdef USE_CRC
-	// Calculate CRC
-	uint16_t crc = 0;
-	for (int i = 6; i < tx_frame_length; i++)
-		crc = _crc16_update(crc, tx_buffer[i]);
-	tx_buffer[tx_frame_length] = crc >> 8;
-	tx_buffer[tx_frame_length+1] = crc & 0xff;
-	this->tx_frame_length = length * 2 + 8;
-#endif
-}
-
-void CMBSender::FillVarDataRq(uint16_t addr, uint16_t length)
-{
-	// Frame header
-	tx_buffer[0] = FRAMEHEADER_LOWBYTE;
-	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
-	// Frame size
-#ifdef USE_CRC
-	tx_buffer[2] = 6; //CMD(1) + DATA(3) + CRC(2)
-#else
-	tx_buffer[2] = 4; //CMD(1) + DATA(3)
-#endif
-	tx_buffer[3] = 0x83;				// Frame command
-	tx_buffer[4] = addr >> 8;			// Register address
-	tx_buffer[5] = addr & 0xff;			// Register address
-	tx_buffer[6] = length * 2;			// Data
-	tx_frame_length = 7;
-	
-#ifdef USE_CRC
-	// Calculate CRC
-	uint16_t crc = 0;
-	for (uint16_t i = 3; i < tx_frame_length; i++)
-		crc = _crc16_update(crc, tx_buffer[i]);
-	tx_buffer[tx_frame_length]   = crc >> 8;
-	tx_buffer[tx_frame_length+1] = crc & 0xff;
-	tx_frame_length = 9;
-#endif	
-}
-
 // MODBUS write data to register command
 void CMBSender::WriteDataToRegisterAsync(uint8_t addr, uint8_t* data, uint8_t length)
 {
@@ -283,8 +163,6 @@ void CMBSender::OnReceiveByte(uint8_t data)
 				modbus_receiver_state = rx_CRC0;
 #else
 				modbus_receiver_state = rx_Complete;
-				/*if (isTransaction)
-					StartMODBUSTransmitter();*/
 #endif
 				OnTransactionCallback(rx_buffer, rx_frame_length);
 				if (CallbackHandler != 0)
@@ -300,8 +178,6 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			if (rx_currt_crc == rx_frame_crc)
 			{
 				modbus_receiver_state = rx_Complete;
-				/*if (isTransaction)
-					StartMODBUSTransmitter();*/
 				
 				OnTransactionCallback(rx_buffer, rx_frame_length);
 				if (CallbackHandler != 0)
@@ -442,15 +318,13 @@ void CMBSender::ProcessTransaction(uint8_t* data, uint16_t length)
 
 void CMBSender::OnTransactionCallback(uint8_t* data, uint16_t length)
 {
-	ProcessTransaction(data, length);
-	// no code
+	CMBSender::ProcessTransaction(data, length);
 }
 
 void CMBSender::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_t length)
 {
 	if (CallbackHandler != 0)
 		CallbackHandler->OnVariableReceived(addr, data, length);
-	// no code
 }
 
 
@@ -458,5 +332,4 @@ void CMBSender::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t length)
 {
 	if (CallbackHandler != 0)
 		CallbackHandler->OnRegisterReceived(addr, data, length);
-	// no code
 }

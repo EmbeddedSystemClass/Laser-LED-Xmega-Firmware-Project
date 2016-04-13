@@ -1,17 +1,19 @@
 /* 
-* CMBSender.h
+* CMBSenderDMA.h
 *
-* Created: 28.02.2016 22:01:08
-* Author: Vladislav
+* Created: 12.04.2016 10:16:53
+* Author: TPU_2
 */
 
 
-#ifndef __CMBSENDER_H__
-#define __CMBSENDER_H__
+#ifndef __CMBSENDERDMA_H__
+#define __CMBSENDERDMA_H__
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <avr/io.h>
 #include "CMBProtocol.h"
+#include "CDMA.h"
 #include "../LaserLib/CUSART.h"
 
 typedef enum MODBUS_RECEIVER_STATE_ENUM
@@ -22,11 +24,11 @@ typedef enum MODBUS_RECEIVER_STATE_ENUM
 	rx_FrameLength,
 	rx_FrameReceive,
 	rx_CRC0,
-	rx_CRC1,		
+	rx_CRC1,
 	rx_Idle,
-	rx_Complete,		
+	rx_Complete,
 	rx_Error,
-	rx_TimeOut		
+	rx_TimeOut
 } MODBUS_RECEIVER_STATE, *PMODBUS_RECEIVER_STATE;
 
 typedef enum MODBUS_TRANSMITTER_STATE_ENUM
@@ -49,13 +51,13 @@ typedef enum MODBUS_STATE_ENUM
 
 typedef void (*FPModbusCallback)(CMBEventsHandler *handler, uint8_t* data, uint16_t length);
 
-class CMBSender : public CMBEventsHandler
+class CMBSenderDMA : public CMBEventsHandler
 {
 public:
-	CMBSender();
-	~CMBSender();
+	CMBSenderDMA();
+	~CMBSenderDMA();
 	
-	void Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize);
+	void Initialize(CUSART* usart, CMBEventsHandler *handler, DMA_t *dma, DMA_CHANNEL rxDMAch, DMA_CHANNEL txDMAch, uint16_t rx_bufSize, uint16_t tx_bufSize);
 	void Deinitialize();
 	
 	// Send data methods asynchronous
@@ -63,12 +65,6 @@ public:
 	void WriteDataToSRAMAsync(uint16_t addr, uint16_t* data, uint16_t length);
 	void RequestDataFromRegisterAsync(uint8_t addr, uint8_t length);
 	void RequestDataFromSRAMAsync(uint16_t addr, uint8_t length);
-	
-	// Send data methods synchronous
-	void WriteDataToRegister(uint8_t addr, uint8_t* data, uint8_t length);
-	void WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length);
-	//void RequestDataFromRegister(uint8_t addr, uint8_t length);
-	//void RequestDataFromSRAM(uint16_t addr, uint8_t length);
 	
 	// Receive data methods
 	void StartMODBUSListener();
@@ -84,7 +80,7 @@ public:
 	void StartMODBUSRegisterTransaction(uint8_t addr, uint8_t length);
 	void StartMODBUSVariableTransaction(uint16_t addr, uint8_t length);
 	
-protected:	
+protected:
 	// ISR Callback
 	static void OnUSARTRxInterrupt(void* sender);
 	static void OnUSARTTxInterrupt(void* sender);
@@ -94,33 +90,40 @@ protected:
 	virtual void OnVariableReceived(uint16_t addr, uint16_t* data, uint16_t length);
 	virtual void OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t length);
 	
-private:
-	
+private:	
 	// main receive byte FSM function
-	void OnReceiveByte(uint8_t data);
-	void OnTransmitByte();
+	void OnReceiveBlock(uint8_t data);
+	void OnTransmitBlock();
 	void OnTimeout();
 	void ProcessTransaction(uint8_t* data, uint16_t length);
 	
+	// DMA functions
+	void StartRxDMA(uint8_t* dstmem, uint16_t length);
+	void StopRxDMA();
+	void StartTxDMA(uint8_t* srcmem, uint16_t length);
+	void StopTxDMA();
+	
 protected:
 	CUSART*  pUSART;
+	DMA_CH_t* rx_dma;
+	DMA_CH_t* tx_dma;
 	
 	// Receiver variables
 	volatile MODBUS_RECEIVER_STATE modbus_receiver_state;
-	volatile uint8_t  rx_buffer_pos;
+	uint8_t  rx_buffer_pos;
 	// Variables for final state machine runtime CRC check
 	uint16_t rx_frame_crc;
 	uint16_t rx_currt_crc;
 	
 	// transmitter variables
 	volatile MODBUS_TRANSMITTER_STATE modbus_transmitter_state;
-	volatile uint8_t  tx_buffer_pos;
+	uint8_t  tx_buffer_pos;
 	
 	// MODBUS state
 	bool isTransaction;
 	
 	// Callback owner
 	CMBEventsHandler *CallbackHandler;
-}; //CMBSender
+}; //CMBSenderDMA
 
-#endif //__CMBSENDER_H__
+#endif //__CMBSENDERDMA_H__
