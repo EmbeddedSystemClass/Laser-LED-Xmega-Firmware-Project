@@ -16,6 +16,7 @@
 // Application class
 #include "CLaserBoard.h"
 #include "CLaserControlApp.h"
+#include "CSoundPlayer.h"
 
 // MODBUS Lib
 #include "MODBUS/CMBSender.h"
@@ -34,13 +35,15 @@ CSPI dacSPI;
 CDGUSUSART usart;
 CMBSender sender;
 CLaserBoard laserBoard;
+CSoundPlayer player;
 CLaserControlApp App;
 
 extern "C" void __cxa_pure_virtual()
-{
-	laserBoard.BeepClassError();
-	
-	while(1);
+{	
+	while(1)
+	{
+		laserBoard.BeepClassError();
+	}
 }
 
 void SystemInitialize()
@@ -48,8 +51,9 @@ void SystemInitialize()
 	cli();	/* Disable global interrupts */
 	
 	// Initialize modules
-	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 	laserBoard.InitializeIO();
+	player.Initialize();
+	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 	usart.Initialize(BAUD_115200_ERM0P1, PARITY_DISABLE, STOPBITS_1BIT, true);
 	sender.Initialize(&usart, &App, 256, 256);
 	App.Initialize(&sender);
@@ -65,11 +69,8 @@ int main(void)
 	// Initialization system
 	SystemInitialize();
 	
-	// Startup delay
-	_delay_ms(2000);
-	
-	// Beep
-	laserBoard.BeepClassError();
+	// Startup delay (Beep "Imperial March")
+	player.Play();
 	
 	// Initialize application GUI
 	App.Start();
@@ -87,7 +88,7 @@ int main(void)
 
 		// Sine waveform generation
 		x += 0.1f;
-		//if (x > 6.28) x = 0.0f;
+		if (x > 6.2831853) x = 0.0f;
 		float y = 1023.0f * (1.0f + sinf(x)) * 0.5f;
 		uint16_t data = ((uint16_t)y) << 2;
 	
