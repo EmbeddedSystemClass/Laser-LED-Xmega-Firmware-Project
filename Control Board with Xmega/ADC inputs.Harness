@@ -1,0 +1,1 @@
+AnalogIO=ADC[0..7],DAC[0..1],AREF,ATRIG
