@@ -86,6 +86,7 @@ int main(void)
 		if ((prs++ % 200) == 0)
 			App.Run();
 
+		/*
 		// Sine waveform generation
 		x += 0.1f;
 		if (x > 6.2831853) x = 0.0f;
@@ -93,6 +94,6 @@ int main(void)
 		uint16_t data = ((uint16_t)y) << 2;
 	
 		// Send to DAC	
-		dacSPI.Send((uint8_t*)&data, sizeof(data));
+		dacSPI.Send((uint8_t*)&data, sizeof(data));*/
     }
 }

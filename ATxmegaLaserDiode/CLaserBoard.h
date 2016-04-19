@@ -64,8 +64,8 @@ public:
 	void InitializeIO();
 	void InitializeClock();
 	
-	void Beep();
-	void BeepClassError();
+	static void Beep();
+	static void BeepClassError();
 protected:
 private:
 

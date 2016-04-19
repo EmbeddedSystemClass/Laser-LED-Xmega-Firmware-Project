@@ -16,6 +16,18 @@
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
 
+typedef enum APP_STATE_ENUM
+{
+	APP_LOGO,
+	APP_SETUP,
+	APP_SETUPtoRUN_ANIM,
+	APP_RUN,
+	APP_OnTimerStart,
+	APP_OnTimerStop,
+	APP_OnTimerRestart,
+	APP_OnHL
+} APP_STATE, *PAPP_STATE;
+
 class CLaserControlApp : public CMBEventsHandler
 {
 public:
@@ -34,17 +46,19 @@ public:
 	// Process GUI
 	void Run();
 private :
+	// application state
+	APP_STATE state;
+	
 	// Registers
 	volatile uint8_t PIC_ID;
 	
 	// Variables
-	volatile uint16_t Energy;
-	volatile uint16_t Frequency;
-	
-	// State variables
-	volatile uint16_t water_state_var;
-	volatile uint16_t lamp_state_var;
-	volatile uint16_t led_state_var;
+	volatile uint16_t m_wMinutes;
+	volatile uint16_t m_wSeconds;
+	volatile uint16_t m_wMillSec;
+	volatile uint16_t m_wSetMin;
+	volatile uint16_t m_wSetSec;
+	volatile uint16_t m_wPower;
 	
 	// Modules
 	CMBSender* m_cpSender;

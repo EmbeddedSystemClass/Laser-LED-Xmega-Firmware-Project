@@ -1,0 +1,18 @@
+[INIT]
+VARCount=64
+PICFIX=1
+SCREENDSIZE=800X600
+SPADDRESS=5000
+[IMG]
+0=0_Logo.bmp
+1=1 Setup.bmp
+2=2 SetupPressed.bmp
+3=3 OnStart.bmp
+4=4 OnH_L.bmp
+5=5 Anim1.bmp
+6=6 Anim2.bmp
+7=7 Anim3.bmp
+8=8 Anim4.bmp
+9=9 Timer.bmp
+10=10 TimerRestart.bmp
+11=11 TimerStop.bmp

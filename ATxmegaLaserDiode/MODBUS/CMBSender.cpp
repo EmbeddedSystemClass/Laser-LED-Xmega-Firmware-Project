@@ -312,7 +312,7 @@ void CMBSender::ProcessTransaction(uint8_t* data, uint16_t length)
 	}
 	if (data[0] == 0x83)
 	{
-		OnVariableReceived(data[1], (uint16_t*)&data[4], (data[2] << 8) | data[3]);
+		OnVariableReceived((data[1] << 8) | data[2], (uint16_t*)&data[4], (data[2] << 8) | data[3]);
 	}
 }
 

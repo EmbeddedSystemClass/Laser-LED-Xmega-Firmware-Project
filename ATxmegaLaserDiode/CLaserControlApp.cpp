@@ -14,6 +14,22 @@ uint16_t swap(uint16_t data)
 	return (data >> 8) | (data << 8);
 }
 
+uint16_t min(uint16_t x, uint16_t y)
+{
+	if (x < y)
+		return x;
+	else
+		return y;
+}
+
+uint16_t max(uint16_t x, uint16_t y)
+{
+	if (x > y)
+		return x;
+	else
+		return y;
+}
+
 // default constructor
 CLaserControlApp::CLaserControlApp()
 {
@@ -36,21 +52,23 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 	uint16_t val = swap(*((uint16_t*)data));
 	switch (swap(addr))
 	{
-		case VARIABLE_ADDR_ENRG:
-			Energy = val;
+		case VARIABLE_ADDR_MIN:
+			m_wSetMin = val;
+			m_wMinutes = val;
 		break;
-		case VARIABLE_ADDR_FREQ:
-			Frequency = val;
+		case VARIABLE_ADDR_SEC:
+			m_wSetSec = val;
+			m_wSeconds = val;
 		break;
-		case VARIABLE_ADDR_LAMP:
-			lamp_state_var = val;
+		case VARIABLE_ADDR_MSC:
+			// Not used
 		break;
-		case VARIABLE_ADDR_LED:
-			led_state_var = val;
+		case VARIABLE_ADDR_PWR:
+			// Not used
 		break;
-		case VARIABLE_ADDR_WATER:
-			water_state_var = val;
-		break;
+		default:
+			// Error
+			CLaserBoard::Beep();
 	}
 }
 
@@ -58,6 +76,34 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 {
 	// Update GUI registers
 	if (addr == 0x03)	PIC_ID = data[1];
+	
+	switch (PIC_ID)
+	{
+		case PICID_LOGO:
+			state = APP_LOGO;
+		break;
+		case PICID_SETUP:
+			state = APP_SETUP;
+		break;
+		case PICID_TIMER:
+			state = APP_RUN;
+		break;
+		case PICID_OnStart:
+			state = APP_OnTimerStart;
+		break;
+		case PICID_OnRestart:
+			state = APP_OnTimerRestart;
+		break;
+		case PICID_OnStop:
+			state = APP_OnTimerStop;
+		break;
+		case PICID_OnH_L:
+			state = APP_OnHL;
+		break;
+		default:
+			//state = APP_SETUPtoRUN_ANIM;
+		break;
+	}
 }
 
 // Initialization
@@ -68,11 +114,12 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	
 	// Set global variables
 	PIC_ID = 0;
-	Energy = 50;
-	Frequency = 4;
-	water_state_var = 1;
-	lamp_state_var = 1;
-	led_state_var = 1;
+	m_wSetMin = 1;
+	m_wSetSec = 30;
+	m_wMillSec = 0;
+	m_wMinutes = m_wSetMin;
+	m_wSeconds = m_wSetSec;
+	m_wPower = 0;
 }
 
 void CLaserControlApp::Start()
@@ -83,16 +130,16 @@ void CLaserControlApp::Start()
 	m_cpSender->WaitMODBUSTransmitter();
 	
 	//Setup variables
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_ENRG, (uint16_t*)&Energy, 2);
+	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wSetMin, 2);
 	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_FREQ, (uint16_t*)&Frequency, 2);
+	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_SEC, (uint16_t*)&m_wSetSec, 2);
 	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_WATER, (uint16_t*)&water_state_var, 2);
+	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
 	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_LAMP, (uint16_t*)&lamp_state_var, 2);
+	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
 	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_LED, (uint16_t*)&led_state_var, 2);
-	m_cpSender->WaitMODBUSTransmitter();
+	
+	state = APP_SETUP;
 }
 
 // Process GUI
@@ -104,26 +151,97 @@ void CLaserControlApp::Run()
 	m_cpSender->WaitMODBUSListener();
 	_delay_ms(50);
 	
-	// Get Variables
-	m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_FREQ, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WaitMODBUSListener();
-	_delay_ms(50);
+	static uint16_t anim = 5;
+	uint16_t pic_id;
 	
-	m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_ENRG, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WaitMODBUSListener();
-	_delay_ms(50);
+	static uint16_t bar = 0;
+	uint16_t bar1 = 0;
+	uint16_t bar2 = 0;
+	uint16_t bar3 = 0;
 	
-	m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_LED, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WaitMODBUSListener();
-	_delay_ms(50);
-	
-	Energy++;
-	if (Energy > 100) Energy = 0;
-	
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_ENRG, (uint16_t*)&Energy, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	_delay_ms(50);
+	switch (state)
+	{
+		case APP_LOGO:
+			Start(); // Start if logo
+		break;
+		case APP_SETUP:
+			// Get Variables
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_MIN, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+			
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_SEC, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+		break;
+		case APP_SETUPtoRUN_ANIM:
+			// Play animation
+			anim++;
+			if (anim > 9) {
+				anim = 9;
+				state = APP_RUN;
+			}
+			pic_id = swap(anim);
+			
+			// Timer setup to timer run animation
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+		break;
+		case APP_RUN:
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wMinutes, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_SEC, (uint16_t*)&m_wSeconds, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			
+			m_wPower++;
+			if (m_wPower > 100) m_wPower = 0;
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			
+			bar++;
+			if (bar > 34) bar = 0;
+			bar1 = min(bar, 12);
+			bar2 = min(max(bar, 11), 24);
+			bar3 = max(bar, 23);
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+		break;
+		case APP_OnTimerStart:
+			// Set Run state
+			anim = 5;
+			pic_id = swap(PICID_TIMER);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			state = APP_RUN;
+		break;
+		case APP_OnTimerStop:
+			// Set Stop (return to Setup) state
+			pic_id = swap(PICID_SETUP);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			state = APP_SETUP;
+		break;
+		case APP_OnTimerRestart:
+			// Restart (return to Run) state
+			pic_id = swap(PICID_TIMER);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			state = APP_RUN;
+		break;
+		case APP_OnHL:
+			// Turn HL (return to Setup) state
+			pic_id = swap(PICID_SETUP);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			state = APP_SETUP;
+		break;
+	}
 }
