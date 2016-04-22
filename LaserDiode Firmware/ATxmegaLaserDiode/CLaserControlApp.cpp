@@ -11,6 +11,7 @@
 #include <util/delay.h>
 
 CTimerC timer;
+CTimerF laserTimer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 
@@ -116,9 +117,18 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 {
 	// GUI class initialization
 	m_cpSender = sender;
+	
+	// Initialize timer
 	timer.Initialize(WGM_Normal, CS_DIV256);
 	timer.SetPeriod(25000); // Every 10 ms
 	timer.SetOVFCallback(OnTimerStatic, this, TC_OVFINTLVL_LO_gc); // Enable interrupt
+	
+	// Initialize Laser timer
+	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
+	laserTimer.SetPeriod(12500);	// 10 Hz
+	laserTimer.SetCOMPA(3125);	// 50 ms, 50% duty cycle
+	laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
+	laserTimer.EnableChannel(TIMER_CHANNEL_A); // Enable Laser TTL Gate
 	
 	// Set global variables
 	PIC_ID = 0;
@@ -246,6 +256,7 @@ void CLaserControlApp::Run()
 			
 			// Start timer
 			timer.Start(25000);
+			laserTimer.Start(12500);
 			laserBoard.Relay1On();
 			
 			state = APP_RUN;
@@ -258,6 +269,7 @@ void CLaserControlApp::Run()
 			
 			// Stop timer
 			timer.Stop();
+			laserTimer.Stop();
 			laserBoard.Relay1Off();
 			
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wSetMin, 2);
@@ -285,6 +297,7 @@ void CLaserControlApp::Run()
 			m_wMillSec = 0;
 			
 			timer.Stop();
+			laserTimer.Stop();
 			
 			player.SoundStart(1000, 50, 1);
 			player.SoundStop();
@@ -295,6 +308,7 @@ void CLaserControlApp::Run()
 			
 			// Stop timer
 			timer.Start(25000);
+			laserTimer.Start(12500);
 			laserBoard.Relay1On();
 			
 			state = APP_RUN;
@@ -308,9 +322,15 @@ void CLaserControlApp::Run()
 			static bool hl = true;
 			
 			if (hl)
+			{
 				laserBoard.Relay2On();
+				laserBoard.LaserPowerOn();
+			}
 			else
+			{
 				laserBoard.Relay2Off();
+				laserBoard.LaserPowerOff();
+			}
 				
 			hl = !hl;
 			
@@ -363,6 +383,12 @@ void CLaserControlApp::OnTimer()
 	m_wMillSec-=10;
 }
 
+void CLaserControlApp::OnLaserTimer()
+{
+	player.SoundStart(1000, 5, 0);
+	player.SoundStop();
+}
+
 void CLaserControlApp::OnTimeout()
 {
 	timer.Stop();
@@ -373,4 +399,10 @@ void CLaserControlApp::OnTimerStatic(void* sender)
 {
 	CLaserControlApp* app = (CLaserControlApp*)sender;
 	app->OnTimer();
+}
+
+void CLaserControlApp::OnLaserTimerStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnLaserTimer();
 }

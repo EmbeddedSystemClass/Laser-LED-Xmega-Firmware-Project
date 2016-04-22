@@ -10,6 +10,7 @@
 #define __CLASERCONTROLAPP_H__
 
 #include "CTimerC.h"
+#include "CTimerF.h"
 #include "DGUSGUI.h"
 #include "CDGUSUSART.h"
 #include "CLaserBoard.h"
@@ -49,8 +50,10 @@ public:
 	
 protected :
 	void OnTimer();
+	void OnLaserTimer();
 	void OnTimeout();
 	static void OnTimerStatic(void* sender);
+	static void OnLaserTimerStatic(void* sender);
 	
 private :
 	// application state

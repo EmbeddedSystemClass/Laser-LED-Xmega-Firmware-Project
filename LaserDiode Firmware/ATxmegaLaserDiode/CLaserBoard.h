@@ -48,8 +48,8 @@ typedef enum LASERBOARD_PINS_ENUM
 	PIN_OUT6,				// = PIN6_bp, PORTF
 	PIN_OUT7,				// = PIN7_bp, PORTF
 	// Slow OUT Port
-	PIN_SLOWOUT0,			// = PIN1_bp, PORTE
-	PIN_SLOWOUT1,			// = PIN2_bp, PORTE
+	PIN_SLOWOUT0,			// = PIN1_bp, PORTE // Laser Power on
+	PIN_SLOWOUT1,			// = PIN0_bp, PORTE
 	PIN_SLOWOUT2,			// = PIN4_bp, PORTD // Relay 1
 	PIN_SLOWOUT3			// = PIN0_bp, PORTD // Relay 2
 } LASERBOARD_PINS, *PLASERBOARD_PINS;
@@ -70,6 +70,10 @@ public:
 	void Relay2On();
 	void Relay1Off();
 	void Relay2Off();
+	
+	// Laser
+	void LaserPowerOn();
+	void LaserPowerOff();
 	
 	// Sound
 	static void Beep();

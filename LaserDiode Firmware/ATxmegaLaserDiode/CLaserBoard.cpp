@@ -71,6 +71,14 @@ void CLaserBoard::InitializeIO()
 	
 	PORTD.OUT = 0;//PIN0_bm;
 	
+	PORTE.DIRSET = PIN0_bm | PIN1_bm;
+	
+	// Configure all pins to "wired and"
+	PORTE.PIN0CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTE.PIN1CTRL =PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	
+	PORTE.OUT = 0;//PIN0_bm;
+	
 	// Enable low level interrupts
 	PMIC.CTRL |= PMIC_LOLVLEN_bm;
 	PMIC.CTRL |= PMIC_MEDLVLEN_bm;
@@ -141,6 +149,16 @@ void CLaserBoard::Relay1Off()
 void CLaserBoard::Relay2Off()
 {
 	PORTD.DIRSET = PIN4_bm;
+}
+
+void CLaserBoard::LaserPowerOn()
+{
+	PORTE.OUTSET = PIN1_bm;
+}
+
+void CLaserBoard::LaserPowerOff()
+{
+	PORTE.OUTCLR = PIN1_bm;
 }
 
 void CLaserBoard::Beep()
