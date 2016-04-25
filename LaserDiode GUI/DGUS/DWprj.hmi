@@ -1,0 +1,23 @@
+[INIT]
+VARCount=64
+PICFIX=1
+SCREENDSIZE=800X600
+SPADDRESS=5000
+[IMG]
+0=0 DemoLogo.bmp
+1=1 WorkFast.bmp
+2=2 WorkMedium.bmp
+3=3 WorkSlow.bmp
+4=4 WorkPressed.bmp
+5=5 WorkOnReady.bmp
+6=6 WorkStart.bmp
+7=7 WorkOnStart.bmp
+8=8 WorkStarted.bmp
+9=9 PhototypeSelect.bmp
+10=10 PhototypeSelectPressed.bmp
+11=11 phototype 1.bmp
+12=12 phototype 2.bmp
+13=13 phototype 3.bmp
+14=14 phototype 4.bmp
+15=15 phototype 5.bmp
+16=16 phototype 6.bmp
