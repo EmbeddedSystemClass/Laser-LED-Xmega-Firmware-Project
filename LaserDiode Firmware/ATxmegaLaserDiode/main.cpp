@@ -70,7 +70,7 @@ int main(void)
 	SystemInitialize();
 	
 	// Startup delay (Beep "Imperial March")
-	//player.Play();
+	player.Play();
 	
 	// Initialize application GUI
 	App.Start();
