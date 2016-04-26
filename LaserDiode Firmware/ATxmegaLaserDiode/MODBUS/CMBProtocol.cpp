@@ -138,7 +138,7 @@ void CMBEventsHandler::FillVarDataRq(uint16_t addr, uint16_t length)
 	tx_buffer[3] = 0x83;				// Frame command
 	tx_buffer[4] = addr >> 8;			// Register address
 	tx_buffer[5] = addr & 0xff;			// Register address
-	tx_buffer[6] = length * 2;			// Data
+	tx_buffer[6] = length;				// Data
 	tx_frame_length = 7;
 	
 #ifdef USE_CRC

@@ -125,6 +125,8 @@ void CMBSender::WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length)
 //void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length);
 //void CMBSender::RequestDataFromSRAM(uint16_t addr, uint8_t length);
 
+volatile uint16_t cnt = 0;
+
 void CMBSender::OnReceiveByte(uint8_t data)
 {
 	switch (modbus_receiver_state)
@@ -146,6 +148,7 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			rx_frame_length = data;
 			rx_buffer_pos = 0;
 			rx_currt_crc = 0;
+			cnt = 0;
 			modbus_receiver_state = rx_FrameReceive;
 			break;
 		case rx_FrameReceive :
@@ -157,6 +160,7 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			}
 			rx_currt_crc = _crc16_update(rx_currt_crc, data);
 			rx_buffer_pos++;
+			cnt++;
 			if (rx_buffer_pos == rx_frame_length)
 			{
 #ifdef USE_CRC
