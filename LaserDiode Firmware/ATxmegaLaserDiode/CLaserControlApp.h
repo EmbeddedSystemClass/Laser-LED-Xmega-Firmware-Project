@@ -9,6 +9,7 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
+#include <stdbool.h>
 #include "CTimerC.h"
 #include "CTimerF.h"
 #include "DGUSGUI.h"
@@ -20,15 +21,34 @@
 
 typedef enum APP_STATE_ENUM
 {
+	// DGUS State
 	APP_LOGO,
-	APP_SETUP,
-	APP_SETUPtoRUN_ANIM,
-	APP_RUN,
-	APP_OnTimerStart,
-	APP_OnTimerStop,
-	APP_OnTimerRestart,
-	APP_OnHL
+	APP_WORKFAST,
+	APP_WORKMEDIUM,
+	APP_WORKSLOW,
+	APP_WORKSTART,
+	APP_WORKSTARTED,
+	
+	// Commands
+	APP_WORKOnReady,
+	APP_WORKOnStart,
+	
+	// Phototype selector state
+	APP_PHOTOTYPESELECT,
+	APP_PHOTOTYPE1,
+	APP_PHOTOTYPE2,
+	APP_PHOTOTYPE3,
+	APP_PHOTOTYPE4,
+	APP_PHOTOTYPE5,
+	APP_PHOTOTYPE6
 } APP_STATE, *PAPP_STATE;
+
+typedef enum APP_PROFILE_ENUM
+{
+	WorkFast,
+	WorkMedium,
+	WorkSlow
+} APP_PROFILE, *PAPP_PROFILE;
 
 class CLaserControlApp : public CMBEventsHandler
 {
@@ -58,17 +78,11 @@ protected :
 private :
 	// application state
 	APP_STATE state;
+	APP_PROFILE profile;
 	
 	// Registers
 	volatile uint8_t PIC_ID;
-	
-	// Variables
-	volatile uint16_t m_wMinutes;
-	volatile uint16_t m_wSeconds;
-	volatile uint16_t m_wMillSec;
-	volatile uint16_t m_wSetMin;
-	volatile uint16_t m_wSetSec;
-	volatile uint16_t m_wPower;
+	volatile bool update;
 	
 	// Modules
 	CMBSender* m_cpSender;

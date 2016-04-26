@@ -8,6 +8,7 @@
 
 #include "CLaserControlApp.h"
 #include "CSoundPlayer.h"
+#include <string.h>
 #include <util/delay.h>
 
 CTimerC timer;
@@ -15,9 +16,24 @@ CTimerF laserTimer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 
+volatile DGUS_DATA m_structDGUSDATA_Fast;
+volatile DGUS_DATA m_structDGUSDATA_Medium;
+volatile DGUS_DATA m_structDGUSDATA_Slow;
+
 uint16_t swap(uint16_t data)
 {
 	return (data >> 8) | (data << 8);
+}
+
+void ConvertData(void* dst, void* src, uint16_t size)
+{
+	uint16_t  length = size / 2;
+	uint16_t* source = (uint16_t*)src;
+	uint16_t* dest = (uint16_t*)dst;
+	
+	// swap bytes in words
+	for (uint16_t i = 0; i < length; i++)
+		dest[i] = swap(source[i]);
 }
 
 uint16_t min(uint16_t x, uint16_t y)
@@ -55,26 +71,28 @@ void CLaserControlApp::OnTransactionCallback(uint8_t* data, uint16_t length)
 void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_t length)
 {
 	// Update GUI variables	
-	uint16_t val = swap(*((uint16_t*)data));
-	switch (addr)
+	//uint16_t val = swap(*((uint16_t*)data));
+	
+	if (addr == STRUCT_ADDR_DATA)
 	{
-		case VARIABLE_ADDR_MIN:
-			m_wSetMin = val;
-			m_wMinutes = val;
-		break;
-		case VARIABLE_ADDR_SEC:
-			m_wSetSec = val;
-			m_wSeconds = val;
-		break;
-		case VARIABLE_ADDR_MSC:
-			// Not used
-		break;
-		case VARIABLE_ADDR_PWR:
-			// Not used
-		break;
-		default:
-			// Error
-			CLaserBoard::Beep();
+		//memcpy((void*)&m_structDGUSDATA_Fast, (void*)data, length);
+		//ConvertData((void*)&m_structDGUSDATA_Fast, (void*)data, length);
+		switch (profile)
+		{
+			case WorkFast:
+				ConvertData((void*)&m_structDGUSDATA_Fast, (void*)data, length/2);
+			break;
+			case WorkSlow:
+				ConvertData((void*)&m_structDGUSDATA_Slow, (void*)data, length/2);
+			break;
+			case WorkMedium:
+				ConvertData((void*)&m_structDGUSDATA_Medium, (void*)data, length/2);
+			break;
+			default:
+				// Error
+				CLaserBoard::Beep();
+			break;
+		}
 	}
 }
 
@@ -88,23 +106,62 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		case PICID_LOGO:
 			state = APP_LOGO;
 		break;
-		case PICID_SETUP:
-			state = APP_SETUP;
+		case PICID_WORKFAST:
+			state = APP_WORKFAST;
+			if (profile != WorkFast)
+			{
+				profile = WorkFast;
+				update = true;
+			}
 		break;
-		case PICID_TIMER:
-			state = APP_RUN;
+		case PICID_WORKMEDIUM:
+			state = APP_WORKMEDIUM;
+			if (profile != WorkMedium)
+			{
+				profile = WorkMedium;
+				update = true;
+			}
 		break;
-		case PICID_OnStart:
-			state = APP_OnTimerStart;
+		case PICID_WORKSLOW:
+			state = APP_WORKSLOW;
+			if (profile != WorkSlow)
+			{
+				profile = WorkSlow;
+				update = true;
+			}
 		break;
-		case PICID_OnRestart:
-			state = APP_OnTimerRestart;
+		case PICID_WORKOnReady:
+			state = APP_WORKOnReady;
 		break;
-		case PICID_OnStop:
-			state = APP_OnTimerStop;
+		case PICID_WORKSTART:
+			state = APP_WORKSTART;
 		break;
-		case PICID_OnH_L:
-			state = APP_OnHL;
+		case PICID_WORKOnStart:
+			state = APP_WORKOnStart;
+		break;
+		case PICID_WORKSTARTED:
+			state = APP_WORKSTARTED;
+		break;
+		case PICID_PHOTOTYPESELECT:
+			state = APP_PHOTOTYPESELECT;
+		break;
+		case PICID_PHOTOTYPE1:
+			state = APP_PHOTOTYPE1;
+		break;
+		case PICID_PHOTOTYPE2:
+			state = APP_PHOTOTYPE2;
+		break;
+		case PICID_PHOTOTYPE3:
+			state = APP_PHOTOTYPE3;
+		break;
+		case PICID_PHOTOTYPE4:
+			state = APP_PHOTOTYPE4;
+		break;
+		case PICID_PHOTOTYPE5:
+			state = APP_PHOTOTYPE5;
+		break;
+		case PICID_PHOTOTYPE6:
+			state = APP_PHOTOTYPE6;
 		break;
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
@@ -132,12 +189,34 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	
 	// Set global variables
 	PIC_ID = 0;
-	m_wSetMin = 1;
-	m_wSetSec = 30;
-	m_wMillSec = 0;
-	m_wMinutes = m_wSetMin;
-	m_wSeconds = m_wSetSec;
-	m_wPower = 0;
+	update = false;
+	
+	// Fast profile
+	m_structDGUSDATA_Fast.Frequency = 10; // 10 Hz
+	m_structDGUSDATA_Fast.DutyCycle = 50; // 50%
+	m_structDGUSDATA_Fast.Duration  = ((1000 / m_structDGUSDATA_Fast.Frequency) * m_structDGUSDATA_Fast.DutyCycle) / 100; // ms
+	m_structDGUSDATA_Fast.Intensity = 200; // W
+	m_structDGUSDATA_Fast.Power     = (m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.DutyCycle) / 100; // W
+	m_structDGUSDATA_Fast.Energy    = (m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.Duration) / 1000; // J
+	
+	// Slow profile
+	m_structDGUSDATA_Slow.Frequency = 10; // 10 Hz
+	m_structDGUSDATA_Slow.DutyCycle = 50; // 50%
+	m_structDGUSDATA_Slow.Duration  = ((1000 / m_structDGUSDATA_Slow.Frequency) * m_structDGUSDATA_Slow.DutyCycle) / 100; // ms
+	m_structDGUSDATA_Slow.Intensity = 200; // W
+	m_structDGUSDATA_Slow.Power     = (m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.DutyCycle) / 100; // W
+	m_structDGUSDATA_Slow.Energy    = (m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.Duration) / 1000; // J
+	
+	// Medium profile
+	m_structDGUSDATA_Medium.Frequency = 10; // 10 Hz
+	m_structDGUSDATA_Medium.DutyCycle = 50; // 50%
+	m_structDGUSDATA_Medium.Duration  = ((1000 / m_structDGUSDATA_Medium.Frequency) * m_structDGUSDATA_Medium.DutyCycle) / 100; // ms
+	m_structDGUSDATA_Medium.Intensity = 200; // W
+	m_structDGUSDATA_Medium.Power     = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.DutyCycle) / 100; // W
+	m_structDGUSDATA_Medium.Energy    = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.Duration) / 1000; // J
+	
+	// Current profile
+	profile = WorkFast;
 }
 
 void CLaserControlApp::Start()
@@ -148,27 +227,10 @@ void CLaserControlApp::Start()
 	m_cpSender->WaitMODBUSTransmitter();
 	
 	//Setup variables
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wSetMin, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_SEC, (uint16_t*)&m_wSetSec, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+	m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_DATA, (uint16_t*)&m_structDGUSDATA_Fast, sizeof(m_structDGUSDATA_Fast));
 	m_cpSender->WaitMODBUSTransmitter();
 	
-	uint16_t bar = 0;
-	uint16_t bar1 = min(bar, 12);
-	uint16_t bar2 = min(max(bar, 11), 24);
-	uint16_t bar3 = max(bar, 23);
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	
-	state = APP_SETUP;
+	state = APP_WORKFAST;
 }
 
 // Process GUI
@@ -180,207 +242,125 @@ void CLaserControlApp::Run()
 	m_cpSender->WaitMODBUSListener();
 	_delay_ms(50);
 	
-	static uint16_t anim = 5;
-	uint16_t pic_id;
-	
-	static uint16_t bar = 0;
-	uint16_t bar1 = 0;
-	uint16_t bar2 = 0;
-	uint16_t bar3 = 0;
+	if (!update)
+	{
+		// Get variables 
+		m_cpSender->StartMODBUSVariableTransaction(STRUCT_ADDR_DATA, sizeof(DGUS_DATA));
+		m_cpSender->WaitMODBUSTransmitter();
+		m_cpSender->WaitMODBUSListener();
+		_delay_ms(50);
+	}
 	
 	switch (state)
-	{
+	{		
+		// DGUS State
 		case APP_LOGO:
-			Start(); // Start if logo
+			state = APP_WORKFAST;
 		break;
-		case APP_SETUP:
-			// Get Variables
-			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_MIN, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WaitMODBUSListener();
-			_delay_ms(50);
-			
-			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_SEC, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WaitMODBUSListener();
-			_delay_ms(50);
+		case APP_WORKFAST:
+			state = APP_WORKFAST;
 		break;
-		case APP_SETUPtoRUN_ANIM:
-			// Play animation
-			anim++;
-			if (anim > 9) {
-				anim = 9;
-				state = APP_RUN;
-			}
-			pic_id = swap(anim);
-			
-			// Timer setup to timer run animation
-			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-			m_cpSender->WaitMODBUSTransmitter();
+		case APP_WORKMEDIUM:
+			state = APP_WORKFAST;
 		break;
-		case APP_RUN:
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wMinutes, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_SEC, (uint16_t*)&m_wSeconds, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			/*m_wPower++;
-			if (m_wPower > 100) m_wPower = 0;
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			bar++;
-			if (bar > 34) bar = 0;
-			bar1 = min(bar, 12);
-			bar2 = min(max(bar, 11), 24);
-			bar3 = max(bar, 23);
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
-			m_cpSender->WaitMODBUSTransmitter();*/
+		case APP_WORKSLOW:
+			state = APP_WORKFAST;
 		break;
-		case APP_OnTimerStart:
-			// Set Run state
-			anim = 5;
-			pic_id = swap(PICID_TIMER);
-			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			m_wMinutes = m_wSetMin;
-			m_wSeconds = m_wSetSec;
-			m_wMillSec = 0;
-			
-			// Start timer
-			timer.Start(25000);
-			laserTimer.Start(12500);
-			laserBoard.Relay1On();
-			
-			state = APP_RUN;
+		case APP_WORKSTART:
+			state = APP_WORKFAST;
 		break;
-		case APP_OnTimerStop:
-			// Set Stop (return to Setup) state
-			pic_id = swap(PICID_SETUP);
-			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			// Stop timer
-			timer.Stop();
-			laserTimer.Stop();
-			laserBoard.Relay1Off();
-			
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MIN, (uint16_t*)&m_wSetMin, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_SEC, (uint16_t*)&m_wSetSec, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			m_wMinutes = m_wSetMin;
-			m_wSeconds = m_wSetSec;
-			m_wMillSec = 0;
-			
-			state = APP_SETUP;
+		case APP_WORKSTARTED:
+			state = APP_WORKFAST;
 		break;
-		case APP_OnTimerRestart:
-			// Restart (return to Run) state
-			pic_id = swap(PICID_TIMER);
-			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			// Reset
-			m_wMinutes = m_wSetMin;
-			m_wSeconds = m_wSetSec;
-			m_wMillSec = 0;
-			
-			timer.Stop();
-			laserTimer.Stop();
-			
-			player.SoundStart(1000, 50, 1);
-			player.SoundStop();
-			_delay_ms(50);
-			player.SoundStart(1000, 50, 1);
-			player.SoundStop();
-			_delay_ms(50);
-			
-			// Stop timer
-			timer.Start(25000);
-			laserTimer.Start(12500);
-			laserBoard.Relay1On();
-			
-			state = APP_RUN;
+		
+		// Commands
+		case APP_WORKOnReady:
+			state = APP_WORKFAST;
 		break;
-		case APP_OnHL:
-			// Turn HL (return to Setup) state
-			pic_id = swap(PICID_SETUP);
-			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-			m_cpSender->WaitMODBUSTransmitter();
-			
-			static bool hl = true;
-			
-			if (hl)
-			{
-				laserBoard.Relay2On();
-				laserBoard.LaserPowerOn();
-			}
-			else
-			{
-				laserBoard.Relay2Off();
-				laserBoard.LaserPowerOff();
-			}
+		case APP_WORKOnStart:
+			state = APP_WORKFAST;
+		break;
+		
+		// Phototype selector state
+		case APP_PHOTOTYPESELECT:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE1:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE2:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE3:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE4:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE5:
+			state = APP_WORKFAST;
+		break;
+		case APP_PHOTOTYPE6:
+			state = APP_WORKFAST;
+		break;
+		default:
+		break;
+	}
+	
+	DGUS_DATA DGUSDATA;
+	
+	if (update)
+	{
+		switch (profile)
+		{
+			case WorkFast:
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_DATA, (uint16_t*)&m_structDGUSDATA_Fast, sizeof(DGUS_DATA));
+			break;
+			case WorkSlow:
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_DATA, (uint16_t*)&m_structDGUSDATA_Slow, sizeof(DGUS_DATA));
+			break;
+			case WorkMedium:
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_DATA, (uint16_t*)&m_structDGUSDATA_Medium, sizeof(DGUS_DATA));
+			break;
+		}
+		m_cpSender->WaitMODBUSTransmitter();
+		update = false;
+	}
+	else
+	{
+		switch (profile)
+		{
+			case WorkFast:
+				// Fast profile			
+				DGUSDATA.DutyCycle = m_structDGUSDATA_Fast.Duration * m_structDGUSDATA_Fast.Frequency / 10;
+				DGUSDATA.Power     = (m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.DutyCycle) / 100;
+				DGUSDATA.Energy    = m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.Duration / 1000;
 				
-			hl = !hl;
-			
-			state = APP_SETUP;
-		break;
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
+			break;
+			case WorkSlow:
+				// Fast profile
+				DGUSDATA.DutyCycle = m_structDGUSDATA_Slow.Duration * m_structDGUSDATA_Slow.Frequency / 10;
+				DGUSDATA.Power     = (m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.DutyCycle) / 100;
+				DGUSDATA.Energy    = m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.Duration / 1000;
+				
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
+			break;
+			case WorkMedium:
+				// Fast profile
+				DGUSDATA.DutyCycle = m_structDGUSDATA_Medium.Duration * m_structDGUSDATA_Medium.Frequency / 10;
+				DGUSDATA.Power     = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.DutyCycle) / 100;
+				DGUSDATA.Energy    = m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.Duration / 1000;
+				
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
+			break;
+		}
+		m_cpSender->WaitMODBUSTransmitter();
 	}
 }
 
 void CLaserControlApp::OnTimer()
 {
-	if (m_wMillSec == 0)
-	{
-		if (m_wSeconds == 0)
-		{
-			if (m_wMinutes == 0)
-			{
-				OnTimeout();
-				player.SoundStart(1000, 1000, 0);
-				player.SoundStop();
-				//player.beep(1000, 1000);
-				return;
-			}
-			m_wSeconds = 60;
-			m_wMinutes--;
-		}
-		m_wMillSec = 100; // Every 10 ms
-		m_wSeconds--;
-		if (m_wMinutes == 0 && m_wSeconds < 10)
-		{
-			if (m_wMinutes == 0 && m_wSeconds < 5)
-			{
-				player.SoundStart(1000, 100, 0);
-				player.SoundStop();
-				//player.beep(1000, 100);
-			}
-			else
-			{
-				player.SoundStart(1000, 50, 1);
-				player.SoundStop();
-				//player.beep(1000, 50);
-			}
-		}
-		else
-		{
-			player.SoundStart(1000, 25, 2);
-			player.SoundStop();
-			//player.beep(1000, 25);
-		}
-	}
-	m_wMillSec-=10;
 }
 
 void CLaserControlApp::OnLaserTimer()

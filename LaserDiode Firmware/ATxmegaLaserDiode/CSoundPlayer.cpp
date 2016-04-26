@@ -156,10 +156,10 @@ void CSoundPlayer::Play()
 	beep(cH, 150);
 	beep(a, 650);
 	
-	_delay_ms(150);
+	/*_delay_ms(150);
 	//end of first bit
 	
-	/*beep(eH, 500);
+	beep(eH, 500);
 	beep(eH, 500);
 	beep(eH, 500);
 	beep(fH, 350);
