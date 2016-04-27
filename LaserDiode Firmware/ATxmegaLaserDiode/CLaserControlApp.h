@@ -12,10 +12,14 @@
 #include <stdbool.h>
 #include "CTimerC.h"
 #include "CTimerF.h"
-#include "DGUSGUI.h"
 #include "CDGUSUSART.h"
+
+#include "DGUSGUI.h"
 #include "CLaserBoard.h"
+
 #include "MODBUS/CMBSender.h"
+
+#include "LaserLib/CSPI.h"
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
 
@@ -32,6 +36,7 @@ typedef enum APP_STATE_ENUM
 	// Commands
 	APP_WORKOnReady,
 	APP_WORKOnStart,
+	APP_WORKOnStop,
 	
 	// Phototype selector state
 	APP_PHOTOTYPESELECT,
@@ -83,6 +88,12 @@ private :
 	// Registers
 	volatile uint8_t PIC_ID;
 	volatile bool update;
+	
+	// variables
+	uint16_t laserTimerPeriod;
+	uint16_t laserTimerDutyCycle;
+	uint16_t laserTimerDutyCyclems;
+	uint16_t laserPower;
 	
 	// Modules
 	CMBSender* m_cpSender;

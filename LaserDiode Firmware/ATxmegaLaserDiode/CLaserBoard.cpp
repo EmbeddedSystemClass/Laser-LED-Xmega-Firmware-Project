@@ -37,7 +37,7 @@ void CLaserBoard::InitializeIO()
 	PORTC.PIN7CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
 	
 	// Set all down
-	PORTC.OUT = 0x00;
+	PORTC.OUT = 0xFF;
 	
 	// Buzzer pin initialize
 	PORTE.DIRSET = PIN3_bm;
@@ -48,7 +48,7 @@ void CLaserBoard::InitializeIO()
 	
 	// Configure all pins of PWM to inverted
 	PORTF.PIN0CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
-	PORTF.PIN1CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTF.PIN1CTRL = /*PORT_INVEN_bm |*/ PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN2CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN3CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN4CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
@@ -83,6 +83,11 @@ void CLaserBoard::InitializeIO()
 	PMIC.CTRL |= PMIC_LOLVLEN_bm;
 	PMIC.CTRL |= PMIC_MEDLVLEN_bm;
 	PMIC.CTRL |= PMIC_HILVLEN_bm;
+	
+	for (uint8_t i = 0; i < 8; i++)
+		PIN_Cnt[i] = 1;
+		
+	PINThreshold = 10;
 }
 
 void CLaserBoard::InitializeClock()
@@ -193,4 +198,37 @@ void CLaserBoard::BeepClassError()
 	}
 	
 	sei();
+}
+
+void CLaserBoard::PortCheck()
+{
+	uint8_t inport = PORTC.IN;
+	uint8_t bitpos = 1;
+	for (uint8_t i = 0; i < 8; i++)
+	{
+		if (inport & bitpos)
+		{
+			PIN_Cnt[i]++;
+			if (PIN_Cnt[i] > 128)
+				PIN_Cnt[i] = 128;
+		}
+		else
+		{
+			PIN_Cnt[i]--;
+			if (PIN_Cnt[i] < 1)
+				PIN_Cnt[i] = 1;
+		}
+		
+		if (PIN_Cnt[i] > PINThreshold)
+			Port |= bitpos;
+		else
+			Port &= ~bitpos;
+		
+		bitpos <<= 1;
+	}
+}
+
+bool CLaserBoard::Footswitch()
+{
+	return Port & 0x01;
 }

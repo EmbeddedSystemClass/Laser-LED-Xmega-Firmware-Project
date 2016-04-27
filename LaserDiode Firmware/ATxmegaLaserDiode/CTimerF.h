@@ -23,6 +23,8 @@ class CTimerF : public CTimer
 	virtual void Stop();
 	virtual void EnableChannel(TIMER_CHANNELS channels);
 	virtual void DisableChannel(TIMER_CHANNELS channels);
+	virtual void ChannelSet(TIMER_CHANNELS channels);
+	virtual void ChannelReset(TIMER_CHANNELS channels);
 	virtual void SetPeriod(uint16_t value);
 	virtual void SetCOMPA(uint16_t value);
 	virtual void SetCOMPB(uint16_t value);

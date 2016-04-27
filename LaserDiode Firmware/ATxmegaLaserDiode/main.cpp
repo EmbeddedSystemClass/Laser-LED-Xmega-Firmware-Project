@@ -71,6 +71,12 @@ int main(void)
 	
 	// Startup delay (Beep "Imperial March")
 	player.Play();
+	laserBoard.Relay1On();
+	_delay_ms(100);
+	laserBoard.Relay1Off();
+	
+	uint16_t data = 0;
+	dacSPI.Send((uint8_t*)&data, sizeof(data));
 	
 	// Initialize application GUI
 	App.Start();
@@ -85,8 +91,10 @@ int main(void)
 		static uint16_t prs = 0;
 		if ((prs++ % 200) == 0)
 			App.Run();
+			
+		laserBoard.PortCheck();
 
-		
+		/*
 		// Sine waveform generation
 		x += 0.1f;
 		if (x > 6.2831853) x = 0.0f;
@@ -94,6 +102,6 @@ int main(void)
 		uint16_t data = ((uint16_t)y) << 2;
 	
 		// Send to DAC	
-		dacSPI.Send((uint8_t*)&data, sizeof(data));
+		dacSPI.Send((uint8_t*)&data, sizeof(data));*/
     }
 }

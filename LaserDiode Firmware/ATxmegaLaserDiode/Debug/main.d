@@ -20,8 +20,8 @@ main.d main.o: .././main.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
  .././CTimerF.h .././MODBUS/CMBSender.h .././MODBUS/CMBProtocol.h \
- .././MODBUS/../LaserLib/CUSART.h .././LaserLib/sys_interrupts.h \
- .././CSoundPlayer.h .././LaserLib/CSPI.h \
+ .././MODBUS/../LaserLib/CUSART.h .././LaserLib/CSPI.h \
+ .././LaserLib/sys_interrupts.h .././CSoundPlayer.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h
@@ -84,11 +84,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 
 .././MODBUS/../LaserLib/CUSART.h:
 
+.././LaserLib/CSPI.h:
+
 .././LaserLib/sys_interrupts.h:
 
 .././CSoundPlayer.h:
-
-.././LaserLib/CSPI.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 

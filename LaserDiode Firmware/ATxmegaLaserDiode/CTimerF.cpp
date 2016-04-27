@@ -67,12 +67,22 @@ void CTimerF::Stop()
 
 void CTimerF::EnableChannel(TIMER_CHANNELS channels)
 {
-	TCF0.CTRLB = (TCF0.CTRLB & ~0xF0) | channels;
+	TCF0.CTRLB |= channels;
 }
 
 void CTimerF::DisableChannel(TIMER_CHANNELS channels)
 {
 	TCF0.CTRLB &= ~channels;
+}
+
+void CTimerF::ChannelSet(TIMER_CHANNELS channels)
+{
+	TCF0.CTRLC |= (channels >> 4);
+}
+
+void CTimerF::ChannelReset(TIMER_CHANNELS channels)
+{
+	TCF0.CTRLC &= ~(channels >> 4);
 }
 
 void CTimerF::SetPeriod(uint16_t value)

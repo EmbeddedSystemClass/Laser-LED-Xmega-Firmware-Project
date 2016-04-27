@@ -15,6 +15,7 @@ CTimerC timer;
 CTimerF laserTimer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
+extern CSPI dacSPI;
 
 volatile DGUS_DATA m_structDGUSDATA_Fast;
 volatile DGUS_DATA m_structDGUSDATA_Medium;
@@ -133,11 +134,14 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		case PICID_WORKOnReady:
 			state = APP_WORKOnReady;
 		break;
-		case PICID_WORKSTART:
-			state = APP_WORKSTART;
-		break;
 		case PICID_WORKOnStart:
 			state = APP_WORKOnStart;
+		break;
+		case PICID_WORKOnStop:
+			state = APP_WORKOnStop;
+		break;
+		case PICID_WORKSTART:
+			state = APP_WORKSTART;
 		break;
 		case PICID_WORKSTARTED:
 			state = APP_WORKSTARTED;
@@ -180,13 +184,6 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	timer.SetPeriod(25000); // Every 10 ms
 	timer.SetOVFCallback(OnTimerStatic, this, TC_OVFINTLVL_LO_gc); // Enable interrupt
 	
-	// Initialize Laser timer
-	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
-	laserTimer.SetPeriod(12500);	// 10 Hz
-	laserTimer.SetCOMPA(3125);	// 50 ms, 50% duty cycle
-	laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
-	laserTimer.EnableChannel(TIMER_CHANNEL_A); // Enable Laser TTL Gate
-	
 	// Set global variables
 	PIC_ID = 0;
 	update = false;
@@ -200,7 +197,7 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	m_structDGUSDATA_Fast.Energy    = (m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.Duration) / 1000; // J
 	
 	// Slow profile
-	m_structDGUSDATA_Slow.Frequency = 10; // 10 Hz
+	m_structDGUSDATA_Slow.Frequency = 1; // 10 Hz
 	m_structDGUSDATA_Slow.DutyCycle = 50; // 50%
 	m_structDGUSDATA_Slow.Duration  = ((1000 / m_structDGUSDATA_Slow.Frequency) * m_structDGUSDATA_Slow.DutyCycle) / 100; // ms
 	m_structDGUSDATA_Slow.Intensity = 200; // W
@@ -208,12 +205,26 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	m_structDGUSDATA_Slow.Energy    = (m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.Duration) / 1000; // J
 	
 	// Medium profile
-	m_structDGUSDATA_Medium.Frequency = 10; // 10 Hz
+	m_structDGUSDATA_Medium.Frequency = 5; // 10 Hz
 	m_structDGUSDATA_Medium.DutyCycle = 50; // 50%
 	m_structDGUSDATA_Medium.Duration  = ((1000 / m_structDGUSDATA_Medium.Frequency) * m_structDGUSDATA_Medium.DutyCycle) / 100; // ms
 	m_structDGUSDATA_Medium.Intensity = 200; // W
 	m_structDGUSDATA_Medium.Power     = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.DutyCycle) / 100; // W
 	m_structDGUSDATA_Medium.Energy    = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.Duration) / 1000; // J
+	
+	// Initialize Laser timer
+	laserTimerPeriod = (6250 / m_structDGUSDATA_Fast.Frequency) * 10;
+	laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * m_structDGUSDATA_Fast.DutyCycle);
+	
+	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
+	laserTimer.SetPeriod(laserTimerPeriod);	// 10 Hz
+	laserTimer.SetCOMPA(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
+	laserTimer.EnableChannel(TIMER_CHANNEL_A); // Enable Laser TTL Gate
+	laserTimer.EnableChannel(TIMER_CHANNEL_B); // Enable Laser TTL Gate
+	laserTimer.ChannelSet(TIMER_CHANNEL_A);
+	laserTimer.ChannelSet(TIMER_CHANNEL_B);
 	
 	// Current profile
 	profile = WorkFast;
@@ -255,27 +266,49 @@ void CLaserControlApp::Run()
 	{		
 		// DGUS State
 		case APP_LOGO:
-			state = APP_WORKFAST;
+			{
+				uint16_t pic_id = swap(PICID_WORKFAST);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+				state = APP_WORKFAST;
+			}
 		break;
 		case APP_WORKFAST:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_WORKMEDIUM:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_WORKSLOW:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_WORKSTART:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_WORKSTARTED:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
+			
+			if (!laserBoard.Footswitch())
+			{
+				laserTimer.SetCOMPA(laserTimerDutyCycle);
+				laserTimer.SetCOMPB(laserTimerDutyCycle);
+				//laserTimer.SetPeriod(laserTimerPeriod);
+				laserTimer.Start(laserTimerPeriod);
+			}
+			else
+			{
+				laserTimer.Stop();
+				laserTimer.ChannelSet(TIMER_CHANNEL_A);
+				laserTimer.ChannelSet(TIMER_CHANNEL_B);
+			}
 		break;
 		
 		// Commands
 		case APP_WORKOnReady:
 			{
+				laserBoard.Relay2On();
+				laserBoard.LaserPowerOn();
+				
 				uint16_t pic_id = swap(PICID_WORKSTART);
 				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 				m_cpSender->WaitMODBUSTransmitter();
@@ -284,34 +317,70 @@ void CLaserControlApp::Run()
 		break;
 		case APP_WORKOnStart:
 			{
+				uint16_t data = ((uint16_t)((laserPower * 64) / 63)) << 2;  // (laserPower * 1024) / 1000)
+				dacSPI.Send((uint8_t*)&data, sizeof(data));
+				
 				uint16_t pic_id = swap(PICID_WORKSTARTED);
 				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 				m_cpSender->WaitMODBUSTransmitter();
 				state = APP_WORKSTARTED;
+
+				//laserTimer.Start(12500);
+			}
+		break;
+		case APP_WORKOnStop:
+			{
+				uint16_t data = 0;
+				dacSPI.Send((uint8_t*)&data, sizeof(data));
+				
+				laserTimer.Stop();
+				laserTimer.ChannelSet(TIMER_CHANNEL_A);
+				laserTimer.ChannelSet(TIMER_CHANNEL_B);
+				laserBoard.LaserPowerOff();
+				laserBoard.Relay2Off();
+				
+				uint16_t pic_id = 0;
+				switch (profile)
+				{
+					case WorkFast: 
+						pic_id = swap(PICID_WORKFAST); 
+						state = APP_WORKFAST;
+						break;
+					case WorkSlow: 
+						pic_id = swap(PICID_WORKSLOW); 
+						state = APP_WORKSLOW;
+						break;
+					case WorkMedium: 
+						pic_id = swap(PICID_WORKMEDIUM); 
+						state = APP_WORKMEDIUM;
+						break;
+				}
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
 			}
 		break;
 		
 		// Phototype selector state
 		case APP_PHOTOTYPESELECT:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE1:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE2:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE3:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE4:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE5:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		case APP_PHOTOTYPE6:
-			state = APP_WORKFAST;
+			//state = APP_WORKFAST;
 		break;
 		default:
 		break;
@@ -346,6 +415,11 @@ void CLaserControlApp::Run()
 				DGUSDATA.Power     = (m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.DutyCycle) / 100;
 				DGUSDATA.Energy    = m_structDGUSDATA_Fast.Intensity * m_structDGUSDATA_Fast.Duration / 1000;
 				
+				laserTimerPeriod = (6250 / m_structDGUSDATA_Fast.Frequency) * 10;
+				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
+				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
+				laserPower = m_structDGUSDATA_Fast.Intensity;
+				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;
 			case WorkSlow:
@@ -354,6 +428,11 @@ void CLaserControlApp::Run()
 				DGUSDATA.Power     = (m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.DutyCycle) / 100;
 				DGUSDATA.Energy    = m_structDGUSDATA_Slow.Intensity * m_structDGUSDATA_Slow.Duration / 1000;
 				
+				laserTimerPeriod = (6250 / m_structDGUSDATA_Slow.Frequency) * 10;
+				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
+				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
+				laserPower = m_structDGUSDATA_Slow.Intensity;
+				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;
 			case WorkMedium:
@@ -361,6 +440,11 @@ void CLaserControlApp::Run()
 				DGUSDATA.DutyCycle = m_structDGUSDATA_Medium.Duration * m_structDGUSDATA_Medium.Frequency / 10;
 				DGUSDATA.Power     = (m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.DutyCycle) / 100;
 				DGUSDATA.Energy    = m_structDGUSDATA_Medium.Intensity * m_structDGUSDATA_Medium.Duration / 1000;
+				
+				laserTimerPeriod = (6250 / m_structDGUSDATA_Medium.Frequency) * 10;
+				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
+				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
+				laserPower = m_structDGUSDATA_Medium.Intensity;
 				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;
@@ -375,7 +459,7 @@ void CLaserControlApp::OnTimer()
 
 void CLaserControlApp::OnLaserTimer()
 {
-	player.SoundStart(1000, 5, 0);
+	player.SoundStart(1000, laserTimerDutyCyclems/2, 0);
 	player.SoundStop();
 }
 

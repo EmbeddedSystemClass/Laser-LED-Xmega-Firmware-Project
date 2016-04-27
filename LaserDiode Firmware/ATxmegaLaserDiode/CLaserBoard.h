@@ -78,9 +78,16 @@ public:
 	// Sound
 	static void Beep();
 	static void BeepClassError();
+	
+	// Port in
+	void PortCheck();
+	
+	bool Footswitch();
 protected:
 private:
-
+	uint8_t PIN_Cnt[8];
+	uint8_t PINThreshold;
+	uint8_t Port;
 }; //CLaserBoard
 
 #endif //__CLASERBOARD_H__

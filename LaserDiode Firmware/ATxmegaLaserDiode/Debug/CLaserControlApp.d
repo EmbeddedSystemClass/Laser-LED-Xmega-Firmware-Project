@@ -18,10 +18,10 @@ CLaserControlApp.d CLaserControlApp.o: .././CLaserControlApp.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- .././CTimerF.h .././DGUSGUI.h .././CDGUSUSART.h .././LaserLib/CUSART.h \
+ .././CTimerF.h .././CDGUSUSART.h .././LaserLib/CUSART.h .././DGUSGUI.h \
  .././CLaserBoard.h .././MODBUS/CMBSender.h .././MODBUS/CMBProtocol.h \
- .././MODBUS/../LaserLib/CUSART.h .././LaserLib/sys_interrupts.h \
- .././CSoundPlayer.h \
+ .././MODBUS/../LaserLib/CUSART.h .././LaserLib/CSPI.h \
+ .././LaserLib/sys_interrupts.h .././CSoundPlayer.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
@@ -71,11 +71,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 .././CTimerF.h:
 
-.././DGUSGUI.h:
-
 .././CDGUSUSART.h:
 
 .././LaserLib/CUSART.h:
+
+.././DGUSGUI.h:
 
 .././CLaserBoard.h:
 
@@ -84,6 +84,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././MODBUS/CMBProtocol.h:
 
 .././MODBUS/../LaserLib/CUSART.h:
+
+.././LaserLib/CSPI.h:
 
 .././LaserLib/sys_interrupts.h:
 
