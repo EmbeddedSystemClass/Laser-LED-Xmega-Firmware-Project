@@ -80,13 +80,13 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 		switch (profile)
 		{
 			case WorkFast:
-				ConvertData((void*)&m_structDGUSDATA_Fast, (void*)data, length/2);
+				ConvertData((void*)&m_structDGUSDATA_Fast, (void*)data, length);
 			break;
 			case WorkSlow:
-				ConvertData((void*)&m_structDGUSDATA_Slow, (void*)data, length/2);
+				ConvertData((void*)&m_structDGUSDATA_Slow, (void*)data, length);
 			break;
 			case WorkMedium:
-				ConvertData((void*)&m_structDGUSDATA_Medium, (void*)data, length/2);
+				ConvertData((void*)&m_structDGUSDATA_Medium, (void*)data, length);
 			break;
 			default:
 				// Error
@@ -275,10 +275,20 @@ void CLaserControlApp::Run()
 		
 		// Commands
 		case APP_WORKOnReady:
-			state = APP_WORKFAST;
+			{
+				uint16_t pic_id = swap(PICID_WORKSTART);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+				state = APP_WORKSTART;
+			}
 		break;
 		case APP_WORKOnStart:
-			state = APP_WORKFAST;
+			{
+				uint16_t pic_id = swap(PICID_WORKSTARTED);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+				state = APP_WORKSTARTED;
+			}
 		break;
 		
 		// Phototype selector state
