@@ -39,6 +39,8 @@
 #define PICID_PHOTOTYPE5		0x0012
 #define PICID_PHOTOTYPE6		0x0013
 
+#define PICID_MAINMENU			0x0014
+
 // Data structures
 #define STRUCT_ADDR_DATA		0x0001
 

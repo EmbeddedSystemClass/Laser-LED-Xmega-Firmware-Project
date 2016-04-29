@@ -233,7 +233,7 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 void CLaserControlApp::Start()
 {	
 	// Startup DGUS initialization
-	uint16_t pic_id = swap(1);
+	uint16_t pic_id = swap(PICID_MAINMENU);
 	m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 	m_cpSender->WaitMODBUSTransmitter();
 	
@@ -267,7 +267,7 @@ void CLaserControlApp::Run()
 		// DGUS State
 		case APP_LOGO:
 			{
-				uint16_t pic_id = swap(PICID_WORKFAST);
+				uint16_t pic_id = swap(PICID_MAINMENU);
 				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 				m_cpSender->WaitMODBUSTransmitter();
 				state = APP_WORKFAST;

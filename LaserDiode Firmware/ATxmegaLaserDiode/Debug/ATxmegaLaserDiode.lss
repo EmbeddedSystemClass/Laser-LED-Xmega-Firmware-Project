@@ -1640,9 +1640,9 @@ void CLaserControlApp::Start()
      902:	de b7       	in	r29, 0x3e	; 62
      904:	8c 01       	movw	r16, r24
 	// Startup DGUS initialization
-	uint16_t pic_id = swap(1);
+	uint16_t pic_id = swap(PICID_MAINMENU);
      906:	80 e0       	ldi	r24, 0x00	; 0
-     908:	91 e0       	ldi	r25, 0x01	; 1
+     908:	94 e1       	ldi	r25, 0x14	; 20
      90a:	89 83       	std	Y+1, r24	; 0x01
      90c:	9a 83       	std	Y+2, r25	; 0x02
 	m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
@@ -2347,9 +2347,9 @@ void CLaserControlApp::Run()
 		// DGUS State
 		case APP_LOGO:
 			{
-				uint16_t pic_id = swap(PICID_WORKFAST);
+				uint16_t pic_id = swap(PICID_MAINMENU);
      dd8:	80 e0       	ldi	r24, 0x00	; 0
-     dda:	91 e0       	ldi	r25, 0x01	; 1
+     dda:	94 e1       	ldi	r25, 0x14	; 20
      ddc:	89 83       	std	Y+1, r24	; 0x01
      dde:	9a 83       	std	Y+2, r25	; 0x02
 				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
