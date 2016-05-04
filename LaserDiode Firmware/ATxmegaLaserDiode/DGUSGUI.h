@@ -17,6 +17,7 @@
 #define VARIABLE_ADDR_POWER		0x0004
 #define VARIABLE_ADDR_ENERGY	0x0005
 #define VARIABLE_ADDR_DUTYCYCLE	0x0006
+#define VARIABLE_ADDR_PROFINDEX	0x0007
 
 // Picture ids
 #define PICID_LOGO				0x0000
@@ -99,5 +100,19 @@ typedef struct DGUS_LINESDATA2_STRUCT
 	char line13[32];
 	char line14[32];
 } DGUS_LINESDATA2, *PDGUS_LINESDATA2;
+
+#define STRUCT_ADDR_VALUESDATA1	0x0310
+#define STRUCT_ADDR_VALUESDATA2	0x0380
+
+typedef struct DGUS_VALUESDATA_STRUCT
+{
+	char value1[32];
+	char value2[32];
+	char value3[32];
+	char value4[32];
+	char value5[32];
+	char value6[32];
+	char value7[32];
+} DGUS_VALUESDATA, *PDGUS_VALUESDATA;
 
 #endif /* DGUSGUI_H_ */

@@ -76,6 +76,10 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 {
 	// Update GUI variables	
 	//uint16_t val = swap(*((uint16_t*)data));
+	if (addr == VARIABLE_ADDR_PROFINDEX)
+	{
+		profileIndex = swap(*((uint16_t*)data));
+	}
 	
 	if (addr == STRUCT_ADDR_DATA)
 	{
@@ -172,9 +176,13 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		break;
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
-			if (PIC_ID >= PICID_DATABASE_MIN && PIC_ID <= PICID_DATABASE_MAX)
+			if (PIC_ID >= PICID_DATABASE_MIN && PIC_ID < PICID_DATABASE_MAX)
 			{
 				state = APP_DATABASE;
+			}
+			if (PIC_ID == PICID_DATABASE_MAX)
+			{
+				state = APP_DATABASE_START;
 			}
 		break;
 	}
@@ -254,6 +262,8 @@ void CLaserControlApp::Start()
 // Process GUI
 void CLaserControlApp::Run()
 {
+	static uint8_t DatabaseSelectedProfile = 0;
+	
 	// Get PIC ID
 	m_cpSender->StartMODBUSRegisterTransaction(REGISTER_ADDR_PICID, 2);
 	m_cpSender->WaitMODBUSTransmitter();
@@ -389,34 +399,98 @@ void CLaserControlApp::Run()
 		case APP_PHOTOTYPE6:
 			//state = APP_WORKFAST;
 		break;
+		case APP_DATABASE_START:
+			{
+				uint16_t pic_id = swap(27 + 14 - 3);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+				state = APP_DATABASE;
+			}
+		break;
 		case APP_DATABASE:
 			{
+				//VARIABLE_ADDR_PROFINDEX
+				m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_PROFINDEX, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+				m_cpSender->WaitMODBUSListener();
+				_delay_ms(50);
+				
 				DGUS_LINESDATA1 lines1 = {0};
-				DGUS_LINESDATA2 lines2 = {0};                     //
+				DGUS_LINESDATA2 lines2 = {0};
+				DGUS_VALUESDATA value1 = {0};
+				DGUS_VALUESDATA value2 = {0};
 				char empty[33] = "Hello world!                    ";
 				
+				                //-------|-------|-------|-------|
+				char value[33] = "  4321    1234    1234    1234  ";
+				
 				static int cnt = 0;
+				static int lastprofile = 0;
 				cnt+=1;
 				if (cnt >= 32) cnt = 0;
-					
-				ConvertData((void*)lines1.line1 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line2 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line3 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line4 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line5 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line6 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines1.line7 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line8 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line9 , (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line10, (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line11, (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line12, (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line13, (void*)empty, 32, cnt);
-				ConvertData((void*)lines2.line14, (void*)empty, 32, cnt);
-								
-				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA1, (uint16_t*)&lines1, sizeof(lines1));
+				
+				if (profileIndex != lastprofile) cnt = 0;
+				
+				lastprofile = profileIndex;
+				
+				// Names
+				ConvertData((void*) lines1.line1 , (void*)empty, 32);
+				ConvertData((void*) lines1.line2 , (void*)empty, 32);
+				ConvertData((void*) lines1.line3 , (void*)empty, 32);
+				ConvertData((void*) lines1.line4 , (void*)empty, 32);
+				ConvertData((void*) lines1.line5 , (void*)empty, 32);
+				ConvertData((void*) lines1.line6 , (void*)empty, 32);
+				ConvertData((void*) lines1.line7 , (void*)empty, 32);
+				ConvertData((void*) lines2.line8 , (void*)empty, 32);
+				ConvertData((void*) lines2.line9 , (void*)empty, 32);
+				ConvertData((void*) lines2.line10, (void*)empty, 32);
+				ConvertData((void*) lines2.line11, (void*)empty, 32);
+				ConvertData((void*) lines2.line12, (void*)empty, 32);
+				ConvertData((void*) lines2.line13, (void*)empty, 32);
+				ConvertData((void*) lines2.line14, (void*)empty, 32);
+				
+				switch (profileIndex)
+				{
+					case 1 : ConvertData((void*) lines1.line1 , (void*)empty, 32, cnt); break;
+					case 2 : ConvertData((void*) lines1.line2 , (void*)empty, 32, cnt); break;
+					case 3 : ConvertData((void*) lines1.line3 , (void*)empty, 32, cnt); break;
+					case 4 : ConvertData((void*) lines1.line4 , (void*)empty, 32, cnt); break;
+					case 5 : ConvertData((void*) lines1.line5 , (void*)empty, 32, cnt); break;
+					case 6 : ConvertData((void*) lines1.line6 , (void*)empty, 32, cnt); break;
+					case 7 : ConvertData((void*) lines1.line7 , (void*)empty, 32, cnt); break;
+					case 8 : ConvertData((void*) lines2.line8 , (void*)empty, 32, cnt); break;
+					case 9 : ConvertData((void*) lines2.line9 , (void*)empty, 32, cnt); break;
+					case 10: ConvertData((void*) lines2.line10, (void*)empty, 32, cnt); break;
+					case 11: ConvertData((void*) lines2.line11, (void*)empty, 32, cnt); break;
+					case 12: ConvertData((void*) lines2.line12, (void*)empty, 32, cnt); break;
+					case 13: ConvertData((void*) lines2.line13, (void*)empty, 32, cnt); break;
+					case 14: ConvertData((void*) lines2.line14, (void*)empty, 32, cnt); break;
+				}
+				
+				// Parameters
+				ConvertData((void*)&value1.value1, (void*)value, 32);
+				ConvertData((void*)&value1.value2, (void*)value, 32);
+				ConvertData((void*)&value1.value3, (void*)value, 32);
+				ConvertData((void*)&value1.value4, (void*)value, 32);
+				ConvertData((void*)&value1.value5, (void*)value, 32);
+				ConvertData((void*)&value1.value6, (void*)value, 32);
+				ConvertData((void*)&value1.value7, (void*)value, 32);
+				ConvertData((void*)&value2.value1, (void*)value, 32);
+				ConvertData((void*)&value2.value2, (void*)value, 32);
+				ConvertData((void*)&value2.value3, (void*)value, 32);
+				ConvertData((void*)&value2.value4, (void*)value, 32);
+				ConvertData((void*)&value2.value5, (void*)value, 32);
+				ConvertData((void*)&value2.value6, (void*)value, 32);
+				ConvertData((void*)&value2.value7, (void*)value, 32);
+				
+				// Param transfer
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA1 , (uint16_t*)&lines1, sizeof(lines1));
 				m_cpSender->WaitMODBUSTransmitter();
-				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA2, (uint16_t*)&lines2, sizeof(lines2));
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA2 , (uint16_t*)&lines2, sizeof(lines2));
+				m_cpSender->WaitMODBUSTransmitter();
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_VALUESDATA1, (uint16_t*)&value1, sizeof(value1));
+				m_cpSender->WaitMODBUSTransmitter();
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_VALUESDATA2, (uint16_t*)&value2, sizeof(value2));
 				m_cpSender->WaitMODBUSTransmitter();
 			}
 		break;
@@ -457,6 +531,7 @@ void CLaserControlApp::Run()
 				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
 				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
 				laserPower = m_structDGUSDATA_Fast.Intensity;
+				DatabaseSelectedProfile = DGUSDATA.DatabaseSelectedProfile;
 				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;
@@ -470,6 +545,7 @@ void CLaserControlApp::Run()
 				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
 				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
 				laserPower = m_structDGUSDATA_Slow.Intensity;
+				DatabaseSelectedProfile = DGUSDATA.DatabaseSelectedProfile;
 				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;
@@ -483,6 +559,7 @@ void CLaserControlApp::Run()
 				laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * DGUSDATA.DutyCycle);
 				laserTimerDutyCyclems = DGUSDATA.DutyCycle;
 				laserPower = m_structDGUSDATA_Medium.Intensity;
+				DatabaseSelectedProfile = DGUSDATA.DatabaseSelectedProfile;
 				
 				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_WRITEDATA, (uint16_t*)&DGUSDATA.Power, sizeof(DGUS_WRITEDATA));
 			break;

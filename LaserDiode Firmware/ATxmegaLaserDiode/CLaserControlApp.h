@@ -47,7 +47,8 @@ typedef enum APP_STATE_ENUM
 	APP_PHOTOTYPE5,
 	APP_PHOTOTYPE6,
 	
-	APP_DATABASE
+	APP_DATABASE,
+	APP_DATABASE_START
 } APP_STATE, *PAPP_STATE;
 
 typedef enum APP_PROFILE_ENUM
@@ -96,6 +97,7 @@ private :
 	uint16_t laserTimerDutyCycle;
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
+	uint16_t profileIndex;
 	
 	// Modules
 	CMBSender* m_cpSender;
