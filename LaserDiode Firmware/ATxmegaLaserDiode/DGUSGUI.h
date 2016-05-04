@@ -39,6 +39,9 @@
 #define PICID_PHOTOTYPE5		0x0012
 #define PICID_PHOTOTYPE6		0x0013
 
+#define PICID_DATABASE_MIN		0x0018
+#define PICID_DATABASE_MAX		0x0029
+
 #define PICID_MAINMENU			0x0014
 
 // Data structures
@@ -52,7 +55,7 @@ typedef struct DGUS_DATA_STRUCT
 	uint16_t Power;
 	uint16_t Energy;
 	uint16_t DutyCycle;
-	//uint16_t update;
+	uint16_t DatabaseSelectedProfile;
 } DGUS_DATA, *PDGUS_DATA;
 
 typedef struct DGUS_READDATA_STRUCT
@@ -70,5 +73,31 @@ typedef struct DGUS_WRITEDATA_STRUCT
 	uint16_t Energy;
 	uint16_t DutyCycle;
 } DGUS_WRITEDATA, *PDGUS_WRITEDATA;
+
+#define STRUCT_ADDR_LINESDATA1	0x0010
+
+typedef struct DGUS_LINESDATA1_STRUCT
+{
+	char line1 [32];
+	char line2 [32];
+	char line3 [32];
+	char line4 [32];
+	char line5 [32];
+	char line6 [32];
+	char line7 [32];
+} DGUS_LINESDATA1, *PDGUS_LINESDATA1;
+
+#define STRUCT_ADDR_LINESDATA2	0x0080
+
+typedef struct DGUS_LINESDATA2_STRUCT
+{
+	char line8 [32];
+	char line9 [32];
+	char line10[32];
+	char line11[32];
+	char line12[32];
+	char line13[32];
+	char line14[32];
+} DGUS_LINESDATA2, *PDGUS_LINESDATA2;
 
 #endif /* DGUSGUI_H_ */

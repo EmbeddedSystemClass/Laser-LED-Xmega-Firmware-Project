@@ -7,7 +7,7 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_negsi2.o)
                               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_divmodsi4.o) (__negsi2)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_exit.o)
-                              C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o (exit)
+                              C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o (exit)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_tablejump2.o)
                               CLaserControlApp.o (__tablejump2__)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_copy_data.o)
@@ -35,8 +35,8 @@ __flp               0x2               c:/program files (x86)/atmel/studio/7.0/to
 
 Discarded input sections
 
- .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
- .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
  .group         0x00000000        0x8 CDGUSUSART.o
  .text          0x00000000        0x0 CDGUSUSART.o
  .data          0x00000000        0x0 CDGUSUSART.o
@@ -299,7 +299,7 @@ user_signatures  0x00850000         0x00000400         rw !x
 
 Linker script and memory map
 
-LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
 LOAD CDGUSUSART.o
 LOAD CLaserBoard.o
 LOAD CLaserControlApp.o
@@ -322,7 +322,7 @@ START GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libm.a
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a
-LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6\libatxmega128a3.a
+LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6\libatxmega128a3.a
 END GROUP
 
 .hash
@@ -415,9 +415,9 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x4cb2
+.text           0x00000000     0x4eec
  *(.vectors)
- .vectors       0x00000000      0x1e8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .vectors       0x00000000      0x1e8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
                 0x00000000                __vector_default
                 0x00000000                __vectors
  *(.vectors)
@@ -451,13 +451,13 @@ END GROUP
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000039a        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .init0         0x0000039a        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
                 0x0000039a                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000039a       0x10 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .init2         0x0000039a       0x10 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
  *(.init2)
  *(.init3)
  *(.init3)
@@ -478,10 +478,10 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000003f4        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .init9         0x000003f4        0x8 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
  *(.init9)
  *(.text)
- .text          0x000003fc        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+ .text          0x000003fc        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
                 0x000003fc                __vector_75
                 0x000003fc                __vector_102
                 0x000003fc                __bad_interrupt
@@ -590,669 +590,669 @@ END GROUP
                 0x0000076a        0x2 CLaserControlApp.o
                 0x0000076a                _ZN16CLaserControlApp21OnTransactionCallbackEPhj
  .text._ZN16CLaserControlApp18OnRegisterReceivedEhPhh
-                0x0000076c       0xfa CLaserControlApp.o
+                0x0000076c      0x118 CLaserControlApp.o
                 0x0000076c                _ZN16CLaserControlApp18OnRegisterReceivedEhPhh
  .text._ZN16CLaserControlApp13OnTimerStaticEPv
-                0x00000866        0x2 CLaserControlApp.o
-                0x00000866                _ZN16CLaserControlApp13OnTimerStaticEPv
- .text._Z11ConvertDataPvS_j
-                0x00000868       0x2e CLaserControlApp.o
-                0x00000868                _Z11ConvertDataPvS_j
+                0x00000884        0x2 CLaserControlApp.o
+                0x00000884                _ZN16CLaserControlApp13OnTimerStaticEPv
+ .text._Z11ConvertDataPvS_jj
+                0x00000886       0x58 CLaserControlApp.o
+                0x00000886                _Z11ConvertDataPvS_jj
  .text._ZN16CLaserControlApp18OnVariableReceivedEjPjj
-                0x00000896       0x42 CLaserControlApp.o
-                0x00000896                _ZN16CLaserControlApp18OnVariableReceivedEjPjj
+                0x000008de       0x52 CLaserControlApp.o
+                0x000008de                _ZN16CLaserControlApp18OnVariableReceivedEjPjj
  .text._ZN16CLaserControlAppC2Ev
-                0x000008d8        0xc CLaserControlApp.o
-                0x000008d8                _ZN16CLaserControlAppC2Ev
-                0x000008d8                _ZN16CLaserControlAppC1Ev
+                0x00000930        0xc CLaserControlApp.o
+                0x00000930                _ZN16CLaserControlAppC2Ev
+                0x00000930                _ZN16CLaserControlAppC1Ev
  .text._ZN16CLaserControlAppD2Ev
-                0x000008e4       0x10 CLaserControlApp.o
-                0x000008e4                _ZN16CLaserControlAppD2Ev
-                0x000008e4                _ZN16CLaserControlAppD1Ev
+                0x0000093c       0x10 CLaserControlApp.o
+                0x0000093c                _ZN16CLaserControlAppD2Ev
+                0x0000093c                _ZN16CLaserControlAppD1Ev
  .text._ZN16CLaserControlApp5StartEv
-                0x000008f4       0x6c CLaserControlApp.o
-                0x000008f4                _ZN16CLaserControlApp5StartEv
+                0x0000094c       0x6c CLaserControlApp.o
+                0x0000094c                _ZN16CLaserControlApp5StartEv
  .text._ZN16CLaserControlApp12OnLaserTimerEv
-                0x00000960       0x22 CLaserControlApp.o
-                0x00000960                _ZN16CLaserControlApp12OnLaserTimerEv
+                0x000009b8       0x22 CLaserControlApp.o
+                0x000009b8                _ZN16CLaserControlApp12OnLaserTimerEv
  .text._ZN16CLaserControlApp18OnLaserTimerStaticEPv
-                0x00000982        0x6 CLaserControlApp.o
-                0x00000982                _ZN16CLaserControlApp18OnLaserTimerStaticEPv
+                0x000009da        0x6 CLaserControlApp.o
+                0x000009da                _ZN16CLaserControlApp18OnLaserTimerStaticEPv
  .text._GLOBAL__sub_I_timer
-                0x00000988       0x12 CLaserControlApp.o
+                0x000009e0       0x12 CLaserControlApp.o
  .text._GLOBAL__sub_D_timer
-                0x0000099a       0x12 CLaserControlApp.o
+                0x000009f2       0x12 CLaserControlApp.o
  .text._ZN16CLaserControlApp10InitializeEP9CMBSender
-                0x000009ac      0x36a CLaserControlApp.o
-                0x000009ac                _ZN16CLaserControlApp10InitializeEP9CMBSender
+                0x00000a04      0x36a CLaserControlApp.o
+                0x00000a04                _ZN16CLaserControlApp10InitializeEP9CMBSender
  .text._ZN16CLaserControlApp3RunEv
-                0x00000d16      0x6fa CLaserControlApp.o
-                0x00000d16                _ZN16CLaserControlApp3RunEv
+                0x00000d6e      0x8de CLaserControlApp.o
+                0x00000d6e                _ZN16CLaserControlApp3RunEv
  .text._ZN12CSoundPlayerC2Ev
-                0x00001410        0x2 CSoundPlayer.o
-                0x00001410                _ZN12CSoundPlayerC2Ev
-                0x00001410                _ZN12CSoundPlayerC1Ev
+                0x0000164c        0x2 CSoundPlayer.o
+                0x0000164c                _ZN12CSoundPlayerC2Ev
+                0x0000164c                _ZN12CSoundPlayerC1Ev
  .text._ZN12CSoundPlayerD2Ev
-                0x00001412        0x2 CSoundPlayer.o
-                0x00001412                _ZN12CSoundPlayerD1Ev
-                0x00001412                _ZN12CSoundPlayerD2Ev
+                0x0000164e        0x2 CSoundPlayer.o
+                0x0000164e                _ZN12CSoundPlayerD1Ev
+                0x0000164e                _ZN12CSoundPlayerD2Ev
  .text._ZN12CSoundPlayer19InitializeToneTimerEv
-                0x00001414       0x22 CSoundPlayer.o
-                0x00001414                _ZN12CSoundPlayer19InitializeToneTimerEv
+                0x00001650       0x22 CSoundPlayer.o
+                0x00001650                _ZN12CSoundPlayer19InitializeToneTimerEv
  .text._ZN12CSoundPlayer23InitializeDurationTimerEv
-                0x00001436       0x18 CSoundPlayer.o
-                0x00001436                _ZN12CSoundPlayer23InitializeDurationTimerEv
+                0x00001672       0x18 CSoundPlayer.o
+                0x00001672                _ZN12CSoundPlayer23InitializeDurationTimerEv
  .text._ZN12CSoundPlayer10SoundStartEjjh
-                0x0000144e       0x68 CSoundPlayer.o
-                0x0000144e                _ZN12CSoundPlayer10SoundStartEjjh
+                0x0000168a       0x68 CSoundPlayer.o
+                0x0000168a                _ZN12CSoundPlayer10SoundStartEjjh
  .text._ZN12CSoundPlayer9SoundStopEv
-                0x000014b6       0x3c CSoundPlayer.o
-                0x000014b6                _ZN12CSoundPlayer9SoundStopEv
+                0x000016f2       0x3c CSoundPlayer.o
+                0x000016f2                _ZN12CSoundPlayer9SoundStopEv
  .text._ZN12CSoundPlayer4beepEjj
-                0x000014f2       0x18 CSoundPlayer.o
-                0x000014f2                _ZN12CSoundPlayer4beepEjj
+                0x0000172e       0x18 CSoundPlayer.o
+                0x0000172e                _ZN12CSoundPlayer4beepEjj
  .text._ZN12CSoundPlayer10InitializeEv
-                0x0000150a       0x16 CSoundPlayer.o
-                0x0000150a                _ZN12CSoundPlayer10InitializeEv
+                0x00001746       0x16 CSoundPlayer.o
+                0x00001746                _ZN12CSoundPlayer10InitializeEv
  .text._ZN12CSoundPlayer4PlayEv
-                0x00001520       0x9e CSoundPlayer.o
-                0x00001520                _ZN12CSoundPlayer4PlayEv
+                0x0000175c       0x9e CSoundPlayer.o
+                0x0000175c                _ZN12CSoundPlayer4PlayEv
  .text._ZN7CTimerC10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
-                0x000015be       0x36 CTimerC.o
-                0x000015be                _ZN7CTimerC10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
+                0x000017fa       0x36 CTimerC.o
+                0x000017fa                _ZN7CTimerC10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
  .text._ZN7CTimerC5StartEj
-                0x000015f4       0x1a CTimerC.o
-                0x000015f4                _ZN7CTimerC5StartEj
+                0x00001830       0x1a CTimerC.o
+                0x00001830                _ZN7CTimerC5StartEj
  .text._ZN7CTimerC4StopEv
-                0x0000160e       0x10 CTimerC.o
-                0x0000160e                _ZN7CTimerC4StopEv
+                0x0000184a       0x10 CTimerC.o
+                0x0000184a                _ZN7CTimerC4StopEv
  .text._ZN7CTimerC13EnableChannelE19TIMER_CHANNELS_ENUM
-                0x0000161e        0xe CTimerC.o
-                0x0000161e                _ZN7CTimerC13EnableChannelE19TIMER_CHANNELS_ENUM
+                0x0000185a        0xe CTimerC.o
+                0x0000185a                _ZN7CTimerC13EnableChannelE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerC14DisableChannelE19TIMER_CHANNELS_ENUM
-                0x0000162c        0xe CTimerC.o
-                0x0000162c                _ZN7CTimerC14DisableChannelE19TIMER_CHANNELS_ENUM
+                0x00001868        0xe CTimerC.o
+                0x00001868                _ZN7CTimerC14DisableChannelE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerC9SetPeriodEj
-                0x0000163a        0xa CTimerC.o
-                0x0000163a                _ZN7CTimerC9SetPeriodEj
+                0x00001876        0xa CTimerC.o
+                0x00001876                _ZN7CTimerC9SetPeriodEj
  .text._ZN7CTimerC8SetCOMPAEj
-                0x00001644        0xa CTimerC.o
-                0x00001644                _ZN7CTimerC8SetCOMPAEj
+                0x00001880        0xa CTimerC.o
+                0x00001880                _ZN7CTimerC8SetCOMPAEj
  .text._ZN7CTimerC8SetCOMPBEj
-                0x0000164e        0xa CTimerC.o
-                0x0000164e                _ZN7CTimerC8SetCOMPBEj
+                0x0000188a        0xa CTimerC.o
+                0x0000188a                _ZN7CTimerC8SetCOMPBEj
  .text._ZN7CTimerC8SetCOMPCEj
-                0x00001658        0xa CTimerC.o
-                0x00001658                _ZN7CTimerC8SetCOMPCEj
+                0x00001894        0xa CTimerC.o
+                0x00001894                _ZN7CTimerC8SetCOMPCEj
  .text._ZN7CTimerC8SetCOMPDEj
-                0x00001662        0xa CTimerC.o
-                0x00001662                _ZN7CTimerC8SetCOMPDEj
+                0x0000189e        0xa CTimerC.o
+                0x0000189e                _ZN7CTimerC8SetCOMPDEj
  .text._ZN7CTimerC14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
-                0x0000166c       0x24 CTimerC.o
-                0x0000166c                _ZN7CTimerC14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
+                0x000018a8       0x24 CTimerC.o
+                0x000018a8                _ZN7CTimerC14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
  .text._ZN7CTimerC14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
-                0x00001690       0x24 CTimerC.o
-                0x00001690                _ZN7CTimerC14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
+                0x000018cc       0x24 CTimerC.o
+                0x000018cc                _ZN7CTimerC14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
  .text._ZN7CTimerC16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
-                0x000016b4       0x24 CTimerC.o
-                0x000016b4                _ZN7CTimerC16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
+                0x000018f0       0x24 CTimerC.o
+                0x000018f0                _ZN7CTimerC16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
  .text._ZN7CTimerC16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
-                0x000016d8       0x24 CTimerC.o
-                0x000016d8                _ZN7CTimerC16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
+                0x00001914       0x24 CTimerC.o
+                0x00001914                _ZN7CTimerC16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
  .text._ZN7CTimerC16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
-                0x000016fc       0x24 CTimerC.o
-                0x000016fc                _ZN7CTimerC16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
+                0x00001938       0x24 CTimerC.o
+                0x00001938                _ZN7CTimerC16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
  .text._ZN7CTimerC16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
-                0x00001720       0x24 CTimerC.o
-                0x00001720                _ZN7CTimerC16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
+                0x0000195c       0x24 CTimerC.o
+                0x0000195c                _ZN7CTimerC16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
  .text._ZN7CTimerCC2Ev
-                0x00001744       0x18 CTimerC.o
-                0x00001744                _ZN7CTimerCC1Ev
-                0x00001744                _ZN7CTimerCC2Ev
+                0x00001980       0x18 CTimerC.o
+                0x00001980                _ZN7CTimerCC1Ev
+                0x00001980                _ZN7CTimerCC2Ev
  .text._ZN7CTimerCD2Ev
-                0x0000175c       0x10 CTimerC.o
-                0x0000175c                _ZN7CTimerCD1Ev
-                0x0000175c                _ZN7CTimerCD2Ev
+                0x00001998       0x10 CTimerC.o
+                0x00001998                _ZN7CTimerCD1Ev
+                0x00001998                _ZN7CTimerCD2Ev
  .text._ZN7CTimerF10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
-                0x0000176c       0x36 CTimerF.o
-                0x0000176c                _ZN7CTimerF10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
+                0x000019a8       0x36 CTimerF.o
+                0x000019a8                _ZN7CTimerF10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM22TIMER_CLOCKSELECT_ENUM
  .text._ZN7CTimerF5StartEj
-                0x000017a2       0x1a CTimerF.o
-                0x000017a2                _ZN7CTimerF5StartEj
+                0x000019de       0x1a CTimerF.o
+                0x000019de                _ZN7CTimerF5StartEj
  .text._ZN7CTimerF4StopEv
-                0x000017bc       0x10 CTimerF.o
-                0x000017bc                _ZN7CTimerF4StopEv
+                0x000019f8       0x10 CTimerF.o
+                0x000019f8                _ZN7CTimerF4StopEv
  .text._ZN7CTimerF13EnableChannelE19TIMER_CHANNELS_ENUM
-                0x000017cc        0xc CTimerF.o
-                0x000017cc                _ZN7CTimerF13EnableChannelE19TIMER_CHANNELS_ENUM
+                0x00001a08        0xc CTimerF.o
+                0x00001a08                _ZN7CTimerF13EnableChannelE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerF14DisableChannelE19TIMER_CHANNELS_ENUM
-                0x000017d8        0xe CTimerF.o
-                0x000017d8                _ZN7CTimerF14DisableChannelE19TIMER_CHANNELS_ENUM
+                0x00001a14        0xe CTimerF.o
+                0x00001a14                _ZN7CTimerF14DisableChannelE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerF10ChannelSetE19TIMER_CHANNELS_ENUM
-                0x000017e6       0x10 CTimerF.o
-                0x000017e6                _ZN7CTimerF10ChannelSetE19TIMER_CHANNELS_ENUM
+                0x00001a22       0x10 CTimerF.o
+                0x00001a22                _ZN7CTimerF10ChannelSetE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerF12ChannelResetE19TIMER_CHANNELS_ENUM
-                0x000017f6       0x12 CTimerF.o
-                0x000017f6                _ZN7CTimerF12ChannelResetE19TIMER_CHANNELS_ENUM
+                0x00001a32       0x12 CTimerF.o
+                0x00001a32                _ZN7CTimerF12ChannelResetE19TIMER_CHANNELS_ENUM
  .text._ZN7CTimerF9SetPeriodEj
-                0x00001808        0xa CTimerF.o
-                0x00001808                _ZN7CTimerF9SetPeriodEj
+                0x00001a44        0xa CTimerF.o
+                0x00001a44                _ZN7CTimerF9SetPeriodEj
  .text._ZN7CTimerF8SetCOMPAEj
-                0x00001812        0xa CTimerF.o
-                0x00001812                _ZN7CTimerF8SetCOMPAEj
+                0x00001a4e        0xa CTimerF.o
+                0x00001a4e                _ZN7CTimerF8SetCOMPAEj
  .text._ZN7CTimerF8SetCOMPBEj
-                0x0000181c        0xa CTimerF.o
-                0x0000181c                _ZN7CTimerF8SetCOMPBEj
+                0x00001a58        0xa CTimerF.o
+                0x00001a58                _ZN7CTimerF8SetCOMPBEj
  .text._ZN7CTimerF8SetCOMPCEj
-                0x00001826        0xa CTimerF.o
-                0x00001826                _ZN7CTimerF8SetCOMPCEj
+                0x00001a62        0xa CTimerF.o
+                0x00001a62                _ZN7CTimerF8SetCOMPCEj
  .text._ZN7CTimerF8SetCOMPDEj
-                0x00001830        0xa CTimerF.o
-                0x00001830                _ZN7CTimerF8SetCOMPDEj
+                0x00001a6c        0xa CTimerF.o
+                0x00001a6c                _ZN7CTimerF8SetCOMPDEj
  .text._ZN7CTimerF14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
-                0x0000183a       0x24 CTimerF.o
-                0x0000183a                _ZN7CTimerF14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
+                0x00001a76       0x24 CTimerF.o
+                0x00001a76                _ZN7CTimerF14SetOVFCallbackEPFvPvES0_17TC_OVFINTLVL_enum
  .text._ZN7CTimerF14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
-                0x0000185e       0x24 CTimerF.o
-                0x0000185e                _ZN7CTimerF14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
+                0x00001a9a       0x24 CTimerF.o
+                0x00001a9a                _ZN7CTimerF14SetERRCallbackEPFvPvES0_17TC_ERRINTLVL_enum
  .text._ZN7CTimerF16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
-                0x00001882       0x24 CTimerF.o
-                0x00001882                _ZN7CTimerF16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
+                0x00001abe       0x24 CTimerF.o
+                0x00001abe                _ZN7CTimerF16SetCOMPACallbackEPFvPvES0_17TC_CCAINTLVL_enum
  .text._ZN7CTimerF16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
-                0x000018a6       0x24 CTimerF.o
-                0x000018a6                _ZN7CTimerF16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
+                0x00001ae2       0x24 CTimerF.o
+                0x00001ae2                _ZN7CTimerF16SetCOMPBCallbackEPFvPvES0_17TC_CCBINTLVL_enum
  .text._ZN7CTimerF16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
-                0x000018ca       0x24 CTimerF.o
-                0x000018ca                _ZN7CTimerF16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
+                0x00001b06       0x24 CTimerF.o
+                0x00001b06                _ZN7CTimerF16SetCOMPCCallbackEPFvPvES0_17TC_CCCINTLVL_enum
  .text._ZN7CTimerF16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
-                0x000018ee       0x24 CTimerF.o
-                0x000018ee                _ZN7CTimerF16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
+                0x00001b2a       0x24 CTimerF.o
+                0x00001b2a                _ZN7CTimerF16SetCOMPDCallbackEPFvPvES0_17TC_CCDINTLVL_enum
  .text._ZN7CTimerFC2Ev
-                0x00001912       0x18 CTimerF.o
-                0x00001912                _ZN7CTimerFC2Ev
-                0x00001912                _ZN7CTimerFC1Ev
+                0x00001b4e       0x18 CTimerF.o
+                0x00001b4e                _ZN7CTimerFC2Ev
+                0x00001b4e                _ZN7CTimerFC1Ev
  .text._ZN7CTimerFD2Ev
-                0x0000192a       0x10 CTimerF.o
-                0x0000192a                _ZN7CTimerFD2Ev
-                0x0000192a                _ZN7CTimerFD1Ev
+                0x00001b66       0x10 CTimerF.o
+                0x00001b66                _ZN7CTimerFD2Ev
+                0x00001b66                _ZN7CTimerFD1Ev
  .text._ZN4CSPIC2Ev
-                0x0000193a        0x2 LaserLib/CSPI.o
-                0x0000193a                _ZN4CSPIC2Ev
-                0x0000193a                _ZN4CSPIC1Ev
+                0x00001b76        0x2 LaserLib/CSPI.o
+                0x00001b76                _ZN4CSPIC2Ev
+                0x00001b76                _ZN4CSPIC1Ev
  .text._ZN4CSPID2Ev
-                0x0000193c        0x2 LaserLib/CSPI.o
-                0x0000193c                _ZN4CSPID2Ev
-                0x0000193c                _ZN4CSPID1Ev
+                0x00001b78        0x2 LaserLib/CSPI.o
+                0x00001b78                _ZN4CSPID2Ev
+                0x00001b78                _ZN4CSPID1Ev
  .text._ZN4CSPI10InitializeEb19SPI_DATA_ORDER_ENUM13SPI_MODE_ENUMb18SPI_PRESCALER_enum
-                0x0000193e       0x88 LaserLib/CSPI.o
-                0x0000193e                _ZN4CSPI10InitializeEb19SPI_DATA_ORDER_ENUM13SPI_MODE_ENUMb18SPI_PRESCALER_enum
+                0x00001b7a       0x88 LaserLib/CSPI.o
+                0x00001b7a                _ZN4CSPI10InitializeEb19SPI_DATA_ORDER_ENUM13SPI_MODE_ENUMb18SPI_PRESCALER_enum
  .text._ZN4CSPI4SendEPhj
-                0x000019c6       0x40 LaserLib/CSPI.o
-                0x000019c6                _ZN4CSPI4SendEPhj
+                0x00001c02       0x40 LaserLib/CSPI.o
+                0x00001c02                _ZN4CSPI4SendEPhj
  .text._ZN4CSPI10OnTransmitEv
-                0x00001a06       0x30 LaserLib/CSPI.o
-                0x00001a06                _ZN4CSPI10OnTransmitEv
+                0x00001c42       0x30 LaserLib/CSPI.o
+                0x00001c42                _ZN4CSPI10OnTransmitEv
  .text._ZN4CSPI16StaticOnTransmitEPv
-                0x00001a36        0x6 LaserLib/CSPI.o
-                0x00001a36                _ZN4CSPI16StaticOnTransmitEPv
+                0x00001c72        0x6 LaserLib/CSPI.o
+                0x00001c72                _ZN4CSPI16StaticOnTransmitEPv
  .text._ZN6CTimerC2Ev
-                0x00001a3c        0xc LaserLib/CTimer.o
-                0x00001a3c                _ZN6CTimerC1Ev
-                0x00001a3c                _ZN6CTimerC2Ev
+                0x00001c78        0xc LaserLib/CTimer.o
+                0x00001c78                _ZN6CTimerC1Ev
+                0x00001c78                _ZN6CTimerC2Ev
  .text._ZN6CTimerD2Ev
-                0x00001a48        0x2 LaserLib/CTimer.o
-                0x00001a48                _ZN6CTimerD1Ev
-                0x00001a48                _ZN6CTimerD2Ev
+                0x00001c84        0x2 LaserLib/CTimer.o
+                0x00001c84                _ZN6CTimerD1Ev
+                0x00001c84                _ZN6CTimerD2Ev
  .text._ZN6CUSARTC2Ev
-                0x00001a4a        0xc LaserLib/CUSART.o
-                0x00001a4a                _ZN6CUSARTC2Ev
-                0x00001a4a                _ZN6CUSARTC1Ev
+                0x00001c86        0xc LaserLib/CUSART.o
+                0x00001c86                _ZN6CUSARTC2Ev
+                0x00001c86                _ZN6CUSARTC1Ev
  .text._ZN6CUSARTD2Ev
-                0x00001a56        0x2 LaserLib/CUSART.o
-                0x00001a56                _ZN6CUSARTD1Ev
-                0x00001a56                _ZN6CUSARTD2Ev
+                0x00001c92        0x2 LaserLib/CUSART.o
+                0x00001c92                _ZN6CUSARTD1Ev
+                0x00001c92                _ZN6CUSARTD2Ev
  .text.__vector_1
-                0x00001a58       0x62 LaserLib/intx128.o
-                0x00001a58                __vector_1
+                0x00001c94       0x62 LaserLib/intx128.o
+                0x00001c94                __vector_1
  .text.__vector_2
-                0x00001aba       0x62 LaserLib/intx128.o
-                0x00001aba                __vector_2
+                0x00001cf6       0x62 LaserLib/intx128.o
+                0x00001cf6                __vector_2
  .text.__vector_3
-                0x00001b1c       0x62 LaserLib/intx128.o
-                0x00001b1c                __vector_3
+                0x00001d58       0x62 LaserLib/intx128.o
+                0x00001d58                __vector_3
  .text.__vector_4
-                0x00001b7e       0x62 LaserLib/intx128.o
-                0x00001b7e                __vector_4
+                0x00001dba       0x62 LaserLib/intx128.o
+                0x00001dba                __vector_4
  .text.__vector_5
-                0x00001be0       0x62 LaserLib/intx128.o
-                0x00001be0                __vector_5
+                0x00001e1c       0x62 LaserLib/intx128.o
+                0x00001e1c                __vector_5
  .text.__vector_6
-                0x00001c42       0x62 LaserLib/intx128.o
-                0x00001c42                __vector_6
+                0x00001e7e       0x62 LaserLib/intx128.o
+                0x00001e7e                __vector_6
  .text.__vector_7
-                0x00001ca4       0x62 LaserLib/intx128.o
-                0x00001ca4                __vector_7
+                0x00001ee0       0x62 LaserLib/intx128.o
+                0x00001ee0                __vector_7
  .text.__vector_8
-                0x00001d06       0x62 LaserLib/intx128.o
-                0x00001d06                __vector_8
+                0x00001f42       0x62 LaserLib/intx128.o
+                0x00001f42                __vector_8
  .text.__vector_9
-                0x00001d68       0x62 LaserLib/intx128.o
-                0x00001d68                __vector_9
+                0x00001fa4       0x62 LaserLib/intx128.o
+                0x00001fa4                __vector_9
  .text.__vector_10
-                0x00001dca       0x62 LaserLib/intx128.o
-                0x00001dca                __vector_10
+                0x00002006       0x62 LaserLib/intx128.o
+                0x00002006                __vector_10
  .text.__vector_11
-                0x00001e2c       0x62 LaserLib/intx128.o
-                0x00001e2c                __vector_11
+                0x00002068       0x62 LaserLib/intx128.o
+                0x00002068                __vector_11
  .text.__vector_12
-                0x00001e8e       0x62 LaserLib/intx128.o
-                0x00001e8e                __vector_12
+                0x000020ca       0x62 LaserLib/intx128.o
+                0x000020ca                __vector_12
  .text.__vector_13
-                0x00001ef0       0x62 LaserLib/intx128.o
-                0x00001ef0                __vector_13
+                0x0000212c       0x62 LaserLib/intx128.o
+                0x0000212c                __vector_13
  .text.__vector_14
-                0x00001f52       0x62 LaserLib/intx128.o
-                0x00001f52                __vector_14
+                0x0000218e       0x62 LaserLib/intx128.o
+                0x0000218e                __vector_14
  .text.__vector_15
-                0x00001fb4       0x62 LaserLib/intx128.o
-                0x00001fb4                __vector_15
+                0x000021f0       0x62 LaserLib/intx128.o
+                0x000021f0                __vector_15
  .text.__vector_16
-                0x00002016       0x62 LaserLib/intx128.o
-                0x00002016                __vector_16
+                0x00002252       0x62 LaserLib/intx128.o
+                0x00002252                __vector_16
  .text.__vector_17
-                0x00002078       0x62 LaserLib/intx128.o
-                0x00002078                __vector_17
+                0x000022b4       0x62 LaserLib/intx128.o
+                0x000022b4                __vector_17
  .text.__vector_18
-                0x000020da       0x62 LaserLib/intx128.o
-                0x000020da                __vector_18
+                0x00002316       0x62 LaserLib/intx128.o
+                0x00002316                __vector_18
  .text.__vector_19
-                0x0000213c       0x62 LaserLib/intx128.o
-                0x0000213c                __vector_19
+                0x00002378       0x62 LaserLib/intx128.o
+                0x00002378                __vector_19
  .text.__vector_20
-                0x0000219e       0x62 LaserLib/intx128.o
-                0x0000219e                __vector_20
+                0x000023da       0x62 LaserLib/intx128.o
+                0x000023da                __vector_20
  .text.__vector_21
-                0x00002200       0x62 LaserLib/intx128.o
-                0x00002200                __vector_21
+                0x0000243c       0x62 LaserLib/intx128.o
+                0x0000243c                __vector_21
  .text.__vector_22
-                0x00002262       0x62 LaserLib/intx128.o
-                0x00002262                __vector_22
+                0x0000249e       0x62 LaserLib/intx128.o
+                0x0000249e                __vector_22
  .text.__vector_23
-                0x000022c4       0x62 LaserLib/intx128.o
-                0x000022c4                __vector_23
+                0x00002500       0x62 LaserLib/intx128.o
+                0x00002500                __vector_23
  .text.__vector_24
-                0x00002326       0x62 LaserLib/intx128.o
-                0x00002326                __vector_24
+                0x00002562       0x62 LaserLib/intx128.o
+                0x00002562                __vector_24
  .text.__vector_25
-                0x00002388       0x62 LaserLib/intx128.o
-                0x00002388                __vector_25
+                0x000025c4       0x62 LaserLib/intx128.o
+                0x000025c4                __vector_25
  .text.__vector_26
-                0x000023ea       0x62 LaserLib/intx128.o
-                0x000023ea                __vector_26
+                0x00002626       0x62 LaserLib/intx128.o
+                0x00002626                __vector_26
  .text.__vector_27
-                0x0000244c       0x62 LaserLib/intx128.o
-                0x0000244c                __vector_27
+                0x00002688       0x62 LaserLib/intx128.o
+                0x00002688                __vector_27
  .text.__vector_28
-                0x000024ae       0x62 LaserLib/intx128.o
-                0x000024ae                __vector_28
+                0x000026ea       0x62 LaserLib/intx128.o
+                0x000026ea                __vector_28
  .text.__vector_29
-                0x00002510       0x62 LaserLib/intx128.o
-                0x00002510                __vector_29
+                0x0000274c       0x62 LaserLib/intx128.o
+                0x0000274c                __vector_29
  .text.__vector_30
-                0x00002572       0x62 LaserLib/intx128.o
-                0x00002572                __vector_30
+                0x000027ae       0x62 LaserLib/intx128.o
+                0x000027ae                __vector_30
  .text.__vector_31
-                0x000025d4       0x62 LaserLib/intx128.o
-                0x000025d4                __vector_31
+                0x00002810       0x62 LaserLib/intx128.o
+                0x00002810                __vector_31
  .text.__vector_32
-                0x00002636       0x62 LaserLib/intx128.o
-                0x00002636                __vector_32
+                0x00002872       0x62 LaserLib/intx128.o
+                0x00002872                __vector_32
  .text.__vector_33
-                0x00002698       0x62 LaserLib/intx128.o
-                0x00002698                __vector_33
+                0x000028d4       0x62 LaserLib/intx128.o
+                0x000028d4                __vector_33
  .text.__vector_34
-                0x000026fa       0x62 LaserLib/intx128.o
-                0x000026fa                __vector_34
+                0x00002936       0x62 LaserLib/intx128.o
+                0x00002936                __vector_34
  .text.__vector_35
-                0x0000275c       0x62 LaserLib/intx128.o
-                0x0000275c                __vector_35
+                0x00002998       0x62 LaserLib/intx128.o
+                0x00002998                __vector_35
  .text.__vector_36
-                0x000027be       0x62 LaserLib/intx128.o
-                0x000027be                __vector_36
+                0x000029fa       0x62 LaserLib/intx128.o
+                0x000029fa                __vector_36
  .text.__vector_37
-                0x00002820       0x62 LaserLib/intx128.o
-                0x00002820                __vector_37
+                0x00002a5c       0x62 LaserLib/intx128.o
+                0x00002a5c                __vector_37
  .text.__vector_38
-                0x00002882       0x62 LaserLib/intx128.o
-                0x00002882                __vector_38
+                0x00002abe       0x62 LaserLib/intx128.o
+                0x00002abe                __vector_38
  .text.__vector_39
-                0x000028e4       0x62 LaserLib/intx128.o
-                0x000028e4                __vector_39
+                0x00002b20       0x62 LaserLib/intx128.o
+                0x00002b20                __vector_39
  .text.__vector_40
-                0x00002946       0x62 LaserLib/intx128.o
-                0x00002946                __vector_40
+                0x00002b82       0x62 LaserLib/intx128.o
+                0x00002b82                __vector_40
  .text.__vector_41
-                0x000029a8       0x62 LaserLib/intx128.o
-                0x000029a8                __vector_41
+                0x00002be4       0x62 LaserLib/intx128.o
+                0x00002be4                __vector_41
  .text.__vector_42
-                0x00002a0a       0x62 LaserLib/intx128.o
-                0x00002a0a                __vector_42
+                0x00002c46       0x62 LaserLib/intx128.o
+                0x00002c46                __vector_42
  .text.__vector_43
-                0x00002a6c       0x62 LaserLib/intx128.o
-                0x00002a6c                __vector_43
+                0x00002ca8       0x62 LaserLib/intx128.o
+                0x00002ca8                __vector_43
  .text.__vector_44
-                0x00002ace       0x62 LaserLib/intx128.o
-                0x00002ace                __vector_44
+                0x00002d0a       0x62 LaserLib/intx128.o
+                0x00002d0a                __vector_44
  .text.__vector_45
-                0x00002b30       0x62 LaserLib/intx128.o
-                0x00002b30                __vector_45
+                0x00002d6c       0x62 LaserLib/intx128.o
+                0x00002d6c                __vector_45
  .text.__vector_46
-                0x00002b92       0x62 LaserLib/intx128.o
-                0x00002b92                __vector_46
+                0x00002dce       0x62 LaserLib/intx128.o
+                0x00002dce                __vector_46
  .text.__vector_47
-                0x00002bf4       0x62 LaserLib/intx128.o
-                0x00002bf4                __vector_47
+                0x00002e30       0x62 LaserLib/intx128.o
+                0x00002e30                __vector_47
  .text.__vector_48
-                0x00002c56       0x62 LaserLib/intx128.o
-                0x00002c56                __vector_48
+                0x00002e92       0x62 LaserLib/intx128.o
+                0x00002e92                __vector_48
  .text.__vector_49
-                0x00002cb8       0x62 LaserLib/intx128.o
-                0x00002cb8                __vector_49
+                0x00002ef4       0x62 LaserLib/intx128.o
+                0x00002ef4                __vector_49
  .text.__vector_50
-                0x00002d1a       0x62 LaserLib/intx128.o
-                0x00002d1a                __vector_50
+                0x00002f56       0x62 LaserLib/intx128.o
+                0x00002f56                __vector_50
  .text.__vector_51
-                0x00002d7c       0x62 LaserLib/intx128.o
-                0x00002d7c                __vector_51
+                0x00002fb8       0x62 LaserLib/intx128.o
+                0x00002fb8                __vector_51
  .text.__vector_52
-                0x00002dde       0x62 LaserLib/intx128.o
-                0x00002dde                __vector_52
+                0x0000301a       0x62 LaserLib/intx128.o
+                0x0000301a                __vector_52
  .text.__vector_53
-                0x00002e40       0x62 LaserLib/intx128.o
-                0x00002e40                __vector_53
+                0x0000307c       0x62 LaserLib/intx128.o
+                0x0000307c                __vector_53
  .text.__vector_54
-                0x00002ea2       0x62 LaserLib/intx128.o
-                0x00002ea2                __vector_54
+                0x000030de       0x62 LaserLib/intx128.o
+                0x000030de                __vector_54
  .text.__vector_55
-                0x00002f04       0x62 LaserLib/intx128.o
-                0x00002f04                __vector_55
+                0x00003140       0x62 LaserLib/intx128.o
+                0x00003140                __vector_55
  .text.__vector_56
-                0x00002f66       0x62 LaserLib/intx128.o
-                0x00002f66                __vector_56
+                0x000031a2       0x62 LaserLib/intx128.o
+                0x000031a2                __vector_56
  .text.__vector_57
-                0x00002fc8       0x62 LaserLib/intx128.o
-                0x00002fc8                __vector_57
+                0x00003204       0x62 LaserLib/intx128.o
+                0x00003204                __vector_57
  .text.__vector_58
-                0x0000302a       0x62 LaserLib/intx128.o
-                0x0000302a                __vector_58
+                0x00003266       0x62 LaserLib/intx128.o
+                0x00003266                __vector_58
  .text.__vector_59
-                0x0000308c       0x62 LaserLib/intx128.o
-                0x0000308c                __vector_59
+                0x000032c8       0x62 LaserLib/intx128.o
+                0x000032c8                __vector_59
  .text.__vector_60
-                0x000030ee       0x62 LaserLib/intx128.o
-                0x000030ee                __vector_60
+                0x0000332a       0x62 LaserLib/intx128.o
+                0x0000332a                __vector_60
  .text.__vector_61
-                0x00003150       0x62 LaserLib/intx128.o
-                0x00003150                __vector_61
+                0x0000338c       0x62 LaserLib/intx128.o
+                0x0000338c                __vector_61
  .text.__vector_62
-                0x000031b2       0x62 LaserLib/intx128.o
-                0x000031b2                __vector_62
+                0x000033ee       0x62 LaserLib/intx128.o
+                0x000033ee                __vector_62
  .text.__vector_63
-                0x00003214       0x62 LaserLib/intx128.o
-                0x00003214                __vector_63
+                0x00003450       0x62 LaserLib/intx128.o
+                0x00003450                __vector_63
  .text.__vector_64
-                0x00003276       0x62 LaserLib/intx128.o
-                0x00003276                __vector_64
+                0x000034b2       0x62 LaserLib/intx128.o
+                0x000034b2                __vector_64
  .text.__vector_65
-                0x000032d8       0x62 LaserLib/intx128.o
-                0x000032d8                __vector_65
+                0x00003514       0x62 LaserLib/intx128.o
+                0x00003514                __vector_65
  .text.__vector_66
-                0x0000333a       0x62 LaserLib/intx128.o
-                0x0000333a                __vector_66
+                0x00003576       0x62 LaserLib/intx128.o
+                0x00003576                __vector_66
  .text.__vector_67
-                0x0000339c       0x62 LaserLib/intx128.o
-                0x0000339c                __vector_67
+                0x000035d8       0x62 LaserLib/intx128.o
+                0x000035d8                __vector_67
  .text.__vector_68
-                0x000033fe       0x62 LaserLib/intx128.o
-                0x000033fe                __vector_68
+                0x0000363a       0x62 LaserLib/intx128.o
+                0x0000363a                __vector_68
  .text.__vector_69
-                0x00003460       0x62 LaserLib/intx128.o
-                0x00003460                __vector_69
+                0x0000369c       0x62 LaserLib/intx128.o
+                0x0000369c                __vector_69
  .text.__vector_70
-                0x000034c2       0x62 LaserLib/intx128.o
-                0x000034c2                __vector_70
+                0x000036fe       0x62 LaserLib/intx128.o
+                0x000036fe                __vector_70
  .text.__vector_71
-                0x00003524       0x62 LaserLib/intx128.o
-                0x00003524                __vector_71
+                0x00003760       0x62 LaserLib/intx128.o
+                0x00003760                __vector_71
  .text.__vector_72
-                0x00003586       0x62 LaserLib/intx128.o
-                0x00003586                __vector_72
+                0x000037c2       0x62 LaserLib/intx128.o
+                0x000037c2                __vector_72
  .text.__vector_73
-                0x000035e8       0x62 LaserLib/intx128.o
-                0x000035e8                __vector_73
+                0x00003824       0x62 LaserLib/intx128.o
+                0x00003824                __vector_73
  .text.__vector_74
-                0x0000364a       0x62 LaserLib/intx128.o
-                0x0000364a                __vector_74
+                0x00003886       0x62 LaserLib/intx128.o
+                0x00003886                __vector_74
  .text.__vector_77
-                0x000036ac       0x62 LaserLib/intx128.o
-                0x000036ac                __vector_77
+                0x000038e8       0x62 LaserLib/intx128.o
+                0x000038e8                __vector_77
  .text.__vector_78
-                0x0000370e       0x62 LaserLib/intx128.o
-                0x0000370e                __vector_78
+                0x0000394a       0x62 LaserLib/intx128.o
+                0x0000394a                __vector_78
  .text.__vector_79
-                0x00003770       0x62 LaserLib/intx128.o
-                0x00003770                __vector_79
+                0x000039ac       0x62 LaserLib/intx128.o
+                0x000039ac                __vector_79
  .text.__vector_80
-                0x000037d2       0x62 LaserLib/intx128.o
-                0x000037d2                __vector_80
+                0x00003a0e       0x62 LaserLib/intx128.o
+                0x00003a0e                __vector_80
  .text.__vector_81
-                0x00003834       0x62 LaserLib/intx128.o
-                0x00003834                __vector_81
+                0x00003a70       0x62 LaserLib/intx128.o
+                0x00003a70                __vector_81
  .text.__vector_82
-                0x00003896       0x62 LaserLib/intx128.o
-                0x00003896                __vector_82
+                0x00003ad2       0x62 LaserLib/intx128.o
+                0x00003ad2                __vector_82
  .text.__vector_83
-                0x000038f8       0x62 LaserLib/intx128.o
-                0x000038f8                __vector_83
+                0x00003b34       0x62 LaserLib/intx128.o
+                0x00003b34                __vector_83
  .text.__vector_84
-                0x0000395a       0x62 LaserLib/intx128.o
-                0x0000395a                __vector_84
+                0x00003b96       0x62 LaserLib/intx128.o
+                0x00003b96                __vector_84
  .text.__vector_85
-                0x000039bc       0x62 LaserLib/intx128.o
-                0x000039bc                __vector_85
+                0x00003bf8       0x62 LaserLib/intx128.o
+                0x00003bf8                __vector_85
  .text.__vector_86
-                0x00003a1e       0x62 LaserLib/intx128.o
-                0x00003a1e                __vector_86
+                0x00003c5a       0x62 LaserLib/intx128.o
+                0x00003c5a                __vector_86
  .text.__vector_87
-                0x00003a80       0x62 LaserLib/intx128.o
-                0x00003a80                __vector_87
+                0x00003cbc       0x62 LaserLib/intx128.o
+                0x00003cbc                __vector_87
  .text.__vector_88
-                0x00003ae2       0x62 LaserLib/intx128.o
-                0x00003ae2                __vector_88
+                0x00003d1e       0x62 LaserLib/intx128.o
+                0x00003d1e                __vector_88
  .text.__vector_89
-                0x00003b44       0x62 LaserLib/intx128.o
-                0x00003b44                __vector_89
+                0x00003d80       0x62 LaserLib/intx128.o
+                0x00003d80                __vector_89
  .text.__vector_90
-                0x00003ba6       0x62 LaserLib/intx128.o
-                0x00003ba6                __vector_90
+                0x00003de2       0x62 LaserLib/intx128.o
+                0x00003de2                __vector_90
  .text.__vector_91
-                0x00003c08       0x62 LaserLib/intx128.o
-                0x00003c08                __vector_91
+                0x00003e44       0x62 LaserLib/intx128.o
+                0x00003e44                __vector_91
  .text.__vector_92
-                0x00003c6a       0x62 LaserLib/intx128.o
-                0x00003c6a                __vector_92
+                0x00003ea6       0x62 LaserLib/intx128.o
+                0x00003ea6                __vector_92
  .text.__vector_93
-                0x00003ccc       0x62 LaserLib/intx128.o
-                0x00003ccc                __vector_93
+                0x00003f08       0x62 LaserLib/intx128.o
+                0x00003f08                __vector_93
  .text.__vector_104
-                0x00003d2e       0x62 LaserLib/intx128.o
-                0x00003d2e                __vector_104
+                0x00003f6a       0x62 LaserLib/intx128.o
+                0x00003f6a                __vector_104
  .text.__vector_105
-                0x00003d90       0x62 LaserLib/intx128.o
-                0x00003d90                __vector_105
+                0x00003fcc       0x62 LaserLib/intx128.o
+                0x00003fcc                __vector_105
  .text.__vector_108
-                0x00003df2       0x62 LaserLib/intx128.o
-                0x00003df2                __vector_108
+                0x0000402e       0x62 LaserLib/intx128.o
+                0x0000402e                __vector_108
  .text.__vector_109
-                0x00003e54       0x62 LaserLib/intx128.o
-                0x00003e54                __vector_109
+                0x00004090       0x62 LaserLib/intx128.o
+                0x00004090                __vector_109
  .text.__vector_110
-                0x00003eb6       0x62 LaserLib/intx128.o
-                0x00003eb6                __vector_110
+                0x000040f2       0x62 LaserLib/intx128.o
+                0x000040f2                __vector_110
  .text.__vector_111
-                0x00003f18       0x62 LaserLib/intx128.o
-                0x00003f18                __vector_111
+                0x00004154       0x62 LaserLib/intx128.o
+                0x00004154                __vector_111
  .text.__vector_112
-                0x00003f7a       0x62 LaserLib/intx128.o
-                0x00003f7a                __vector_112
+                0x000041b6       0x62 LaserLib/intx128.o
+                0x000041b6                __vector_112
  .text.__vector_113
-                0x00003fdc       0x62 LaserLib/intx128.o
-                0x00003fdc                __vector_113
+                0x00004218       0x62 LaserLib/intx128.o
+                0x00004218                __vector_113
  .text.__vector_119
-                0x0000403e       0x62 LaserLib/intx128.o
-                0x0000403e                __vector_119
+                0x0000427a       0x62 LaserLib/intx128.o
+                0x0000427a                __vector_119
  .text.__vector_120
-                0x000040a0       0x62 LaserLib/intx128.o
-                0x000040a0                __vector_120
+                0x000042dc       0x62 LaserLib/intx128.o
+                0x000042dc                __vector_120
  .text.__vector_121
-                0x00004102       0x62 LaserLib/intx128.o
-                0x00004102                __vector_121
+                0x0000433e       0x62 LaserLib/intx128.o
+                0x0000433e                __vector_121
  .text.__cxa_pure_virtual
-                0x00004164        0x6 main.o
-                0x00004164                __cxa_pure_virtual
+                0x000043a0        0x6 main.o
+                0x000043a0                __cxa_pure_virtual
  .text._GLOBAL__sub_I_dacSPI
-                0x0000416a       0x32 main.o
+                0x000043a6       0x32 main.o
  .text._GLOBAL__sub_D_dacSPI
-                0x0000419c       0x32 main.o
+                0x000043d8       0x32 main.o
  .text._Z16SystemInitializev
-                0x000041ce       0x76 main.o
-                0x000041ce                _Z16SystemInitializev
- .text.main     0x00004244       0xb6 main.o
-                0x00004244                main
+                0x0000440a       0x76 main.o
+                0x0000440a                _Z16SystemInitializev
+ .text.main     0x00004480       0xb6 main.o
+                0x00004480                main
  .text._ZN16CMBEventsHandler13FillRegDataTxEhPhh
-                0x000042fa       0x62 MODBUS/CMBProtocol.o
-                0x000042fa                _ZN16CMBEventsHandler13FillRegDataTxEhPhh
+                0x00004536       0x62 MODBUS/CMBProtocol.o
+                0x00004536                _ZN16CMBEventsHandler13FillRegDataTxEhPhh
  .text._ZN16CMBEventsHandler13FillRegDataRqEhh
-                0x0000435c       0x3e MODBUS/CMBProtocol.o
-                0x0000435c                _ZN16CMBEventsHandler13FillRegDataRqEhh
+                0x00004598       0x3e MODBUS/CMBProtocol.o
+                0x00004598                _ZN16CMBEventsHandler13FillRegDataRqEhh
  .text._ZN16CMBEventsHandler13FillVarDataTxEjPjj
-                0x0000439a       0x92 MODBUS/CMBProtocol.o
-                0x0000439a                _ZN16CMBEventsHandler13FillVarDataTxEjPjj
+                0x000045d6       0x90 MODBUS/CMBProtocol.o
+                0x000045d6                _ZN16CMBEventsHandler13FillVarDataTxEjPjj
  .text._ZN16CMBEventsHandler13FillVarDataRqEjj
-                0x0000442c       0x46 MODBUS/CMBProtocol.o
-                0x0000442c                _ZN16CMBEventsHandler13FillVarDataRqEjj
+                0x00004666       0x46 MODBUS/CMBProtocol.o
+                0x00004666                _ZN16CMBEventsHandler13FillVarDataRqEjj
  .text._ZN16CMBEventsHandler15AllocateBuffersEjj
-                0x00004472       0x36 MODBUS/CMBProtocol.o
-                0x00004472                _ZN16CMBEventsHandler15AllocateBuffersEjj
+                0x000046ac       0x36 MODBUS/CMBProtocol.o
+                0x000046ac                _ZN16CMBEventsHandler15AllocateBuffersEjj
  .text._ZN16CMBEventsHandler11FreeBuffersEv
-                0x000044a8       0x1c MODBUS/CMBProtocol.o
-                0x000044a8                _ZN16CMBEventsHandler11FreeBuffersEv
+                0x000046e2       0x1c MODBUS/CMBProtocol.o
+                0x000046e2                _ZN16CMBEventsHandler11FreeBuffersEv
  .text._ZN16CMBEventsHandlerD2Ev
-                0x000044c4        0x2 MODBUS/CMBProtocol.o
-                0x000044c4                _ZN16CMBEventsHandlerD2Ev
-                0x000044c4                _ZN16CMBEventsHandlerD1Ev
+                0x000046fe        0x2 MODBUS/CMBProtocol.o
+                0x000046fe                _ZN16CMBEventsHandlerD2Ev
+                0x000046fe                _ZN16CMBEventsHandlerD1Ev
  .text._ZN9CMBSender18OnVariableReceivedEjPjj
-                0x000044c6       0x1e MODBUS/CMBSender.o
-                0x000044c6                _ZN9CMBSender18OnVariableReceivedEjPjj
+                0x00004700       0x1e MODBUS/CMBSender.o
+                0x00004700                _ZN9CMBSender18OnVariableReceivedEjPjj
  .text._ZN9CMBSender18OnRegisterReceivedEhPhh
-                0x000044e4       0x1e MODBUS/CMBSender.o
-                0x000044e4                _ZN9CMBSender18OnRegisterReceivedEhPhh
+                0x0000471e       0x1e MODBUS/CMBSender.o
+                0x0000471e                _ZN9CMBSender18OnRegisterReceivedEhPhh
  .text._ZN9CMBSenderC2Ev
-                0x00004502        0xc MODBUS/CMBSender.o
-                0x00004502                _ZN9CMBSenderC2Ev
-                0x00004502                _ZN9CMBSenderC1Ev
+                0x0000473c        0xc MODBUS/CMBSender.o
+                0x0000473c                _ZN9CMBSenderC2Ev
+                0x0000473c                _ZN9CMBSenderC1Ev
  .text._ZN9CMBSender10InitializeEP6CUSARTP16CMBEventsHandlerjj
-                0x0000450e       0x9e MODBUS/CMBSender.o
-                0x0000450e                _ZN9CMBSender10InitializeEP6CUSARTP16CMBEventsHandlerjj
+                0x00004748       0x9e MODBUS/CMBSender.o
+                0x00004748                _ZN9CMBSender10InitializeEP6CUSARTP16CMBEventsHandlerjj
  .text._ZN9CMBSenderD2Ev
-                0x000045ac       0x10 MODBUS/CMBSender.o
-                0x000045ac                _ZN9CMBSenderD1Ev
-                0x000045ac                _ZN9CMBSenderD2Ev
+                0x000047e6       0x10 MODBUS/CMBSender.o
+                0x000047e6                _ZN9CMBSenderD1Ev
+                0x000047e6                _ZN9CMBSenderD2Ev
  .text._ZN9CMBSender13OnReceiveByteEh
-                0x000045bc      0x174 MODBUS/CMBSender.o
-                0x000045bc                _ZN9CMBSender13OnReceiveByteEh
+                0x000047f6      0x174 MODBUS/CMBSender.o
+                0x000047f6                _ZN9CMBSender13OnReceiveByteEh
  .text._ZN9CMBSender18OnUSARTRxInterruptEPv
-                0x00004730       0x26 MODBUS/CMBSender.o
-                0x00004730                _ZN9CMBSender18OnUSARTRxInterruptEPv
+                0x0000496a       0x26 MODBUS/CMBSender.o
+                0x0000496a                _ZN9CMBSender18OnUSARTRxInterruptEPv
  .text._ZN9CMBSender19StartMODBUSListenerEv
-                0x00004756       0x12 MODBUS/CMBSender.o
-                0x00004756                _ZN9CMBSender19StartMODBUSListenerEv
+                0x00004990       0x12 MODBUS/CMBSender.o
+                0x00004990                _ZN9CMBSender19StartMODBUSListenerEv
  .text._ZN9CMBSender14OnTransmitByteEv
-                0x00004768       0x92 MODBUS/CMBSender.o
-                0x00004768                _ZN9CMBSender14OnTransmitByteEv
+                0x000049a2       0x92 MODBUS/CMBSender.o
+                0x000049a2                _ZN9CMBSender14OnTransmitByteEv
  .text._ZN9CMBSender18OnUSARTTxInterruptEPv
-                0x000047fa        0x6 MODBUS/CMBSender.o
-                0x000047fa                _ZN9CMBSender18OnUSARTTxInterruptEPv
+                0x00004a34        0x6 MODBUS/CMBSender.o
+                0x00004a34                _ZN9CMBSender18OnUSARTTxInterruptEPv
  .text._ZN9CMBSender18WaitMODBUSListenerEv
-                0x00004800       0x22 MODBUS/CMBSender.o
-                0x00004800                _ZN9CMBSender18WaitMODBUSListenerEv
+                0x00004a3a       0x22 MODBUS/CMBSender.o
+                0x00004a3a                _ZN9CMBSender18WaitMODBUSListenerEv
  .text._ZN9CMBSender22StartMODBUSTransmitterEv
-                0x00004822        0xc MODBUS/CMBSender.o
-                0x00004822                _ZN9CMBSender22StartMODBUSTransmitterEv
+                0x00004a5c        0xc MODBUS/CMBSender.o
+                0x00004a5c                _ZN9CMBSender22StartMODBUSTransmitterEv
  .text._ZN9CMBSender24WriteDataToRegisterAsyncEhPhh
-                0x0000482e       0x1e MODBUS/CMBSender.o
-                0x0000482e                _ZN9CMBSender24WriteDataToRegisterAsyncEhPhh
+                0x00004a68       0x1e MODBUS/CMBSender.o
+                0x00004a68                _ZN9CMBSender24WriteDataToRegisterAsyncEhPhh
  .text._ZN9CMBSender20WriteDataToSRAMAsyncEjPjj
-                0x0000484c       0x1e MODBUS/CMBSender.o
-                0x0000484c                _ZN9CMBSender20WriteDataToSRAMAsyncEjPjj
+                0x00004a86       0x1e MODBUS/CMBSender.o
+                0x00004a86                _ZN9CMBSender20WriteDataToSRAMAsyncEjPjj
  .text._ZN9CMBSender28RequestDataFromRegisterAsyncEhh
-                0x0000486a       0x1e MODBUS/CMBSender.o
-                0x0000486a                _ZN9CMBSender28RequestDataFromRegisterAsyncEhh
+                0x00004aa4       0x1e MODBUS/CMBSender.o
+                0x00004aa4                _ZN9CMBSender28RequestDataFromRegisterAsyncEhh
  .text._ZN9CMBSender24RequestDataFromSRAMAsyncEjh
-                0x00004888       0x20 MODBUS/CMBSender.o
-                0x00004888                _ZN9CMBSender24RequestDataFromSRAMAsyncEjh
+                0x00004ac2       0x20 MODBUS/CMBSender.o
+                0x00004ac2                _ZN9CMBSender24RequestDataFromSRAMAsyncEjh
  .text._ZN9CMBSender21WaitMODBUSTransmitterEv
-                0x000048a8       0x22 MODBUS/CMBSender.o
-                0x000048a8                _ZN9CMBSender21WaitMODBUSTransmitterEv
+                0x00004ae2       0x22 MODBUS/CMBSender.o
+                0x00004ae2                _ZN9CMBSender21WaitMODBUSTransmitterEv
  .text._ZN9CMBSender30StartMODBUSRegisterTransactionEhh
-                0x000048ca        0xc MODBUS/CMBSender.o
-                0x000048ca                _ZN9CMBSender30StartMODBUSRegisterTransactionEhh
+                0x00004b04        0xc MODBUS/CMBSender.o
+                0x00004b04                _ZN9CMBSender30StartMODBUSRegisterTransactionEhh
  .text._ZN9CMBSender30StartMODBUSVariableTransactionEjh
-                0x000048d6        0xc MODBUS/CMBSender.o
-                0x000048d6                _ZN9CMBSender30StartMODBUSVariableTransactionEjh
+                0x00004b10        0xc MODBUS/CMBSender.o
+                0x00004b10                _ZN9CMBSender30StartMODBUSVariableTransactionEjh
  .text._ZN9CMBSender18ProcessTransactionEPhj
-                0x000048e2       0x62 MODBUS/CMBSender.o
-                0x000048e2                _ZN9CMBSender18ProcessTransactionEPhj
+                0x00004b1c       0x62 MODBUS/CMBSender.o
+                0x00004b1c                _ZN9CMBSender18ProcessTransactionEPhj
  .text._ZN9CMBSender21OnTransactionCallbackEPhj
-                0x00004944        0x6 MODBUS/CMBSender.o
-                0x00004944                _ZN9CMBSender21OnTransactionCallbackEPhj
+                0x00004b7e        0x6 MODBUS/CMBSender.o
+                0x00004b7e                _ZN9CMBSender21OnTransactionCallbackEPhj
  .text.libgcc.div
-                0x0000494a       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_udivmodhi4.o)
-                0x0000494a                __udivmodhi4
+                0x00004b84       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_udivmodhi4.o)
+                0x00004b84                __udivmodhi4
  .text.libgcc.div
-                0x00004972       0x2e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_divmodsi4.o)
-                0x00004972                __divmodsi4
+                0x00004bac       0x2e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_divmodsi4.o)
+                0x00004bac                __divmodsi4
  .text.libgcc.div
-                0x000049a0       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_negsi2.o)
-                0x000049a0                __negsi2
- .text.libgcc   0x000049b0       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_tablejump2.o)
-                0x000049b0                __tablejump2__
+                0x00004bda       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_negsi2.o)
+                0x00004bda                __negsi2
+ .text.libgcc   0x00004bea       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_tablejump2.o)
+                0x00004bea                __tablejump2__
  .text.libgcc.mul
-                0x000049c0       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_umulhisi3.o)
-                0x000049c0                __umulhisi3
+                0x00004bfa       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_umulhisi3.o)
+                0x00004bfa                __umulhisi3
  .text.libgcc.div
-                0x000049de       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_udivmodsi4.o)
-                0x000049de                __udivmodsi4
+                0x00004c18       0x44 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_udivmodsi4.o)
+                0x00004c18                __udivmodsi4
  .text.avr-libc
-                0x00004a22      0x25a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
-                0x00004a22                malloc
-                0x00004b4c                free
+                0x00004c5c      0x25a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
+                0x00004c5c                malloc
+                0x00004d86                free
  .text.avr-libc
-                0x00004c7c       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(memcpy.o)
-                0x00004c7c                memcpy
-                0x00004c8e                . = ALIGN (0x2)
+                0x00004eb6       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(memcpy.o)
+                0x00004eb6                memcpy
+                0x00004ec8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00004c8e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_exit.o)
-                0x00004c8e                _exit
-                0x00004c8e                exit
+ .fini9         0x00004ec8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_exit.o)
+                0x00004ec8                _exit
+                0x00004ec8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
  *(.fini7)
  *(.fini7)
  *(.fini6)
- .fini6         0x00004c8e       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_dtors.o)
-                0x00004c8e                __do_global_dtors
+ .fini6         0x00004ec8       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_dtors.o)
+                0x00004ec8                __do_global_dtors
  *(.fini6)
  *(.fini5)
  *(.fini5)
@@ -1265,11 +1265,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00004cae        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_exit.o)
+ .fini0         0x00004ee8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avrxmega6\libgcc.a(_exit.o)
  *(.fini0)
-                0x00004cb2                _etext = .
+                0x00004eec                _etext = .
 
-.data           0x00802000      0x112 load address 0x00004cb2
+.data           0x00802000      0x134 load address 0x00004eec
                 0x00802000                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00802000        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
@@ -1288,84 +1288,89 @@ END GROUP
  .rodata._ZTV10CDGUSUSART
                 0x00802046       0x18 CDGUSUSART.o
                 0x00802046                _ZTV10CDGUSUSART
+ .rodata.str1.1
+                0x0080205e       0x21 CLaserControlApp.o
  .rodata._ZTV16CLaserControlApp
-                0x0080205e       0x16 CLaserControlApp.o
-                0x0080205e                _ZTV16CLaserControlApp
+                0x0080207f       0x16 CLaserControlApp.o
+                0x0080207f                _ZTV16CLaserControlApp
  .rodata._ZTV7CTimerC
-                0x00802074       0x24 CTimerC.o
-                0x00802074                _ZTV7CTimerC
+                0x00802095       0x24 CTimerC.o
+                0x00802095                _ZTV7CTimerC
  .rodata._ZTV7CTimerF
-                0x00802098       0x28 CTimerF.o
-                0x00802098                _ZTV7CTimerF
+                0x008020b9       0x28 CTimerF.o
+                0x008020b9                _ZTV7CTimerF
  .rodata._ZTV6CTimer
-                0x008020c0       0x24 LaserLib/CTimer.o
-                0x008020c0                _ZTV6CTimer
+                0x008020e1       0x24 LaserLib/CTimer.o
+                0x008020e1                _ZTV6CTimer
  .rodata._ZTV6CUSART
-                0x008020e4       0x18 LaserLib/CUSART.o
-                0x008020e4                _ZTV6CUSART
+                0x00802105       0x18 LaserLib/CUSART.o
+                0x00802105                _ZTV6CUSART
  .rodata._ZTV9CMBSender
-                0x008020fc       0x16 MODBUS/CMBSender.o
-                0x008020fc                _ZTV9CMBSender
+                0x0080211d       0x16 MODBUS/CMBSender.o
+                0x0080211d                _ZTV9CMBSender
  *(.gnu.linkonce.d*)
-                0x00802112                . = ALIGN (0x2)
-                0x00802112                _edata = .
-                0x00802112                PROVIDE (__data_end, .)
+                0x00802134                . = ALIGN (0x2)
+ *fill*         0x00802133        0x1 
+                0x00802134                _edata = .
+                0x00802134                PROVIDE (__data_end, .)
 
-.bss            0x00802112      0x264
-                0x00802112                PROVIDE (__bss_start, .)
+.bss            0x00802134      0x266
+                0x00802134                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
+ .bss._ZZN16CLaserControlApp3RunEvE3cnt
+                0x00802134        0x2 CLaserControlApp.o
  .bss.m_structDGUSDATA_Slow
-                0x00802112        0xc CLaserControlApp.o
-                0x00802112                m_structDGUSDATA_Slow
+                0x00802136        0xc CLaserControlApp.o
+                0x00802136                m_structDGUSDATA_Slow
  .bss.m_structDGUSDATA_Medium
-                0x0080211e        0xc CLaserControlApp.o
-                0x0080211e                m_structDGUSDATA_Medium
+                0x00802142        0xc CLaserControlApp.o
+                0x00802142                m_structDGUSDATA_Medium
  .bss.m_structDGUSDATA_Fast
-                0x0080212a        0xc CLaserControlApp.o
-                0x0080212a                m_structDGUSDATA_Fast
+                0x0080214e        0xc CLaserControlApp.o
+                0x0080214e                m_structDGUSDATA_Fast
  .bss.laserTimer
-                0x00802136        0x3 CLaserControlApp.o
-                0x00802136                laserTimer
- .bss.timer     0x00802139        0x3 CLaserControlApp.o
-                0x00802139                timer
+                0x0080215a        0x3 CLaserControlApp.o
+                0x0080215a                laserTimer
+ .bss.timer     0x0080215d        0x3 CLaserControlApp.o
+                0x0080215d                timer
  .bss.InterruptFuncTable
-                0x0080213c       0xf6 LaserLib/intx128.o
-                0x0080213c                InterruptFuncTable
+                0x00802160       0xf6 LaserLib/intx128.o
+                0x00802160                InterruptFuncTable
  .bss.InterruptSenderTable
-                0x00802232       0xf6 LaserLib/intx128.o
-                0x00802232                InterruptSenderTable
+                0x00802256       0xf6 LaserLib/intx128.o
+                0x00802256                InterruptSenderTable
  .bss._ZZ4mainE3prs
-                0x00802328        0x2 main.o
- .bss.App       0x0080232a       0x1a main.o
-                0x0080232a                App
- .bss.player    0x00802344        0x1 main.o
-                0x00802344                player
+                0x0080234c        0x2 main.o
+ .bss.App       0x0080234e       0x1a main.o
+                0x0080234e                App
+ .bss.player    0x00802368        0x1 main.o
+                0x00802368                player
  .bss.laserBoard
-                0x00802345        0xa main.o
-                0x00802345                laserBoard
- .bss.sender    0x0080234f       0x19 main.o
-                0x0080234f                sender
- .bss.usart     0x00802368        0x2 main.o
-                0x00802368                usart
- .bss.dacSPI    0x0080236a        0x6 main.o
-                0x0080236a                dacSPI
- .bss.cnt       0x00802370        0x2 MODBUS/CMBSender.o
-                0x00802370                cnt
+                0x00802369        0xa main.o
+                0x00802369                laserBoard
+ .bss.sender    0x00802373       0x19 main.o
+                0x00802373                sender
+ .bss.usart     0x0080238c        0x2 main.o
+                0x0080238c                usart
+ .bss.dacSPI    0x0080238e        0x6 main.o
+                0x0080238e                dacSPI
+ .bss.cnt       0x00802394        0x2 MODBUS/CMBSender.o
+                0x00802394                cnt
  *(COMMON)
- COMMON         0x00802372        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
-                0x00802372                __brkval
-                0x00802374                __flp
-                0x00802376                PROVIDE (__bss_end, .)
-                0x00004cb2                __data_load_start = LOADADDR (.data)
-                0x00004dc4                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00802396        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avrxmega6\libc.a(malloc.o)
+                0x00802396                __brkval
+                0x00802398                __flp
+                0x0080239a                PROVIDE (__bss_end, .)
+                0x00004eec                __data_load_start = LOADADDR (.data)
+                0x00005020                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00802376        0x0
-                0x00802376                PROVIDE (__noinit_start, .)
+.noinit         0x0080239a        0x0
+                0x0080239a                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00802376                PROVIDE (__noinit_end, .)
-                0x00802376                _end = .
-                0x00802376                PROVIDE (__heap_start, .)
+                0x0080239a                PROVIDE (__noinit_end, .)
+                0x0080239a                _end = .
+                0x0080239a                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -1425,7 +1430,7 @@ END GROUP
 .note.gnu.avr.deviceinfo
                 0x00000000       0x40
  .note.gnu.avr.deviceinfo
-                0x00000000       0x40 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.36/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
+                0x00000000       0x40 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/XMEGAA_DFP/1.0.38/gcc/dev/atxmega128a3/avrxmega6/crtatxmega128a3.o
 
 .note.gnu.build-id
  *(.note.gnu.build-id)
@@ -1474,112 +1479,112 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0xba99
+.debug_info     0x00000000     0xbfe1
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000     0x1095 CDGUSUSART.o
  .debug_info    0x00001095      0xc83 CLaserBoard.o
- .debug_info    0x00001d18     0x1bed CLaserControlApp.o
- .debug_info    0x00003905     0x1385 CSoundPlayer.o
- .debug_info    0x00004c8a     0x15ac CTimerC.o
- .debug_info    0x00006236     0x166e CTimerF.o
- .debug_info    0x000078a4      0x7ce LaserLib/CSPI.o
- .debug_info    0x00008072      0x6a3 LaserLib/CTimer.o
- .debug_info    0x00008715      0x606 LaserLib/CUSART.o
- .debug_info    0x00008d1b      0x91e LaserLib/intx128.o
- .debug_info    0x00009639      0xcf2 main.o
- .debug_info    0x0000a32b      0x595 MODBUS/CMBProtocol.o
- .debug_info    0x0000a8c0     0x11d9 MODBUS/CMBSender.o
+ .debug_info    0x00001d18     0x212e CLaserControlApp.o
+ .debug_info    0x00003e46     0x1385 CSoundPlayer.o
+ .debug_info    0x000051cb     0x15ac CTimerC.o
+ .debug_info    0x00006777     0x166e CTimerF.o
+ .debug_info    0x00007de5      0x7ce LaserLib/CSPI.o
+ .debug_info    0x000085b3      0x6a3 LaserLib/CTimer.o
+ .debug_info    0x00008c56      0x606 LaserLib/CUSART.o
+ .debug_info    0x0000925c      0x91e LaserLib/intx128.o
+ .debug_info    0x00009b7a      0xcf9 main.o
+ .debug_info    0x0000a873      0x595 MODBUS/CMBProtocol.o
+ .debug_info    0x0000ae08     0x11d9 MODBUS/CMBSender.o
 
-.debug_abbrev   0x00000000     0x22e0
+.debug_abbrev   0x00000000     0x22cf
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x2d9 CDGUSUSART.o
  .debug_abbrev  0x000002d9      0x2e4 CLaserBoard.o
- .debug_abbrev  0x000005bd      0x59f CLaserControlApp.o
- .debug_abbrev  0x00000b5c      0x2b9 CSoundPlayer.o
- .debug_abbrev  0x00000e15      0x29c CTimerC.o
- .debug_abbrev  0x000010b1      0x29c CTimerF.o
- .debug_abbrev  0x0000134d      0x28f LaserLib/CSPI.o
- .debug_abbrev  0x000015dc      0x182 LaserLib/CTimer.o
- .debug_abbrev  0x0000175e      0x1ed LaserLib/CUSART.o
- .debug_abbrev  0x0000194b       0x83 LaserLib/intx128.o
- .debug_abbrev  0x000019ce      0x363 main.o
- .debug_abbrev  0x00001d31      0x212 MODBUS/CMBProtocol.o
- .debug_abbrev  0x00001f43      0x39d MODBUS/CMBSender.o
+ .debug_abbrev  0x000005bd      0x58e CLaserControlApp.o
+ .debug_abbrev  0x00000b4b      0x2b9 CSoundPlayer.o
+ .debug_abbrev  0x00000e04      0x29c CTimerC.o
+ .debug_abbrev  0x000010a0      0x29c CTimerF.o
+ .debug_abbrev  0x0000133c      0x28f LaserLib/CSPI.o
+ .debug_abbrev  0x000015cb      0x182 LaserLib/CTimer.o
+ .debug_abbrev  0x0000174d      0x1ed LaserLib/CUSART.o
+ .debug_abbrev  0x0000193a       0x83 LaserLib/intx128.o
+ .debug_abbrev  0x000019bd      0x363 main.o
+ .debug_abbrev  0x00001d20      0x212 MODBUS/CMBProtocol.o
+ .debug_abbrev  0x00001f32      0x39d MODBUS/CMBSender.o
 
-.debug_line     0x00000000     0x2860
+.debug_line     0x00000000     0x287f
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x23e CDGUSUSART.o
  .debug_line    0x0000023e      0x33a CLaserBoard.o
- .debug_line    0x00000578      0x471 CLaserControlApp.o
- .debug_line    0x000009e9      0x23b CSoundPlayer.o
- .debug_line    0x00000c24      0x285 CTimerC.o
- .debug_line    0x00000ea9      0x2a7 CTimerF.o
- .debug_line    0x00001150      0x24a LaserLib/CSPI.o
- .debug_line    0x0000139a      0x135 LaserLib/CTimer.o
- .debug_line    0x000014cf      0x135 LaserLib/CUSART.o
- .debug_line    0x00001604      0xa14 LaserLib/intx128.o
- .debug_line    0x00002018      0x276 main.o
- .debug_line    0x0000228e      0x1d9 MODBUS/CMBProtocol.o
- .debug_line    0x00002467      0x3f9 MODBUS/CMBSender.o
+ .debug_line    0x00000578      0x490 CLaserControlApp.o
+ .debug_line    0x00000a08      0x23b CSoundPlayer.o
+ .debug_line    0x00000c43      0x285 CTimerC.o
+ .debug_line    0x00000ec8      0x2a7 CTimerF.o
+ .debug_line    0x0000116f      0x24a LaserLib/CSPI.o
+ .debug_line    0x000013b9      0x135 LaserLib/CTimer.o
+ .debug_line    0x000014ee      0x135 LaserLib/CUSART.o
+ .debug_line    0x00001623      0xa14 LaserLib/intx128.o
+ .debug_line    0x00002037      0x276 main.o
+ .debug_line    0x000022ad      0x1d9 MODBUS/CMBProtocol.o
+ .debug_line    0x00002486      0x3f9 MODBUS/CMBSender.o
 
-.debug_frame    0x00000000     0x2f40
+.debug_frame    0x00000000     0x2f6c
  *(.debug_frame)
  .debug_frame   0x00000000       0xe8 CDGUSUSART.o
  .debug_frame   0x000000e8      0x108 CLaserBoard.o
- .debug_frame   0x000001f0      0x1c0 CLaserControlApp.o
- .debug_frame   0x000003b0       0xd8 CSoundPlayer.o
- .debug_frame   0x00000488      0x140 CTimerC.o
- .debug_frame   0x000005c8      0x160 CTimerF.o
- .debug_frame   0x00000728       0xbc LaserLib/CSPI.o
- .debug_frame   0x000007e4       0x34 LaserLib/CTimer.o
- .debug_frame   0x00000818       0x34 LaserLib/CUSART.o
- .debug_frame   0x0000084c     0x2324 LaserLib/intx128.o
- .debug_frame   0x00002b70       0x84 main.o
- .debug_frame   0x00002bf4       0xc4 MODBUS/CMBProtocol.o
- .debug_frame   0x00002cb8      0x288 MODBUS/CMBSender.o
+ .debug_frame   0x000001f0      0x1ec CLaserControlApp.o
+ .debug_frame   0x000003dc       0xd8 CSoundPlayer.o
+ .debug_frame   0x000004b4      0x140 CTimerC.o
+ .debug_frame   0x000005f4      0x160 CTimerF.o
+ .debug_frame   0x00000754       0xbc LaserLib/CSPI.o
+ .debug_frame   0x00000810       0x34 LaserLib/CTimer.o
+ .debug_frame   0x00000844       0x34 LaserLib/CUSART.o
+ .debug_frame   0x00000878     0x2324 LaserLib/intx128.o
+ .debug_frame   0x00002b9c       0x84 main.o
+ .debug_frame   0x00002c20       0xc4 MODBUS/CMBProtocol.o
+ .debug_frame   0x00002ce4      0x288 MODBUS/CMBSender.o
 
-.debug_str      0x00000000     0x4b06
+.debug_str      0x00000000     0x4bfd
  *(.debug_str)
- .debug_str     0x00000000     0x15e1 CDGUSUSART.o
-                               0x1663 (size before relaxing)
- .debug_str     0x000015e1      0x753 CLaserBoard.o
-                                0xae4 (size before relaxing)
- .debug_str     0x00001d34      0xf4b CLaserControlApp.o
-                               0x14c6 (size before relaxing)
- .debug_str     0x00002c7f      0x73c CSoundPlayer.o
-                                0xbbc (size before relaxing)
- .debug_str     0x000033bb      0x625 CTimerC.o
-                               0x1287 (size before relaxing)
- .debug_str     0x000039e0      0x1fc CTimerF.o
-                               0x12fd (size before relaxing)
- .debug_str     0x00003bdc       0xd5 LaserLib/CSPI.o
-                                0x6e7 (size before relaxing)
- .debug_str     0x00003cb1       0x35 LaserLib/CTimer.o
-                                0xa38 (size before relaxing)
- .debug_str     0x00003ce6       0x35 LaserLib/CUSART.o
-                                0x7aa (size before relaxing)
- .debug_str     0x00003d1b      0x4e2 LaserLib/intx128.o
-                                0x6b5 (size before relaxing)
- .debug_str     0x000041fd       0xbd main.o
-                                0xc73 (size before relaxing)
- .debug_str     0x000042ba      0x289 MODBUS/CMBProtocol.o
-                                0x4e5 (size before relaxing)
- .debug_str     0x00004543      0x5c3 MODBUS/CMBSender.o
-                                0xa71 (size before relaxing)
+ .debug_str     0x00000000     0x1608 CDGUSUSART.o
+                               0x168a (size before relaxing)
+ .debug_str     0x00001608      0x753 CLaserBoard.o
+                                0xb0b (size before relaxing)
+ .debug_str     0x00001d5b     0x101b CLaserControlApp.o
+                               0x15c2 (size before relaxing)
+ .debug_str     0x00002d76      0x73c CSoundPlayer.o
+                                0xbe3 (size before relaxing)
+ .debug_str     0x000034b2      0x625 CTimerC.o
+                               0x12ae (size before relaxing)
+ .debug_str     0x00003ad7      0x1fc CTimerF.o
+                               0x1324 (size before relaxing)
+ .debug_str     0x00003cd3       0xd5 LaserLib/CSPI.o
+                                0x70e (size before relaxing)
+ .debug_str     0x00003da8       0x35 LaserLib/CTimer.o
+                                0xa5f (size before relaxing)
+ .debug_str     0x00003ddd       0x35 LaserLib/CUSART.o
+                                0x7d1 (size before relaxing)
+ .debug_str     0x00003e12      0x4e2 LaserLib/intx128.o
+                                0x6dc (size before relaxing)
+ .debug_str     0x000042f4       0xbd main.o
+                                0xc9f (size before relaxing)
+ .debug_str     0x000043b1      0x289 MODBUS/CMBProtocol.o
+                                0x50c (size before relaxing)
+ .debug_str     0x0000463a      0x5c3 MODBUS/CMBSender.o
+                                0xa98 (size before relaxing)
 
-.debug_loc      0x00000000     0x7d0f
+.debug_loc      0x00000000     0x7e3f
  *(.debug_loc)
  .debug_loc     0x00000000      0x210 CDGUSUSART.o
  .debug_loc     0x00000210      0x4c2 CLaserBoard.o
- .debug_loc     0x000006d2      0x718 CLaserControlApp.o
- .debug_loc     0x00000dea      0x344 CSoundPlayer.o
- .debug_loc     0x0000112e      0x366 CTimerC.o
- .debug_loc     0x00001494      0x3f4 CTimerF.o
- .debug_loc     0x00001888      0x276 LaserLib/CSPI.o
- .debug_loc     0x00001afe     0x50e2 LaserLib/intx128.o
- .debug_loc     0x00006be0       0x84 main.o
- .debug_loc     0x00006c64      0x356 MODBUS/CMBProtocol.o
- .debug_loc     0x00006fba      0xd55 MODBUS/CMBSender.o
+ .debug_loc     0x000006d2      0x848 CLaserControlApp.o
+ .debug_loc     0x00000f1a      0x344 CSoundPlayer.o
+ .debug_loc     0x0000125e      0x366 CTimerC.o
+ .debug_loc     0x000015c4      0x3f4 CTimerF.o
+ .debug_loc     0x000019b8      0x276 LaserLib/CSPI.o
+ .debug_loc     0x00001c2e     0x50e2 LaserLib/intx128.o
+ .debug_loc     0x00006d10       0x84 main.o
+ .debug_loc     0x00006d94      0x356 MODBUS/CMBProtocol.o
+ .debug_loc     0x000070ea      0xd55 MODBUS/CMBSender.o
 
 .debug_macinfo
  *(.debug_macinfo)

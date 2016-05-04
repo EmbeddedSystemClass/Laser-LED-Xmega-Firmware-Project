@@ -26,15 +26,18 @@ uint16_t swap(uint16_t data)
 	return (data >> 8) | (data << 8);
 }
 
-void ConvertData(void* dst, void* src, uint16_t size)
+void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0)
 {
 	uint16_t  length = size / 2;
 	uint16_t* source = (uint16_t*)src;
 	uint16_t* dest = (uint16_t*)dst;
 	
 	// swap bytes in words
-	for (uint16_t i = 0; i < length; i++)
-		dest[i] = swap(source[i]);
+	/*for (uint16_t i = 0; i < length; i++)
+		dest[(i + offset) % length] = swap(source[i]);*/
+		
+	for (uint16_t i = 0; i < size; i++)
+		((uint8_t*)dst)[((i + offset) % size) ^ 1] = ((uint8_t*)src)[i];
 }
 
 uint16_t min(uint16_t x, uint16_t y)
@@ -169,6 +172,10 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		break;
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
+			if (PIC_ID >= PICID_DATABASE_MIN && PIC_ID <= PICID_DATABASE_MAX)
+			{
+				state = APP_DATABASE;
+			}
 		break;
 	}
 }
@@ -381,6 +388,37 @@ void CLaserControlApp::Run()
 		break;
 		case APP_PHOTOTYPE6:
 			//state = APP_WORKFAST;
+		break;
+		case APP_DATABASE:
+			{
+				DGUS_LINESDATA1 lines1 = {0};
+				DGUS_LINESDATA2 lines2 = {0};                     //
+				char empty[33] = "Hello world!                    ";
+				
+				static int cnt = 0;
+				cnt+=1;
+				if (cnt >= 32) cnt = 0;
+					
+				ConvertData((void*)lines1.line1 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line2 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line3 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line4 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line5 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line6 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines1.line7 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line8 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line9 , (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line10, (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line11, (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line12, (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line13, (void*)empty, 32, cnt);
+				ConvertData((void*)lines2.line14, (void*)empty, 32, cnt);
+								
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA1, (uint16_t*)&lines1, sizeof(lines1));
+				m_cpSender->WaitMODBUSTransmitter();
+				m_cpSender->WriteDataToSRAMAsync(STRUCT_ADDR_LINESDATA2, (uint16_t*)&lines2, sizeof(lines2));
+				m_cpSender->WaitMODBUSTransmitter();
+			}
 		break;
 		default:
 		break;

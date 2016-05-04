@@ -97,17 +97,17 @@ void CMBEventsHandler::FillVarDataTx(uint16_t addr, uint16_t* data, uint16_t len
 	tx_buffer[1] = FRAMEHEADER_HIGHBYTE;
 		// Frame size
 #ifdef USE_CRC
-	tx_buffer[2] = length * 2 + 5; //CMD (1) + DATA(length * 2) + CRC(2) + ADDR(2)
+	tx_buffer[2] = length + 5; //CMD (1) + DATA(length * 2) + CRC(2) + ADDR(2)
 #else
-	tx_buffer[2] = length * 2 + 3; //CMD (1) + DATA(length * 2) + ADDR(2)
+	tx_buffer[2] = length + 3; //CMD (1) + DATA(length * 2) + ADDR(2)
 #endif
 	tx_buffer[3] = 0x82;	// Frame command
 	tx_buffer[4] = addr >> 8;
 	tx_buffer[5] = addr & 0xff;
-	tx_frame_length = length * 2 + 6;
+	tx_frame_length = length + 6;
 		
 	// Frame data
-	for (uint16_t i = 0; i < length; i++)
+	for (uint16_t i = 0; i < length / 2; i++)
 	{
 		tx_buffer[6 + i*2 + 0] = data[i] >> 8;
 		tx_buffer[6 + i*2 + 1] = data[i] & 0xff;
