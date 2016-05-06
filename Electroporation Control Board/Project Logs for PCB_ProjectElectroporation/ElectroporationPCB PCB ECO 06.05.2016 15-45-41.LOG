@@ -1,0 +1,18 @@
+Added Component: Designator=U7(D008_N)
+Added Component: Designator=U8(D008_L)
+Added Pin To Net: NetName=NetR6_1 Pin=U7-1
+Added Pin To Net: NetName=IGND Pin=U7-2
+Added Pin To Net: NetName=IGND Pin=U7-3
+Added Pin To Net: NetName=IGND Pin=U7-6
+Added Pin To Net: NetName=IGND Pin=U7-7
+Added Pin To Net: NetName=REF0.25V Pin=U7-8
+Added Pin To Net: NetName=NetP1_1 Pin=U8-1
+Added Pin To Net: NetName=NetP1_1 Pin=U8-2
+Added Pin To Net: NetName=NetR13_1 Pin=U8-3
+Added Pin To Net: NetName=IGND Pin=U8-4
+Added Pin To Net: NetName=NetR20_2 Pin=U8-5
+Added Pin To Net: NetName=NetR19_2 Pin=U8-6
+Added Pin To Net: NetName=NetR18_2 Pin=U8-7
+Added Pin To Net: NetName=IVCC12V Pin=U8-8
+Added Member To Class: ClassName=Designator Member=Component U7 TL431ACD
+Added Member To Class: ClassName=Designator Member=Component U8 LM358AD
