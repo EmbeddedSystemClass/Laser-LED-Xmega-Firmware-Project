@@ -61,6 +61,8 @@ void SystemInitialize()
 	
 	sei();	/* Enable global interrupts */
 }
+
+uint16_t DATA[1024];
 	 
 int main(void)
 {
@@ -93,6 +95,23 @@ int main(void)
 			App.Run();
 			
 		laserBoard.PortCheck();
+		
+		uint8_t	 database_en   = 0x5A;
+		uint8_t  database_op   = 0xA0;
+		uint32_t database_addr = 0x00002C00; //0x002C0000; //300 Database.DAT
+		uint16_t database_vp   = 0x0400;
+		uint16_t database_len  = 1024;
+		
+		sender.WriteDataToRegister(REGISTER_DATABASE_EN,   (uint8_t*)&database_en, 1);
+		sender.WriteDataToRegister(REGISTER_DATABASE_OP,  (uint8_t*) &database_op, 1);
+		sender.WriteDataToRegister(REGISTER_DATABASE_ADDR, (uint8_t*)&database_addr, 4);
+		sender.WriteDataToRegister(REGISTER_DATABASE_VP,   (uint8_t*)&database_vp, 2);
+		sender.WriteDataToRegister(REGISTER_DATABASE_LEN,  (uint8_t*)&database_len, 2);
+		
+		sender.RequestDataFromSRAMAsync(0x0400, 16);
+		
+		database_en = 0;
+		sender.WriteDataToRegister(REGISTER_DATABASE_EN,   (uint8_t*)&database_en, 1);
 
 		/*
 		// Sine waveform generation

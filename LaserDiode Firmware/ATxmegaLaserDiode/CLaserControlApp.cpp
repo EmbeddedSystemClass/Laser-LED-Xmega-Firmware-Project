@@ -17,6 +17,8 @@ extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 extern CSPI dacSPI;
 
+extern uint16_t DATA[1024];
+
 volatile DGUS_DATA m_structDGUSDATA_Fast;
 volatile DGUS_DATA m_structDGUSDATA_Medium;
 volatile DGUS_DATA m_structDGUSDATA_Slow;
@@ -76,6 +78,11 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 {
 	// Update GUI variables	
 	//uint16_t val = swap(*((uint16_t*)data));
+	if (addr == 0x0400)
+	{
+		ConvertData((void*)&DATA, (void*)data, length);
+	}
+	
 	if (addr == VARIABLE_ADDR_PROFINDEX)
 	{
 		profileIndex = swap(*((uint16_t*)data));

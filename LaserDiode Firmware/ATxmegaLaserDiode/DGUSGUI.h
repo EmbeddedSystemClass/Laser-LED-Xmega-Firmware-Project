@@ -11,6 +11,12 @@
 
 // Variables & registers addresses
 #define REGISTER_ADDR_PICID		0x03
+#define REGISTER_DATABASE_EN	0x56	// 1 bytes
+#define REGISTER_DATABASE_OP	0x57	// 1 bytes
+#define REGISTER_DATABASE_ADDR	0x58	// 4 bytes
+#define REGISTER_DATABASE_VP	0x5C	// 2 bytes
+#define REGISTER_DATABASE_LEN	0x5E	// 2 bytes
+
 #define VARIABLE_ADDR_FREQ		0x0001
 #define VARIABLE_ADDR_DURATION	0x0002
 #define VARIABLE_ADDR_INTENSITY	0x0003
