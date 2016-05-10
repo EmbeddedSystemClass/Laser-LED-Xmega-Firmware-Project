@@ -9,6 +9,8 @@
 #ifndef DGUSGUI_H_
 #define DGUSGUI_H_
 
+#include <stdint.h>
+
 // Variables & registers addresses
 #define REGISTER_ADDR_PICID		0x03
 #define REGISTER_DATABASE_EN	0x56	// 1 bytes
@@ -120,5 +122,18 @@ typedef struct DGUS_VALUESDATA_STRUCT
 	char value6[32];
 	char value7[32];
 } DGUS_VALUESDATA, *PDGUS_VALUESDATA;
+
+#define STRUCT_ADDR_WRITETOFLASH	0x56	// 1 bytes
+
+typedef struct DGUS_WRITETOFLASH_STRUCT
+{
+	uint8_t en;
+	uint8_t op;
+	uint32_t addr;
+	uint16_t vp;
+	uint16_t len;
+} DGUS_WRITETOFLASH;
+
+extern uint16_t swap(uint16_t data);
 
 #endif /* DGUSGUI_H_ */

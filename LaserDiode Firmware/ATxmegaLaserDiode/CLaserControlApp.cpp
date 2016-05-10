@@ -7,7 +7,7 @@
 
 
 #include "CLaserControlApp.h"
-#include "CSoundPlayer.h"
+#include "Periphery/CSoundPlayer.h"
 #include <string.h>
 #include <util/delay.h>
 
@@ -23,10 +23,7 @@ volatile DGUS_DATA m_structDGUSDATA_Fast;
 volatile DGUS_DATA m_structDGUSDATA_Medium;
 volatile DGUS_DATA m_structDGUSDATA_Slow;
 
-uint16_t swap(uint16_t data)
-{
-	return (data >> 8) | (data << 8);
-}
+extern uint16_t swap(uint16_t data);
 
 void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0)
 {
@@ -111,10 +108,17 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 	}
 }
 
+volatile uint8_t DatabaseStatusRegister;
+
 void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t length)
 {
 	// Update GUI registers
 	if (addr == 0x03)	PIC_ID = data[1];
+	
+	if (addr == REGISTER_DATABASE_EN)
+	{ 
+		DatabaseStatusRegister = data[0];
+	}
 	
 	switch (PIC_ID)
 	{

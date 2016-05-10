@@ -11,12 +11,12 @@
 
 // DGUS
 #include "DGUSGUI.h"
-#include "CDGUSUSART.h"
+#include "Periphery/CDGUSUSART.h"
 
 // Application class
-#include "CLaserBoard.h"
+#include "Periphery/CLaserBoard.h"
 #include "CLaserControlApp.h"
-#include "CSoundPlayer.h"
+#include "Periphery/CSoundPlayer.h"
 
 // MODBUS Lib
 #include "MODBUS/CMBSender.h"
@@ -38,6 +38,8 @@ CLaserBoard laserBoard;
 CSoundPlayer player;
 CLaserControlApp App;
 
+extern void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0);
+
 extern "C" void __cxa_pure_virtual()
 {	
 	while(1)
@@ -52,10 +54,12 @@ void SystemInitialize()
 	
 	// Initialize modules
 	laserBoard.InitializeIO();
+	// TimerE0, TimerE1
 	player.Initialize();
 	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 	usart.Initialize(BAUD_115200_ERM0P1, PARITY_DISABLE, STOPBITS_1BIT, true);
 	sender.Initialize(&usart, &App, 256, 256);
+	// TimerC0, TimerF0
 	App.Initialize(&sender);
 	laserBoard.InitializeClock();
 	
@@ -63,6 +67,11 @@ void SystemInitialize()
 }
 
 uint16_t DATA[1024];
+
+uint16_t swap(uint16_t data)
+{
+	return (data >> 8) | (data << 8);
+}
 	 
 int main(void)
 {
@@ -72,7 +81,8 @@ int main(void)
 	SystemInitialize();
 	
 	// Startup delay (Beep "Imperial March")
-	player.Play();
+	//player.Play();
+	_delay_ms(1000);
 	laserBoard.Relay1On();
 	_delay_ms(100);
 	laserBoard.Relay1Off();
@@ -89,29 +99,41 @@ int main(void)
 		// Loop delay
 		_delay_ms(1);
 		
+		laserBoard.PortCheck();
+		
 		// Process application
 		static uint16_t prs = 0;
 		if ((prs++ % 200) == 0)
+		{
 			App.Run();
 			
-		laserBoard.PortCheck();
-		
-		uint8_t	 database_en   = 0x5A;
-		uint8_t  database_op   = 0xA0;
-		uint32_t database_addr = 0x00002C00; //0x002C0000; //300 Database.DAT
-		uint16_t database_vp   = 0x0400;
-		uint16_t database_len  = 1024;
-		
-		sender.WriteDataToRegister(REGISTER_DATABASE_EN,   (uint8_t*)&database_en, 1);
-		sender.WriteDataToRegister(REGISTER_DATABASE_OP,  (uint8_t*) &database_op, 1);
-		sender.WriteDataToRegister(REGISTER_DATABASE_ADDR, (uint8_t*)&database_addr, 4);
-		sender.WriteDataToRegister(REGISTER_DATABASE_VP,   (uint8_t*)&database_vp, 2);
-		sender.WriteDataToRegister(REGISTER_DATABASE_LEN,  (uint8_t*)&database_len, 2);
-		
-		sender.RequestDataFromSRAMAsync(0x0400, 16);
-		
-		database_en = 0;
-		sender.WriteDataToRegister(REGISTER_DATABASE_EN,   (uint8_t*)&database_en, 1);
+			DGUS_WRITETOFLASH flash_cmd;
+			flash_cmd.en = 0x5A;
+			flash_cmd.op = 0x50;
+			flash_cmd.addr = 0x00009000; //400 Database.DAT
+			flash_cmd.vp = swap(0x0400);
+			flash_cmd.len = swap(32);
+			
+			              //                                *
+			char str[33] = "Hello world! Vlad!Maya! 1234567!";
+			char dst[33];
+			
+			ConvertData(dst, str, 33);
+			
+			sender.WriteDataToRegister(STRUCT_ADDR_WRITETOFLASH,  (uint8_t*)&flash_cmd, sizeof(flash_cmd));
+			sender.WaitMODBUSTransmitter();
+			
+			sender.WriteDataToSRAMAsync(0x0400, (uint16_t*)dst, 32);
+			sender.WaitMODBUSTransmitter();
+			
+			/*flash_cmd.en = 0;
+			sender.WriteDataToRegister(STRUCT_ADDR_WRITETOFLASH,  (uint8_t*)&flash_cmd, 1);
+			sender.WaitMODBUSTransmitter();*/
+					
+			sender.StartMODBUSRegisterTransaction(STRUCT_ADDR_WRITETOFLASH,  1);
+			sender.WaitMODBUSTransmitter();
+			sender.WaitMODBUSListener();
+		}
 
 		/*
 		// Sine waveform generation

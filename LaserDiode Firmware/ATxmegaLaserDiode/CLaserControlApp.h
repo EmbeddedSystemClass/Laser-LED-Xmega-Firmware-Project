@@ -9,16 +9,22 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
+// Standard libraries
 #include <stdbool.h>
-#include "CTimerC.h"
-#include "CTimerF.h"
-#include "CDGUSUSART.h"
 
+// DGUS
 #include "DGUSGUI.h"
-#include "CLaserBoard.h"
 
+// MODBUS
 #include "MODBUS/CMBSender.h"
 
+// Periphery
+#include "Periphery/CTimerC.h"
+#include "Periphery/CTimerF.h"
+#include "Periphery/CDGUSUSART.h"
+#include "Periphery/CLaserBoard.h"
+
+// Laser libraries
 #include "LaserLib/CSPI.h"
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
@@ -57,6 +63,8 @@ typedef enum APP_PROFILE_ENUM
 	WorkMedium,
 	WorkSlow
 } APP_PROFILE, *PAPP_PROFILE;
+
+extern volatile uint8_t DatabaseStatusRegister;
 
 class CLaserControlApp : public CMBEventsHandler
 {
