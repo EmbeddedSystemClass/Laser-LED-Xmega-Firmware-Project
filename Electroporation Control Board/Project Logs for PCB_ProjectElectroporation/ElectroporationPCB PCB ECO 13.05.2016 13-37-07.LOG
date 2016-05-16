@@ -1,8 +1,0 @@
-Removed Pin From Net: NetName=SD_EN Pin=P6-9
-Removed Pin From Net: NetName=SD_EN Pin=P6-9
-Removed Pin From Net: NetName=GND Pin=P6-10
-Removed Pin From Net: NetName=GND Pin=P6-10
-Change Component DesignItemId : Designator=P6 Old DesignItemId=MicroSDSocket New DesignItemId=MicroSDHeader8
-Change Component Footprint: Designator=P6 Old Footprint=MicroSDsocket New Footprint=WR-CRD SD Micro
-Change Component Comment : Designator=P6 Old Comment=SD card socket Micro New Comment=Micro SD Card Connector
-Added Member To Class: ClassName=Xmega Member=Component P6 Micro SD Card Connector
