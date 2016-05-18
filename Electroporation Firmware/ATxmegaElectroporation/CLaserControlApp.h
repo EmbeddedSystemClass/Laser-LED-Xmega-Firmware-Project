@@ -16,6 +16,7 @@
 #include "MODBUS/CMBSender.h"
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
+#include "CDGUSDatabase.h"
 
 typedef enum APP_STATE_ENUM
 {

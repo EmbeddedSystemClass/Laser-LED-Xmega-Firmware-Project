@@ -9,31 +9,33 @@
 #ifndef DGUSGUI_H_
 #define DGUSGUI_H_
 
-/*
-// Variables & registers addresses
-#define REGISTER_ADDR_PICID		0x03
-#define VARIABLE_ADDR_ENRG		0x0000
-#define VARIABLE_ADDR_FREQ		0x0100
-#define VARIABLE_ADDR_WATER		0x0300
-#define VARIABLE_ADDR_LAMP		0x0400
-#define VARIABLE_ADDR_LED		0x0500
-
-
-// Picture ids
-#define PICID_FASTMENU			0x0001
-#define PICID_MEDIUMMENU		0x0002
-#define PICID_SLOWMENU			0x0003
-#define PICID_READYMENU			0x0005*/
+#include <stdint.h>
 
 // Electroporation GUI
 #define REGISTER_ADDR_PICID		0x03
 #define VARIABLE_ADDR_MIN		0x0000
-#define VARIABLE_ADDR_SEC		0x0010
-#define VARIABLE_ADDR_MSC		0x0020
-#define VARIABLE_ADDR_PWR		0x0030
-#define VARIABLE_ADDR_BAR1		0x0040
-#define VARIABLE_ADDR_BAR2		0x0050
-#define VARIABLE_ADDR_BAR3		0x0060
+#define VARIABLE_ADDR_SEC		0x0001
+#define VARIABLE_ADDR_MSC		0x0002
+#define VARIABLE_ADDR_PWR		0x0003
+#define VARIABLE_ADDR_BAR1		0x0004
+#define VARIABLE_ADDR_BAR2		0x0005
+#define VARIABLE_ADDR_BAR3		0x0006
+
+#define VARIABLE_ADDR_DATABASE	0x0100
+
+// DGUS data struct
+#define DGUS_DATA_ADDR			0x0000
+
+typedef struct DGUS_DATA_STRUCT
+{
+	uint16_t min;
+	uint16_t sec;
+	uint16_t msc;
+	uint16_t Pwr;
+	uint16_t Bar1;
+	uint16_t Bar2;
+	uint16_t Bar3;
+} DGUS_DATA, *PDGUS_DATA;
 
 #define PICID_LOGO				0x0000
 #define PICID_SETUP				0x0001

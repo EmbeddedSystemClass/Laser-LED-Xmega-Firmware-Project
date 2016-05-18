@@ -13,6 +13,7 @@
 CTimerC timer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
+extern CDGUSDatabase Database;
 
 uint16_t swap(uint16_t data)
 {
@@ -70,6 +71,9 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 		break;
 		case VARIABLE_ADDR_PWR:
 			// Not used
+		break;
+		case VARIABLE_ADDR_DATABASE:
+			Database.OnVariableReceived(addr, data, length);
 		break;
 		default:
 			// Error

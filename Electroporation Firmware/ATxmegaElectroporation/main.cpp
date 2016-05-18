@@ -8,10 +8,12 @@
 // Xmega
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <stdlib.h>
 
 // DGUS
 #include "DGUSGUI.h"
 #include "CDGUSUSART.h"
+#include "CDGUSDatabase.h"
 
 // Application class
 #include "CLaserBoard.h"
@@ -37,6 +39,7 @@ CMBSender sender;
 CLaserBoard laserBoard;
 CSoundPlayer player;
 CLaserControlApp App;
+CDGUSDatabase Database;
 
 extern "C" void __cxa_pure_virtual()
 {	
@@ -58,9 +61,13 @@ void SystemInitialize()
 	sender.Initialize(&usart, &App, 256, 256);
 	App.Initialize(&sender);
 	laserBoard.InitializeClock();
+	Database.Initialize(&sender, VARIABLE_ADDR_DATABASE);
 	
 	sei();	/* Enable global interrupts */
 }
+
+volatile char str[14];
+volatile char strxxxx[14] = "Hello XXXXXXX";
 	 
 int main(void)
 {
@@ -71,6 +78,7 @@ int main(void)
 	
 	// Startup delay (Beep "Imperial March")
 	player.Play();
+	//_delay_ms(2000);
 	
 	// Initialize application GUI
 	App.Start();
@@ -85,6 +93,19 @@ int main(void)
 		static uint16_t prs = 0;
 		if ((prs++ % 200) == 0)
 			App.Run();
+			
+		/*for (uint32_t i = 0; i < 1000; i++)
+		{
+			ultoa(i, (char*)&strxxxx[6], 10);
+			Database.WriteToDatabase((void*)strxxxx, 16, 0x00900000 + i * 16);
+		}
+		Database.WriteDisable();
+		for (uint32_t i = 0; i < 1000; i++)
+		{
+			Database.ReadFromDatabase((void*)str, 16, 0x00900000 + i * 16);
+			_delay_ms(100);
+		}
+		Database.WriteDisable();*/
 
 		/*
 		// Sine waveform generation
