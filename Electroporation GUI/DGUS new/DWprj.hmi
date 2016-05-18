@@ -1,0 +1,42 @@
+[INIT]
+VARCount=64
+PICFIX=1
+SCREENDSIZE=800X600
+SPADDRESS=5000
+[CMD]
+CMD0=00E0=À
+CMD1=00E1=Á
+CMD2=00E2=Â
+CMD3=00E3=Ã
+CMD4=00E4=Ä
+CMD5=00E5=Å
+CMD6=00E6=Æ
+CMD7=00E7=Ç
+CMD8=00E8=È
+CMD9=00E9=É
+CMD10=00EA=Ê
+[IMG]
+0=0_Logo.bmp
+1=1 Main menu RU.bmp
+2=2 Main menu RU (pressed).bmp
+3=3 Language menu RU.bmp
+4=4 Language menu RU (pressed).bmp
+5=5 Database RU.bmp
+6=6 Database RU (pressed).bmp
+7=7 ProfilePopup RU.bmp
+8=8 ProfilePopup RU (pressed).bmp
+9=9 Edit profile RU.bmp
+10=10 Edit profile RU (pressed).bmp
+11=11 Profile Keyboard.bmp
+12=12 Profile Keyboard (pressed).bmp
+13=13 New profile.bmp
+14=14 New profile (pressed).bmp
+15=15 Setup RU.bmp
+16=16 Setup RU (pressed).bmp
+17=17 Timer RU.bmp
+18=18 Timer RU (pressed).bmp
+19=19 OnStart RU.bmp
+20=20 OnHL RU.bmp
+21=21 OnPause RU.bmp
+22=22 OnRestart RU.bmp
+23=23 OnStop RU.bmp
