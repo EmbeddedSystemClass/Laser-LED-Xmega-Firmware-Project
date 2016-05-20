@@ -73,6 +73,9 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 		case VARIABLE_ADDR_PWR:
 			m_wPower = val;
 		break;
+		case VARIABLE_ADDR_DATABASE:
+			Database.OnVariableReceived(addr, data, length);
+		break;
 		default:;
 			// Error
 			//CLaserBoard::Beep();
@@ -126,6 +129,20 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 			state = APP_OnSaveSetup;
 			ready = true;
 		break;
+		
+		case PICID_PROFILEPOP:
+			state = APP_READPROFILE;
+			ready = true;
+		break;
+		case PICID_PROFILEPUSH:
+			state = APP_SAVEPROFILE;
+			ready = true;
+		break;
+		case PICID_DATABASE:
+			state = APP_SHOWDATABASE;
+			ready = true;
+		break;
+		
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
 			ready = true;

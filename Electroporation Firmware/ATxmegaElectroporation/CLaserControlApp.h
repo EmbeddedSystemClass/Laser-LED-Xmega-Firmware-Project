@@ -25,13 +25,17 @@ typedef enum APP_STATE_ENUM
 	APP_SETUPtoRUN_ANIM,
 	APP_RUN,
 	APP_OnTimerStart,
+	APP_OnTimerResume,
+	APP_OnTimerPause,
 	APP_OnTimerStop,
 	APP_OnTimerRestart,
 	APP_OnHL,
+	APP_OnSaveSetup,
 	
 	APP_SAVEPROFILE,
 	APP_READPROFILE,
-	APP_SHOWDATABASE
+	APP_SHOWDATABASE,
+	APP_UNMAPDATABASE
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -71,6 +75,9 @@ private :
 	volatile uint16_t m_wSetMin;
 	volatile uint16_t m_wSetSec;
 	volatile uint16_t m_wPower;
+	
+	volatile uint16_t m_wDatabasePage;
+	volatile uint16_t m_wDatabaseSelInx;
 	
 	// Modules
 	CMBSender* m_cpSender;

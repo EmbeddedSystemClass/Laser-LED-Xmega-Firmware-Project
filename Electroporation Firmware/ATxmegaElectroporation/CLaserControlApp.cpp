@@ -10,6 +10,7 @@
 #include "CSoundPlayer.h"
 #include <util/delay.h>
 
+
 CTimerC timer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
@@ -72,6 +73,12 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 		case VARIABLE_ADDR_PWR:
 			m_wPower = val;
 		break;
+		case VARIABLE_ADDR_DATAPAGE:
+			m_wDatabasePage = val;
+		break;
+		case VARIABLE_ADDR_SEL:
+			m_wDatabaseSelInx = val;
+		break;
 		case VARIABLE_ADDR_DATABASE:
 			Database.OnVariableReceived(addr, data, length);
 		break;
@@ -97,8 +104,14 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		case PICID_TIMER:
 			state = APP_RUN;
 		break;
+		case PICID_OnTimerStart:
+			state = APP_OnTimerResume;
+		break;
 		case PICID_OnStart:
 			state = APP_OnTimerStart;
+		break;
+		case PICID_OnPause:
+			state = APP_OnTimerPause;
 		break;
 		case PICID_OnRestart:
 			state = APP_OnTimerRestart;
@@ -109,6 +122,9 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		case PICID_OnH_L:
 			state = APP_OnHL;
 		break;
+		case PICID_OnTimerSave:
+			state = APP_OnSaveSetup;
+		break;
 		
 		case PICID_PROFILEPOP:
 			state = APP_READPROFILE;
@@ -118,6 +134,10 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		break;
 		case PICID_DATABASE:
 			state = APP_SHOWDATABASE;
+		break;
+		case PICID_EDITPROFILE:
+		case PICID_NEWPROFILE:
+			state = APP_UNMAPDATABASE;
 		break;
 		
 		default:
@@ -143,6 +163,8 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	m_wMinutes = m_wSetMin;
 	m_wSeconds = m_wSetSec;
 	m_wPower = 0;
+	m_wDatabasePage = 0;
+	m_wDatabaseSelInx = 0;
 }
 
 void CLaserControlApp::Start()
@@ -281,6 +303,20 @@ void CLaserControlApp::Run()
 			
 			state = APP_RUN;
 		break;
+		case APP_OnTimerResume:
+			// Set Run state
+			//m_wPower = 0;
+			anim = 5;
+			pic_id = swap(PICID_TIMER);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			
+			// Start timer
+			timer.Start(25000);
+			laserBoard.Relay1On();
+			
+			state = APP_RUN;
+		break;
 		case APP_OnTimerStop:
 			// Set Stop (return to Setup) state
 			pic_id = swap(PICID_SETUP);
@@ -303,6 +339,17 @@ void CLaserControlApp::Run()
 			m_wMillSec = 0;
 			
 			state = APP_SETUP;
+		break;
+		case APP_OnTimerPause:
+			// Pause (return to Run) state
+			pic_id = swap(PICID_TIMERPAUSED);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			timer.Stop();
+			
+			laserBoard.Relay1Off();
+			
+			state = APP_RUN;
 		break;
 		case APP_OnTimerRestart:
 			// Restart (return to Run) state
@@ -347,12 +394,37 @@ void CLaserControlApp::Run()
 			
 			state = APP_SETUP;
 		break;
+		case APP_OnSaveSetup :
+			pic_id = swap(PICID_SETUP);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+		break;
 		
 		case APP_SHOWDATABASE:
-			Database.MapDatabaseToRead(VARIABLE_ADDR_DATABASE, DGUS_DATABASE_ADDR, 0x0B00);
+			//Database.UnMap();
+			
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_DATAPAGE, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_SEL, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+		
+			Database.MapDatabaseToRead(VARIABLE_ADDR_DATABASE, DGUS_DATABASE_ADDR + m_wDatabasePage*PROFILE_SIZE, 0x0C00);
 		break;
 		case APP_READPROFILE:
-			Database.MapDatabaseToRead(VARIABLE_ADDR_PROFILE, DGUS_DATABASE_ADDR, 0x0100);
+			Database.MapDatabaseToRead(VARIABLE_ADDR_PROFILE, DGUS_DATABASE_ADDR + (m_wDatabasePage + m_wDatabaseSelInx)*PROFILE_SIZE, 0x0100);
+		break;
+		case APP_SAVEPROFILE:
+			Database.MapDatabaseToWrite(VARIABLE_ADDR_PROFILE, DGUS_DATABASE_ADDR + (m_wDatabasePage + m_wDatabaseSelInx)*PROFILE_SIZE, 0x0100);
+		break;
+		case APP_UNMAPDATABASE:
+			Database.UnMap();
+		break;
+		default:
+			Database.UnMap();
 		break;
 	}
 }

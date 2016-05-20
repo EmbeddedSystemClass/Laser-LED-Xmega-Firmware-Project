@@ -9,12 +9,14 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
+
 #include "DGUSGUI.h"
 #include "CDGUSUSART.h"
 #include "CLaserBoard.h"
 #include "MODBUS/CMBSender.h"
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
+#include "CDGUSDatabase.h"
 
 typedef enum APP_STATE_ENUM
 {
@@ -28,7 +30,11 @@ typedef enum APP_STATE_ENUM
 	APP_OnTimerStop,
 	APP_OnTimerRestart,
 	APP_OnHL,
-	APP_OnSaveSetup
+	APP_OnSaveSetup,
+	
+	APP_SAVEPROFILE,
+	APP_READPROFILE,
+	APP_SHOWDATABASE
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
