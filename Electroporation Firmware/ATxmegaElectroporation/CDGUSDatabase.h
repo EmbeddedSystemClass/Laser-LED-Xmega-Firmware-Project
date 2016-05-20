@@ -41,6 +41,10 @@ public:
 	void WriteToDatabase(void* data, uint16_t length, uint32_t addr);
 	void ReadFromDatabase(void* data, uint16_t length, uint32_t addr);
 	
+	void MapDatabaseToWrite(uint16_t vp, uint32_t addr, uint16_t length);
+	void MapDatabaseToRead(uint16_t vp, uint32_t addr, uint16_t length);
+	void UnMap();
+	
 	// Callback functions
 	void OnVariableReceived(uint16_t addr, uint16_t* data, uint16_t length);
 protected:

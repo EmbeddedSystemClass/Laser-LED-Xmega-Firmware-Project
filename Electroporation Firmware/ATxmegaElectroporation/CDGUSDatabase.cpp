@@ -75,6 +75,43 @@ void CDGUSDatabase::ReadFromDatabase(void* data, uint16_t length, uint32_t addr)
 	data_transaction = (uint16_t*)data;
 }
 
+void CDGUSDatabase::MapDatabaseToWrite(uint16_t vp, uint32_t addr, uint16_t length)
+{
+	DGUS_WRITETOFLASH FLASH;
+	
+	FLASH.en = 0x5A;
+	FLASH.op = 0x50;
+	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	FLASH.vp = (vp >> 8) | (vp << 8);
+	FLASH.len = (length >> 8) | (length << 8);
+	
+	// Database enable for reading
+	m_cpSender->WriteDataToRegisterAsync(STRUCT_ADDR_WRITETOFLASH, (uint8_t*)&FLASH, sizeof(FLASH));
+	m_cpSender->WaitMODBUSTransmitter();
+}
+
+void CDGUSDatabase::MapDatabaseToRead(uint16_t vp, uint32_t addr, uint16_t length)
+{
+	DGUS_WRITETOFLASH FLASH;
+	
+	FLASH.en = 0x5A;
+	FLASH.op = 0xA0;
+	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	FLASH.vp = (vp >> 8) | (vp << 8);
+	FLASH.len = (length >> 8) | (length << 8);
+	
+	// Database enable for reading
+	m_cpSender->WriteDataToRegisterAsync(STRUCT_ADDR_WRITETOFLASH, (uint8_t*)&FLASH, sizeof(FLASH));
+	m_cpSender->WaitMODBUSTransmitter();
+}
+
+void CDGUSDatabase::UnMap()
+{
+	uint8_t en = 0x00;
+	m_cpSender->WriteDataToRegisterAsync(STRUCT_ADDR_WRITETOFLASH, (uint8_t*)&en, sizeof(en));
+	m_cpSender->WaitMODBUSTransmitter();
+}
+
 void CDGUSDatabase::WriteEnable()
 {
 	uint8_t en = 0x5A;

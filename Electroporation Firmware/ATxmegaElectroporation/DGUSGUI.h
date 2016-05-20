@@ -20,11 +20,17 @@
 #define VARIABLE_ADDR_BAR1		0x0004
 #define VARIABLE_ADDR_BAR2		0x0005
 #define VARIABLE_ADDR_BAR3		0x0006
+#define VARIABLE_ADDR_H_L		0x0007
+#define VARIABLE_ADDR_SEL		0x0008
 
 #define VARIABLE_ADDR_DATABASE	0x0100
+#define VARIABLE_ADDR_PROFILE	0x0D00
+#define PROFILE_SIZE			0x0100
 
 // DGUS data struct
 #define DGUS_DATA_ADDR			0x0000
+
+#define DGUS_DATABASE_ADDR		0x00900000
 
 typedef struct DGUS_DATA_STRUCT
 {
@@ -35,7 +41,36 @@ typedef struct DGUS_DATA_STRUCT
 	uint16_t Bar1;
 	uint16_t Bar2;
 	uint16_t Bar3;
+	uint16_t HL;
+	uint16_t sel;
 } DGUS_DATA, *PDGUS_DATA;
+
+typedef struct DGUS_PROFILE_STRUCT
+{
+	uint16_t ID;
+	char Name[32];
+	uint16_t Power;
+} DGUS_PROFILE, *PDGUS_PROFILE;
+
+#define PICID_LOGO				0x0000
+
+#define PICID_DATABASE			5
+#define PICID_PROFILEPOP		7	// Read profile from database
+#define PICID_PROFILEPUSH		11	// Write profile to database
+
+#define PICID_SETUP				23
+#define PICID_OnStart			27
+#define PICID_OnH_L				28
+#define PICID_OnAnim1			-1
+#define PICID_OnAnim2			-1
+#define PICID_OnAnim3			-1
+#define PICID_OnAnim4			-1
+#define PICID_TIMER				25
+#define PICID_OnRestart			30
+#define PICID_OnStop			31
+
+/*
+// OLD IDs
 
 #define PICID_LOGO				0x0000
 #define PICID_SETUP				0x0001
@@ -48,5 +83,6 @@ typedef struct DGUS_DATA_STRUCT
 #define PICID_TIMER				0x0009
 #define PICID_OnRestart			0x000a
 #define PICID_OnStop			0x000b
+*/
 
 #endif /* DGUSGUI_H_ */

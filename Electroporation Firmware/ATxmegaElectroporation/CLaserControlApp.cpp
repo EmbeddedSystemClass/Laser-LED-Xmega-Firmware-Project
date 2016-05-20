@@ -70,7 +70,7 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 			// Not used
 		break;
 		case VARIABLE_ADDR_PWR:
-			// Not used
+			m_wPower = val;
 		break;
 		case VARIABLE_ADDR_DATABASE:
 			Database.OnVariableReceived(addr, data, length);
@@ -109,6 +109,17 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 		case PICID_OnH_L:
 			state = APP_OnHL;
 		break;
+		
+		case PICID_PROFILEPOP:
+			state = APP_READPROFILE;
+		break;
+		case PICID_PROFILEPUSH:
+			state = APP_SAVEPROFILE;
+		break;
+		case PICID_DATABASE:
+			state = APP_SHOWDATABASE;
+		break;
+		
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
 		break;
@@ -198,6 +209,22 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WaitMODBUSListener();
 			_delay_ms(50);
+			
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_PWR, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+			
+			bar = (m_wPower * 34) / 100;
+			bar1 = min(bar, 12);
+			bar2 = min(max(bar, 11), 24);
+			bar3 = min(max(bar, 23), 34);
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
+			m_cpSender->WaitMODBUSTransmitter();
 		break;
 		case APP_SETUPtoRUN_ANIM:
 			// Play animation
@@ -319,6 +346,13 @@ void CLaserControlApp::Run()
 			hl = !hl;
 			
 			state = APP_SETUP;
+		break;
+		
+		case APP_SHOWDATABASE:
+			Database.MapDatabaseToRead(VARIABLE_ADDR_DATABASE, DGUS_DATABASE_ADDR, 0x0B00);
+		break;
+		case APP_READPROFILE:
+			Database.MapDatabaseToRead(VARIABLE_ADDR_PROFILE, DGUS_DATABASE_ADDR, 0x0100);
 		break;
 	}
 }

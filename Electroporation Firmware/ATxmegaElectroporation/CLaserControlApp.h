@@ -27,7 +27,11 @@ typedef enum APP_STATE_ENUM
 	APP_OnTimerStart,
 	APP_OnTimerStop,
 	APP_OnTimerRestart,
-	APP_OnHL
+	APP_OnHL,
+	
+	APP_SAVEPROFILE,
+	APP_READPROFILE,
+	APP_SHOWDATABASE
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler

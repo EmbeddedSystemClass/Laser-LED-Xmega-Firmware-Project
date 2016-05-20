@@ -157,7 +157,7 @@ void CSoundPlayer::Play()
 	
 	_delay_ms(150);
 	//end of first bit
-	
+	/*
 	beep(eH, 500);
 	beep(eH, 500);
 	beep(eH, 500);
@@ -235,7 +235,7 @@ void CSoundPlayer::Play()
 	beep(f, 375);
 	beep(cH, 125);
 	beep(a, 650);
-	//end of the song
+	//end of the song*/
 
 	sei();
 }
