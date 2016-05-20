@@ -23,9 +23,12 @@ typedef enum APP_STATE_ENUM
 	APP_SETUPtoRUN_ANIM,
 	APP_RUN,
 	APP_OnTimerStart,
+	APP_OnTimerResume,
+	APP_OnTimerPause,
 	APP_OnTimerStop,
 	APP_OnTimerRestart,
-	APP_OnHL
+	APP_OnHL,
+	APP_OnSaveSetup
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -46,14 +49,19 @@ public:
 	// Process GUI
 	void Run();
 	
+	static void OnPWMStatic(void* sender);
 	static void OnTimerStatic(void* sender);
+	static void OnEncoderStatic(void* sender);
 	
 protected :
+	void OnPWM();
 	void OnTimer();
+	void OnEncoder();
 	void OnTimeout();
 	
 private :
 	// application state
+	bool ready;
 	APP_STATE state;
 	
 	// Registers
@@ -66,6 +74,8 @@ private :
 	volatile uint16_t m_wSetMin;
 	volatile uint16_t m_wSetSec;
 	volatile uint16_t m_wPower;
+	
+	volatile int16_t m_wEncoder;
 	
 	// Modules
 	CMBSender* m_cpSender;

@@ -12,6 +12,7 @@
 // DGUS
 #include "DGUSGUI.h"
 #include "CDGUSUSART.h"
+#include "CDGUSDatabase.h"
 
 // Application class
 #include "CLaserBoard.h"
@@ -37,6 +38,7 @@ CRelayTimer relayTimer;
 CSensorADC	adc;
 CLaserBoard laserBoard;
 CLaserControlApp App;
+CDGUSDatabase Database;
 
 extern "C" void __cxa_pure_virtual()
 {	
@@ -53,6 +55,8 @@ void SystemInitialize()
 	laserBoard.Init_Relay();
 	laserBoard.Relay1Off();
 	laserBoard.Relay2Off();
+	laserBoard.SetINT1Callback(&CLaserControlApp::OnEncoderStatic, &App);
+	laserBoard.SetTIM1Callback(&CLaserControlApp::OnPWMStatic, &App);
 	
 	// Initialize USART
 	usart.Initialize(BAUD_115200, DISABLE, STOP_1BIT, true);
@@ -93,7 +97,7 @@ int main(void)
 		
 		// Process application
 		static uint16_t prs = 0;
-		if ((prs++ % 200) == 0)
+		if ((prs++ % 50) == 0)
 			App.Run();
 		
 		/*	

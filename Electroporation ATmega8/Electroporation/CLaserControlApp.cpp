@@ -71,7 +71,7 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 			// Not used
 		break;
 		case VARIABLE_ADDR_PWR:
-			// Not used
+			m_wPower = val;
 		break;
 		default:;
 			// Error
@@ -88,27 +88,47 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 	{
 		case PICID_LOGO:
 			state = APP_LOGO;
+			ready = true;
 		break;
 		case PICID_SETUP:
 			state = APP_SETUP;
+			ready = false;
 		break;
 		case PICID_TIMER:
 			state = APP_RUN;
+			ready = false;
+		break;
+		case PICID_OnTimerStart:
+			state = APP_OnTimerResume;
+			ready = true;
 		break;
 		case PICID_OnStart:
 			state = APP_OnTimerStart;
+			ready = true;
+		break;
+		case PICID_OnPause:
+			state = APP_OnTimerPause;
+			ready = true;
 		break;
 		case PICID_OnRestart:
 			state = APP_OnTimerRestart;
+			ready = true;
 		break;
 		case PICID_OnStop:
 			state = APP_OnTimerStop;
+			ready = true;
 		break;
 		case PICID_OnH_L:
 			state = APP_OnHL;
+			ready = true;
+		break;
+		case PICID_OnTimerSave:
+			state = APP_OnSaveSetup;
+			ready = true;
 		break;
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
+			ready = true;
 		break;
 	}
 }
@@ -161,7 +181,11 @@ void CLaserControlApp::Start()
 	m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
 	m_cpSender->WaitMODBUSTransmitter();
 	
+	laserBoard.SetDACValue(0);
+	
 	state = APP_SETUP;
+	
+	m_wEncoder = 0;
 }
 
 // Process GUI
@@ -182,6 +206,8 @@ void CLaserControlApp::Run()
 	uint16_t bar2 = 0;
 	uint16_t bar3 = 0;
 	
+	if (state != APP_SETUP) m_wEncoder = 0;
+	
 	switch (state)
 	{
 		case APP_LOGO:
@@ -192,12 +218,49 @@ void CLaserControlApp::Run()
 			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_MIN, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WaitMODBUSListener();
-			_delay_ms(50);
+			_delay_ms(10);
 			
 			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_SEC, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WaitMODBUSListener();
-			_delay_ms(50);
+			_delay_ms(10);
+			
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_PWR, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(10);
+			
+			bar = (adc.GetValue() * 34) / 1024;
+			//bar = (m_wPower * 34) / 100;
+			bar1 = min(bar, 12);
+			bar2 = min(max(bar, 11), 24);
+			bar3 = min(max(bar, 23), 34);
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			
+			laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
+			
+			if (m_wEncoder != 0)
+			{
+				if (int16_t(m_wPower) < -m_wEncoder)
+				{
+					m_wPower = 0;
+				}
+				else
+				{
+					m_wPower += m_wEncoder;
+					if (m_wPower > 100) m_wPower = 100;
+				}
+				
+				m_wEncoder = 0;
+			
+				m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+			}
 		break;
 		case APP_SETUPtoRUN_ANIM:
 			// Play animation
@@ -220,14 +283,15 @@ void CLaserControlApp::Run()
 			msec = m_wMillSec / 10;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&msec, 2);
 			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+			m_cpSender->WaitMODBUSTransmitter();
 			
 			/*m_wPower++;
 			if (m_wPower > 100) m_wPower = 0;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
-			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSTransmitter();*/
 			
-			bar++;
-			if (bar > 34) bar = 0;
+			bar = (m_wPower * 34) / 100;
 			bar1 = min(bar, 12);
 			bar2 = min(max(bar, 11), 24);
 			bar3 = max(bar, 23);
@@ -236,11 +300,11 @@ void CLaserControlApp::Run()
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
-			m_cpSender->WaitMODBUSTransmitter();*/
+			m_cpSender->WaitMODBUSTransmitter();
 		break;
 		case APP_OnTimerStart:
 			// Set Run state
-			m_wPower = 0;
+			//m_wPower = 0;
 			anim = 5;
 			pic_id = swap(PICID_TIMER);
 			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
@@ -254,6 +318,20 @@ void CLaserControlApp::Run()
 			relayTimer.Start((uint8_t)125);
 			laserBoard.Relay1On();
 			
+			state = APP_RUN;
+		break;
+		case APP_OnTimerResume:
+			// Set Run state
+			//m_wPower = 0;
+			anim = 5;
+			pic_id = swap(PICID_TIMER);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+		
+			// Start timer
+			relayTimer.Start((uint8_t)125);
+			laserBoard.Relay1On();
+		
 			state = APP_RUN;
 		break;
 		case APP_OnTimerStop:
@@ -280,6 +358,17 @@ void CLaserControlApp::Run()
 			m_wPower = 0;
 			
 			state = APP_SETUP;
+		break;
+		case APP_OnTimerPause:
+			// Pause (return to Run) state
+			pic_id = swap(PICID_TIMERPAUSED);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			relayTimer.Stop();
+			
+			laserBoard.Relay1Off();
+			
+			state = APP_RUN;
 		break;
 		case APP_OnTimerRestart:
 			// Restart (return to Run) state
@@ -316,6 +405,11 @@ void CLaserControlApp::Run()
 			
 			state = APP_SETUP;
 		break;
+		case APP_OnSaveSetup :
+			pic_id = swap(PICID_SETUP);
+			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+		break;
 	}
 }
 
@@ -339,14 +433,79 @@ void CLaserControlApp::OnTimer()
 	m_wMillSec -= 8;
 }
 
+void CLaserControlApp::OnEncoder()
+{
+	if ((PIND & (1 << PD6)) != 0)
+	{
+		//if (m_wEncoder != 100)
+			m_wEncoder += 1;
+	}
+	else
+	{
+		//if (m_wEncoder != 0)
+			m_wEncoder -= 1;
+	}
+}
+
+void CLaserControlApp::OnPWM()
+{
+	static int16_t pwm_pulse = 0;
+	static int16_t dx = 1;
+	static uint8_t prescale = 0;
+	
+	prescale++;
+	TIFR &= (1 << TOIE1);
+	
+	if (ready)
+	{		
+		if (prescale % 20 == 0)
+		{
+			if (pwm_pulse == 1023) dx = -1;
+			if (pwm_pulse < 1) dx = 1;
+			
+			pwm_pulse+= dx;
+			
+			OCR1A = pwm_pulse;
+		}
+	}
+	else
+	{
+		uint16_t power = m_wPower;
+		
+		if (int16_t(power) < -m_wEncoder)
+		{
+			power = 0;
+		}
+		else
+		{
+			power += m_wEncoder;
+			if (power > 100) power = 100;
+		}
+		
+		OCR1A = (power * 255)/25;  //m_wPower * 1024 / 100
+	}
+}
+
 void CLaserControlApp::OnTimeout()
 {
 	relayTimer.Stop();
 	laserBoard.Relay1Off();
 }
 
+void CLaserControlApp::OnPWMStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWM();
+}
+
 void CLaserControlApp::OnTimerStatic(void* sender)
 {
 	CLaserControlApp* app = (CLaserControlApp*)sender;
 	app->OnTimer();
+}
+
+void CLaserControlApp::OnEncoderStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnEncoder();
 }

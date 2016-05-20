@@ -12,6 +12,7 @@
 #define F_CPU 16000000
 
 #include <avr/io.h>
+#include "LaserLib/int8a.h"
 
 class CLaserBoard
 {
@@ -29,6 +30,9 @@ public:
 	
 	void SPI_MasterInit();
 	void SPI_MasterTransmit(char data);
+	
+	void SetINT1Callback(ISRCallback func, void* owner);
+	void SetTIM1Callback(ISRCallback func, void* owner);
 	
 	void SetDACValue(uint16_t data);
 protected:

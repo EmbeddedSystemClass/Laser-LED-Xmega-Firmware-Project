@@ -169,6 +169,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CDGUSDatabase.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CDGUSDatabase.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="CDGUSUSART.cpp">
       <SubType>compile</SubType>
     </Compile>
