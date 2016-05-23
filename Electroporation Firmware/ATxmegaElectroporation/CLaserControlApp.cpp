@@ -82,6 +82,24 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 		case VARIABLE_ADDR_DATABASE:
 			Database.OnVariableReceived(addr, data, length);
 		break;
+		// Input password
+		case VARIABLE_ADDR_PASSWORD:
+			m_wPassword[0] = ((char*)data)[0];
+			m_wPassword[1] = ((char*)data)[1];
+			m_wPassword[2] = ((char*)data)[2];
+			m_wPassword[3] = ((char*)data)[3];
+		break;
+		// Input secure settings
+		case VARIABLE_ADDR_DACOFFSET:
+			m_wDAC_Offset = val;
+		break;
+		case VARIABLE_ADDR_DACP:
+			m_wDAC_P = val;
+		break;
+		case VARIABLE_ADDR_DACM:
+			m_wDAC_M = val;
+		break;
+		
 		default:
 			// Error
 			CLaserBoard::Beep();
@@ -140,8 +158,16 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 			state = APP_UNMAPDATABASE;
 		break;
 		
+		case PICID_Password:
+			state = APP_PASSWORD;
+		break;
+		case PICID_Service:
+			state = APP_SERVICE;
+		break;
+		
 		default:
 			//state = APP_SETUPtoRUN_ANIM;
+			state = APP_IDLE;
 		break;
 	}
 }
@@ -423,8 +449,34 @@ void CLaserControlApp::Run()
 		case APP_UNMAPDATABASE:
 			Database.UnMap();
 		break;
+		
+		case APP_PASSWORD:
+			m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_PASSWORD, 2);
+			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(50);
+			
+			if (strcmp((char*)m_wPassword, "1234") == 0)
+			{
+				pic_id = swap(PICID_Service);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+			}/* else
+			{
+				pic_id = swap(PICID_MAINMENU);
+				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+			}*/
+		break;
+		
 		default:
 			Database.UnMap();
+			m_wPassword[0] = 0;
+			m_wPassword[1] = 0;
+			m_wPassword[2] = 0;
+			m_wPassword[3] = 0;
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PASSWORD, (uint16_t*)&m_wPassword, 2);
+			m_cpSender->WaitMODBUSTransmitter();
 		break;
 	}
 }

@@ -35,7 +35,12 @@ typedef enum APP_STATE_ENUM
 	APP_SAVEPROFILE,
 	APP_READPROFILE,
 	APP_SHOWDATABASE,
-	APP_UNMAPDATABASE
+	APP_UNMAPDATABASE,
+	
+	APP_SERVICE,
+	APP_PASSWORD,
+	
+	APP_IDLE
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -75,6 +80,11 @@ private :
 	volatile uint16_t m_wSetMin;
 	volatile uint16_t m_wSetSec;
 	volatile uint16_t m_wPower;
+	
+	volatile char m_wPassword[4];
+	volatile uint16_t m_wDAC_Offset;
+	volatile uint16_t m_wDAC_P;
+	volatile uint16_t m_wDAC_M;
 	
 	volatile uint16_t m_wDatabasePage;
 	volatile uint16_t m_wDatabaseSelInx;

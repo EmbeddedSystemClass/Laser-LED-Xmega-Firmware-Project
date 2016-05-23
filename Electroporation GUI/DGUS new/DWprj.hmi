@@ -72,3 +72,8 @@ CMD31=009F=ß
 32=32 OnStop RU.bmp
 33=33 OnTimerStart RU.bmp
 34=34 OnTimerSave RU.bmp
+35=35 Service menu RU.bmp
+36=36 Service menu RU (pressed).bmp
+37=37 Password RU.bmp
+38=38 Password RU (pressed).bmp
+39=39 Login RU.bmp

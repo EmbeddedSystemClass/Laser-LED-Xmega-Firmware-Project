@@ -67,7 +67,9 @@ void SystemInitialize()
 }
 
 volatile char str[14];
-volatile char strxxxx[14] = "Hello XXXXXXX";
+volatile char strxxxx[14] = "Empty";
+
+DGUS_PROFILE empty_record = {0, "mEtp\0y", "000:\00", 0};
 	 
 int main(void)
 {
@@ -83,6 +85,12 @@ int main(void)
 	// Initialize application GUI
 	App.Start();
 	
+	// Initialize Empty database
+	/*for (int i = 0; i < 64; i++)
+	{
+		sender.WriteDataToSRAM(0x0D00 + i * 0x0100, (uint16_t*)&empty_record, (uint16_t)sizeof(empty_record));
+	}*/
+	
 	// Start main loop
     while (1) 
     {
@@ -93,19 +101,13 @@ int main(void)
 		static uint16_t prs = 0;
 		if ((prs++ % 200) == 0)
 			App.Run();
-			
-		/*for (uint32_t i = 0; i < 1000; i++)
-		{
-			ultoa(i, (char*)&strxxxx[6], 10);
-			Database.WriteToDatabase((void*)strxxxx, 16, 0x00900000 + i * 16);
-		}
-		Database.WriteDisable();
-		for (uint32_t i = 0; i < 1000; i++)
-		{
-			Database.ReadFromDatabase((void*)str, 16, 0x00900000 + i * 16);
-			_delay_ms(100);
-		}
-		Database.WriteDisable();*/
+		
+		/*for (uint32_t i = 0; i < 64; i++)
+		{	
+			Database.MapDatabaseToWrite(0x0D00, 0x00900000 + (uint32_t)0x4000 * i, sizeof(empty_record) * 64);
+			_delay_ms(1000);
+			Database.UnMap();
+		}*/
 
 		/*
 		// Sine waveform generation

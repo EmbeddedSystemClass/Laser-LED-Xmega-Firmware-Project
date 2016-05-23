@@ -23,6 +23,12 @@
 #define VARIABLE_ADDR_DATAPAGE	0x0007
 #define VARIABLE_ADDR_SEL		0x0008
 #define VARIABLE_ADDR_PWRTGT	0x0009
+#define VARIABLE_ADDR_PASSWORD	0x0010
+
+#define VARIABLE_ADDR_DACOFFSET	0x000b
+#define VARIABLE_ADDR_DACP		0x000c
+#define VARIABLE_ADDR_DACM		0x000d
+#define VARIABLE_ADDR_DACVALUE	0x000e
 
 #define VARIABLE_ADDR_DATABASE	0x0100
 #define VARIABLE_ADDR_PROFILE	0x0D00
@@ -45,12 +51,17 @@ typedef struct DGUS_DATA_STRUCT
 	uint16_t HL;
 	uint16_t sel;
 	uint16_t PwrTgt;
+	uint16_t password;
+	uint16_t dac_offset;
+	uint16_t dac_p;
+	uint16_t dac_m;
 } DGUS_DATA, *PDGUS_DATA;
 
 typedef struct DGUS_PROFILE_STRUCT
 {
 	uint16_t ID;
 	char Name[32];
+	char Time[32];
 	uint16_t Power;
 } DGUS_PROFILE, *PDGUS_PROFILE;
 
@@ -78,6 +89,10 @@ typedef struct DGUS_PROFILE_STRUCT
 #define PICID_OnStop			32
 #define PICID_OnTimerStart		33
 #define PICID_OnTimerSave		34
+
+#define PICID_Service			35
+#define PICID_Password			37
+#define PICID_Login				39
 
 /*
 // OLD IDs

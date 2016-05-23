@@ -12,6 +12,7 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
+extern CDGUSDatabase Database;
 extern CSensorADC  adc;
 extern CRelayTimer relayTimer;
 extern CLaserBoard laserBoard;
