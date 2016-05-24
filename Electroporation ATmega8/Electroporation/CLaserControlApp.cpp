@@ -99,6 +99,7 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 			ready = false;
 		break;
 		case PICID_TIMER:
+		case PICID_TIMERPAUSED:
 			state = APP_RUN;
 			ready = false;
 		break;
@@ -248,11 +249,15 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSListener();
 			_delay_ms(10);
 			
-			bar = (adc.GetValue() * 34) / 1024;
+			/*bar = (adc.GetValue() * 34) / 1024;
 			//bar = (m_wPower * 34) / 100;
 			bar1 = min(bar, 12);
 			bar2 = min(max(bar, 11), 24);
-			bar3 = min(max(bar, 23), 34);
+			bar3 = min(max(bar, 23), 34);*/
+			bar = (adc.GetValue() * 35) / 512;
+			bar1 = min(bar, 23);
+			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
+			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
@@ -260,7 +265,8 @@ void CLaserControlApp::Run()
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			
-			laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
+			//laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
+			laserBoard.SetDACValue((m_wPower * 512) / 100 + 471);
 			
 			if (m_wEncoder != 0)
 			{
@@ -301,24 +307,55 @@ void CLaserControlApp::Run()
 			msec = m_wMillSec / 10;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&msec, 2);
 			m_cpSender->WaitMODBUSTransmitter();
-			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+			
+			/*m_cpSender->StartMODBUSVariableTransaction(VARIABLE_ADDR_PWR, 2);
 			m_cpSender->WaitMODBUSTransmitter();
+			m_cpSender->WaitMODBUSListener();
+			_delay_ms(10);
+			
+			/*m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+			m_cpSender->WaitMODBUSTransmitter();*/
 			
 			/*m_wPower++;
 			if (m_wPower > 100) m_wPower = 0;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
 			m_cpSender->WaitMODBUSTransmitter();*/
 			
-			bar = (m_wPower * 34) / 100;
+			/*bar = (m_wPower * 34) / 100;
 			bar1 = min(bar, 12);
 			bar2 = min(max(bar, 11), 24);
-			bar3 = max(bar, 23);
+			bar3 = max(bar, 23);*/
+			bar = (adc.GetValue() * 35) / 512;
+			bar1 = min(bar, 23);
+			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
+			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
 			m_cpSender->WaitMODBUSTransmitter();
+			
+			//laserBoard.SetDACValue((m_wPower * 512) / 100 + 471); // (Power * 2048) / 100 + 410
+			
+			if (m_wEncoder != 0)
+			{
+				if (int16_t(m_wPower) < -m_wEncoder)
+				{
+					m_wPower = 0;
+				}
+				else
+				{
+					m_wPower += m_wEncoder;
+					if (m_wPower > 100) m_wPower = 100;
+				}
+				
+				m_wEncoder = 0;
+				
+				m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
+				m_cpSender->WaitMODBUSTransmitter();
+			}
+			_delay_ms(100);
 		break;
 		case APP_OnTimerStart:
 			// Set Run state

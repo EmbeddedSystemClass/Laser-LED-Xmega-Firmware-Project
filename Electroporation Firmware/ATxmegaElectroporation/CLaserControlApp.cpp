@@ -16,6 +16,20 @@ extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 extern CDGUSDatabase Database;
 
+void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0)
+{
+	uint16_t  length = size / 2;
+	uint16_t* source = (uint16_t*)src;
+	uint16_t* dest = (uint16_t*)dst;
+	
+	// swap bytes in words
+	/*for (uint16_t i = 0; i < length; i++)
+		dest[(i + offset) % length] = swap(source[i]);*/
+		
+	for (uint16_t i = 0; i < size; i++)
+		((uint8_t*)dst)[((i + offset) % size) ^ 1] = ((uint8_t*)src)[i];
+}
+
 uint16_t swap(uint16_t data)
 {
 	return (data >> 8) | (data << 8);
@@ -263,10 +277,11 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSListener();
 			_delay_ms(50);
 			
-			bar = (m_wPower * 34) / 100;
-			bar1 = min(bar, 12);
-			bar2 = min(max(bar, 11), 24);
-			bar3 = min(max(bar, 23), 34);
+			bar = (m_wPower * 70) / 100;
+			bar1 = min(bar, 23);
+			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
+			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
+			
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
@@ -300,11 +315,11 @@ void CLaserControlApp::Run()
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_PWR, (uint16_t*)&m_wPower, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			
-			bar++;
-			if (bar > 34) bar = 0;
-			bar1 = min(bar, 12);
-			bar2 = min(max(bar, 11), 24);
-			bar3 = max(bar, 23);
+			bar = (m_wPower * 70) / 100;
+			bar1 = min(bar, 23);
+			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
+			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
+			
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
@@ -461,12 +476,7 @@ void CLaserControlApp::Run()
 				pic_id = swap(PICID_Service);
 				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 				m_cpSender->WaitMODBUSTransmitter();
-			}/* else
-			{
-				pic_id = swap(PICID_MAINMENU);
-				m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
-				m_cpSender->WaitMODBUSTransmitter();
-			}*/
+			}
 		break;
 		
 		default:

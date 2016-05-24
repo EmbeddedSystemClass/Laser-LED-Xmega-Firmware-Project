@@ -38,6 +38,8 @@ void CDGUSDatabase::WriteToDatabase(void* data, uint16_t length, uint32_t addr)
 	FLASH.en = 0x5A;
 	FLASH.op = 0x50;
 	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	//FLASH.addr = ((addr & 0xff) << 8) | ((addr & 0xff00) >> 8) | ((addr & 0xff0000) << 8) | ((addr & 0xff000000) >> 8);
+	//FLASH.addr = addr;
 	FLASH.vp = vp_addr;
 	FLASH.len = (length >> 8) | (length << 8);
 	
@@ -61,6 +63,8 @@ void CDGUSDatabase::ReadFromDatabase(void* data, uint16_t length, uint32_t addr)
 	FLASH.en = 0x5A;
 	FLASH.op = 0xA0;
 	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	//FLASH.addr = ((addr & 0xff) << 8) | ((addr & 0xff00) >> 8) | ((addr & 0xff0000) << 8) | ((addr & 0xff000000) >> 8);
+	//FLASH.addr = addr;
 	FLASH.vp = vp_addr;
 	FLASH.len = (length >> 8) | (length << 8);
 	
@@ -82,6 +86,8 @@ void CDGUSDatabase::MapDatabaseToWrite(uint16_t vp, uint32_t addr, uint16_t leng
 	FLASH.en = 0x5A;
 	FLASH.op = 0x50;
 	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	//FLASH.addr = ((addr & 0xff) << 8) | ((addr & 0xff00) >> 8) | ((addr & 0xff0000) << 8) | ((addr & 0xff000000) >> 8);
+	//FLASH.addr = addr;
 	FLASH.vp = (vp >> 8) | (vp << 8);
 	FLASH.len = (length >> 8) | (length << 8);
 	
@@ -97,6 +103,8 @@ void CDGUSDatabase::MapDatabaseToRead(uint16_t vp, uint32_t addr, uint16_t lengt
 	FLASH.en = 0x5A;
 	FLASH.op = 0xA0;
 	FLASH.addr = ((addr & 0xff) << 24) | ((addr & 0xff00) << 8) | ((addr & 0xff0000) >> 8) | ((addr & 0xff000000) >> 24);
+	//FLASH.addr = ((addr & 0xff) << 8) | ((addr & 0xff00) >> 8) | ((addr & 0xff0000) << 8) | ((addr & 0xff000000) >> 8);
+	//FLASH.addr = addr;
 	FLASH.vp = (vp >> 8) | (vp << 8);
 	FLASH.len = (length >> 8) | (length << 8);
 	

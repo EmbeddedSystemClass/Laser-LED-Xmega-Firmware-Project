@@ -18,6 +18,9 @@
 #include "LaserLib/sys_interrupts.h"
 #include "CDGUSDatabase.h"
 
+void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset);
+uint16_t swap(uint16_t data);
+
 typedef enum APP_STATE_ENUM
 {
 	APP_LOGO,

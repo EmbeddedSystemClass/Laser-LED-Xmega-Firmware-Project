@@ -24,6 +24,7 @@
 #define VARIABLE_ADDR_SEL		0x0008
 #define VARIABLE_ADDR_PWRTGT	0x0009
 #define VARIABLE_ADDR_PASSWORD	0x0010
+#define VARIABLE_ADDR_PASSWORD_	0x0020
 
 #define VARIABLE_ADDR_DACOFFSET	0x000b
 #define VARIABLE_ADDR_DACP		0x000c
@@ -93,21 +94,5 @@ typedef struct DGUS_PROFILE_STRUCT
 #define PICID_Service			35
 #define PICID_Password			37
 #define PICID_Login				39
-
-/*
-// OLD IDs
-
-#define PICID_LOGO				0x0000
-#define PICID_SETUP				0x0001
-#define PICID_OnStart			0x0003
-#define PICID_OnH_L				0x0004
-#define PICID_OnAnim1			0x0005
-#define PICID_OnAnim2			0x0006
-#define PICID_OnAnim3			0x0007
-#define PICID_OnAnim4			0x0008
-#define PICID_TIMER				0x0009
-#define PICID_OnRestart			0x000a
-#define PICID_OnStop			0x000b
-*/
 
 #endif /* DGUSGUI_H_ */

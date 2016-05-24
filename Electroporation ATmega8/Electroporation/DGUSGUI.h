@@ -20,9 +20,16 @@
 #define VARIABLE_ADDR_BAR1		0x0004
 #define VARIABLE_ADDR_BAR2		0x0005
 #define VARIABLE_ADDR_BAR3		0x0006
-#define VARIABLE_ADDR_H_L		0x0007
+#define VARIABLE_ADDR_DATAPAGE	0x0007
 #define VARIABLE_ADDR_SEL		0x0008
 #define VARIABLE_ADDR_PWRTGT	0x0009
+#define VARIABLE_ADDR_PASSWORD	0x0010
+#define VARIABLE_ADDR_PASSWORD_	0x0020
+
+#define VARIABLE_ADDR_DACOFFSET	0x000b
+#define VARIABLE_ADDR_DACP		0x000c
+#define VARIABLE_ADDR_DACM		0x000d
+#define VARIABLE_ADDR_DACVALUE	0x000e
 
 #define VARIABLE_ADDR_DATABASE	0x0100
 #define VARIABLE_ADDR_PROFILE	0x0D00
@@ -45,20 +52,28 @@ typedef struct DGUS_DATA_STRUCT
 	uint16_t HL;
 	uint16_t sel;
 	uint16_t PwrTgt;
+	uint16_t password;
+	uint16_t dac_offset;
+	uint16_t dac_p;
+	uint16_t dac_m;
 } DGUS_DATA, *PDGUS_DATA;
 
 typedef struct DGUS_PROFILE_STRUCT
 {
 	uint16_t ID;
 	char Name[32];
+	char Time[32];
 	uint16_t Power;
 } DGUS_PROFILE, *PDGUS_PROFILE;
 
-#define PICID_LOGO				0x0000
-
+#define PICID_LOGO				0
+#define PICID_MAINMENU			1
+#define PICID_LANGUAGE			3
 #define PICID_DATABASE			5
 #define PICID_PROFILEPOP		7	// Read profile from database
+#define PICID_EDITPROFILE		9	// Unmap database
 #define PICID_PROFILEPUSH		11	// Write profile to database
+#define PICID_NEWPROFILE		21  // Unmap database
 
 #define PICID_SETUP				23
 #define PICID_OnAnim1			-1
@@ -76,20 +91,8 @@ typedef struct DGUS_PROFILE_STRUCT
 #define PICID_OnTimerStart		33
 #define PICID_OnTimerSave		34
 
-/*
-// OLD IDs
-
-#define PICID_LOGO				0x0000
-#define PICID_SETUP				0x0001
-#define PICID_OnStart			0x0003
-#define PICID_OnH_L				0x0004
-#define PICID_OnAnim1			0x0005
-#define PICID_OnAnim2			0x0006
-#define PICID_OnAnim3			0x0007
-#define PICID_OnAnim4			0x0008
-#define PICID_TIMER				0x0009
-#define PICID_OnRestart			0x000a
-#define PICID_OnStop			0x000b
-*/
+#define PICID_Service			35
+#define PICID_Password			37
+#define PICID_Login				39
 
 #endif /* DGUSGUI_H_ */

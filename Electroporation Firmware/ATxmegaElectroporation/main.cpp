@@ -69,14 +69,41 @@ void SystemInitialize()
 volatile char str[14];
 volatile char strxxxx[14] = "Empty";
 
-DGUS_PROFILE empty_record = {0, "mEtp\0y", "000:\00", 0};
+DGUS_PROFILE empty_record;
 	 
 int main(void)
 {
 	float x = 0.0f;
+	char empty_name[] = "Empty\0";
+	char empty_time[] = "00:00\0";
+	
+	empty_record.ID = 0;
+	ConvertData(empty_record.Name, empty_name, 6, 0);
+	ConvertData(empty_record.Time, empty_time, 6, 0);
+	empty_record.Power = 0;
+	
 	
 	// Initialization system
 	SystemInitialize();
+	
+	
+	uint32_t flash_addr = 0x00900000;
+	for (uint32_t i = 0; i < 16; i++)
+	{
+		Database.MapDatabaseToWrite(0x0100, flash_addr, 0x4000);
+		flash_addr += (uint32_t)0x4000;
+		
+		// Initialize Empty database
+		for (uint32_t j = 0; j < 64; j++)
+		{
+			empty_record.ID = (uint16_t)(i * 64 + j);
+			sender.WriteDataToSRAM(0x0100 + j * 0x0100, (uint16_t*)&empty_record, (uint16_t)sizeof(empty_record));
+		}
+
+		Database.UnMap();
+		
+		//_delay_ms(1000);
+	}
 	
 	// Startup delay (Beep "Imperial March")
 	//player.Play();
@@ -84,12 +111,6 @@ int main(void)
 	
 	// Initialize application GUI
 	App.Start();
-	
-	// Initialize Empty database
-	/*for (int i = 0; i < 64; i++)
-	{
-		sender.WriteDataToSRAM(0x0D00 + i * 0x0100, (uint16_t*)&empty_record, (uint16_t)sizeof(empty_record));
-	}*/
 	
 	// Start main loop
     while (1) 
@@ -101,22 +122,5 @@ int main(void)
 		static uint16_t prs = 0;
 		if ((prs++ % 200) == 0)
 			App.Run();
-		
-		/*for (uint32_t i = 0; i < 64; i++)
-		{	
-			Database.MapDatabaseToWrite(0x0D00, 0x00900000 + (uint32_t)0x4000 * i, sizeof(empty_record) * 64);
-			_delay_ms(1000);
-			Database.UnMap();
-		}*/
-
-		/*
-		// Sine waveform generation
-		x += 0.1f;
-		if (x > 6.2831853) x = 0.0f;
-		float y = 1023.0f * (1.0f + sinf(x)) * 0.5f;
-		uint16_t data = ((uint16_t)y) << 2;
-	
-		// Send to DAC	
-		dacSPI.Send((uint8_t*)&data, sizeof(data));*/
     }
 }
