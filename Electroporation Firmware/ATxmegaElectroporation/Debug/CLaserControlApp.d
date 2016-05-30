@@ -16,7 +16,7 @@ CLaserControlApp.d CLaserControlApp.o: .././CLaserControlApp.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- .././DGUSGUI.h .././CDGUSUSART.h .././LaserLib/CUSART.h \
+ .././CTimerF.h .././DGUSGUI.h .././CDGUSUSART.h .././LaserLib/CUSART.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdbool.h \
  .././CLaserBoard.h .././MODBUS/CMBSender.h .././MODBUS/CMBProtocol.h \
  .././MODBUS/../LaserLib/CUSART.h .././LaserLib/sys_interrupts.h \
@@ -66,6 +66,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
+
+.././CTimerF.h:
 
 .././DGUSGUI.h:
 

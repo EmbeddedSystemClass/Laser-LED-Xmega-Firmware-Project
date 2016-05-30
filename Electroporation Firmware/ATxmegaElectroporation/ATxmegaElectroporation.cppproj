@@ -203,6 +203,12 @@
     <Compile Include="CTimerC.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="CTimerF.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CTimerF.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="DGUSGUI.h">
       <SubType>compile</SubType>
     </Compile>

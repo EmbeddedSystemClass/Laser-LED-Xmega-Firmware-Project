@@ -45,6 +45,7 @@ C_SRCS +=  \
 ../CLaserControlApp.cpp \
 ../CSoundPlayer.cpp \
 ../CTimerC.cpp \
+../CTimerF.cpp \
 ../LaserLib/CSPI.cpp \
 ../LaserLib/CTimer.cpp \
 ../LaserLib/CUSART.cpp \
@@ -67,6 +68,7 @@ CLaserBoard.o \
 CLaserControlApp.o \
 CSoundPlayer.o \
 CTimerC.o \
+CTimerF.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
 LaserLib/CUSART.o \
@@ -82,6 +84,7 @@ CLaserBoard.o \
 CLaserControlApp.o \
 CSoundPlayer.o \
 CTimerC.o \
+CTimerF.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
 LaserLib/CUSART.o \
@@ -97,6 +100,7 @@ CLaserBoard.d \
 CLaserControlApp.d \
 CSoundPlayer.d \
 CTimerC.d \
+CTimerF.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
 LaserLib/CUSART.d \
@@ -112,6 +116,7 @@ CLaserBoard.d \
 CLaserControlApp.d \
 CSoundPlayer.d \
 CTimerC.d \
+CTimerF.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
 LaserLib/CUSART.d \
@@ -134,6 +139,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

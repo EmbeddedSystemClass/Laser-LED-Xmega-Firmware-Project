@@ -19,6 +19,7 @@
 #include "CLaserBoard.h"
 #include "CLaserControlApp.h"
 #include "CSoundPlayer.h"
+#include "CTimerF.h"
 
 // MODBUS Lib
 #include "MODBUS/CMBSender.h"
@@ -40,6 +41,7 @@ CLaserBoard laserBoard;
 CSoundPlayer player;
 CLaserControlApp App;
 CDGUSDatabase Database;
+CTimerF PWMTimer;
 
 extern "C" void __cxa_pure_virtual()
 {	
@@ -62,6 +64,25 @@ void SystemInitialize()
 	App.Initialize(&sender);
 	laserBoard.InitializeClock();
 	Database.Initialize(&sender, VARIABLE_ADDR_DATABASE);
+	
+	/*// Initialize Laser timer
+	laserTimerPeriod = (6250 / m_structDGUSDATA_Fast.Frequency) * 10;
+	laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * m_structDGUSDATA_Fast.DutyCycle);
+	
+	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
+	laserTimer.SetPeriod(laserTimerPeriod);	// 10 Hz
+	laserTimer.SetCOMPA(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
+	laserTimer.EnableChannel(TIMER_CHANNEL_A); // Enable Laser TTL Gate
+	laserTimer.EnableChannel(TIMER_CHANNEL_B); // Enable Laser TTL Gate
+	laserTimer.ChannelSet(TIMER_CHANNEL_A);
+	laserTimer.ChannelSet(TIMER_CHANNEL_B);*/
+	PWMTimer.Initialize(WGM_SingleSlopePWM, CS_NoPrescale);
+	//PWMTimer.SetPeriod(32768);
+	PWMTimer.EnableChannel(TIMER_CHANNEL_C);
+	PWMTimer.ChannelSet(TIMER_CHANNEL_C);
+	PWMTimer.Start(32768);
 	
 	sei();	/* Enable global interrupts */
 }
@@ -86,28 +107,31 @@ int main(void)
 	// Initialization system
 	SystemInitialize();
 	
-	
-	uint32_t flash_addr = 0x00900000;
+	/*uint32_t flash_addr = 0x00900000;
 	for (uint32_t i = 0; i < 16; i++)
 	{
-		Database.MapDatabaseToWrite(0x0100, flash_addr, 0x4000);
-		flash_addr += (uint32_t)0x4000;
-		
 		// Initialize Empty database
 		for (uint32_t j = 0; j < 64; j++)
 		{
 			empty_record.ID = (uint16_t)(i * 64 + j);
 			sender.WriteDataToSRAM(0x0100 + j * 0x0100, (uint16_t*)&empty_record, (uint16_t)sizeof(empty_record));
 		}
-
+		
+		_delay_ms(200);
+		
+		Database.MapDatabaseToWrite(0x0100, flash_addr, 0x4000);
+		flash_addr += (uint32_t)0x4000;
+		
+		_delay_ms(1000);
+		
 		Database.UnMap();
 		
-		//_delay_ms(1000);
-	}
+		_delay_ms(200);
+	}*/
 	
 	// Startup delay (Beep "Imperial March")
-	//player.Play();
-	_delay_ms(2000);
+	player.Play();
+	//_delay_ms(2000);
 	
 	// Initialize application GUI
 	App.Start();

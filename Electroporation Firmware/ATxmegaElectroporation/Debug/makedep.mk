@@ -14,6 +14,8 @@ CSoundPlayer.cpp
 
 CTimerC.cpp
 
+CTimerF.cpp
+
 LaserLib\CSPI.cpp
 
 LaserLib\CTimer.cpp

@@ -68,7 +68,7 @@ void CSoundPlayer::InitializeToneTimer()
 	TCE0.CTRLA = TC_CLKSEL_OFF_gc;
 	
 	// Enable output compare channel D, PWM with single slope waveform generation mode
-	TCE0.CTRLB = TC0_CCDEN_bm | TC_WGMODE_DS_B_gc;
+	TCE0.CTRLB = TC0_CCDEN_bm | TC0_CCCEN_bm | TC_WGMODE_DS_B_gc;
 	
 	// No events
 	TCE0.CTRLD = TC_EVACT_OFF_gc | TC_EVSEL_OFF_gc;
@@ -77,7 +77,10 @@ void CSoundPlayer::InitializeToneTimer()
 	TCE0.PER = PERIOD_1Hz;
 	
 	// Set 50% duty cycle
-	TCE0.CCD =  MAXVOLUME_CC;
+	TCE0.CCC = 0;
+	TCE0.CCD = 0;//MAXVOLUME_CC;
+	
+	TCE0.CTRLA = TC_CLKSEL_DIV256_gc;	//Start tone timer;
 	
 	// Disable interrupt
 	TCE0.INTCTRLA = TC_OVFINTLVL_OFF_gc;
@@ -106,6 +109,8 @@ void CSoundPlayer::InitializeDurationTimer()
 
 void CSoundPlayer::SoundStart(uint16_t freq, uint16_t time, uint8_t volume)
 {
+	if (lock) return;
+	
 	uint16_t period_tc0 = PERIOD_1Hz/freq;
 	uint16_t period_tc1 = DELAYPERIOD_A1s * time + (time >> DELAYPERIOD_S1s);
 	
@@ -115,17 +120,20 @@ void CSoundPlayer::SoundStart(uint16_t freq, uint16_t time, uint8_t volume)
 	TCE1.PER = period_tc1;
 	
 	//Start timer
-	TCE0.CTRLA = TC_CLKSEL_DIV256_gc;	//Start tone timer
+	//TCE0.CTRLA = TC_CLKSEL_DIV256_gc;	//Start tone timer
 	TCE1.CTRLA = TC_CLKSEL_DIV1024_gc;	//Start duration timer
 }
 
 void CSoundPlayer::SoundStop()
 {
+	if (lock) return;
+	
 	while (!(TCE1.INTFLAGS & TC0_OVFIF_bm));
 	TCE1.INTFLAGS &= TC0_OVFIF_bm;
 
 	//Stop timer
-	TCE0.CTRLA = TC_CLKSEL_OFF_gc;		//Stop tone timer
+	//TCE0.CTRLA = TC_CLKSEL_OFF_gc;		//Stop tone timer
+	TCE0.CCD = 0;
 	TCE1.CTRLA = TC_CLKSEL_OFF_gc;		//Stop duration timer
 
 	// Reset duration timer
@@ -135,6 +143,26 @@ void CSoundPlayer::SoundStop()
 	_delay_ms(20);
 } 
 
+void CSoundPlayer::Lock()
+{
+	lock = true;
+	TCE0.CTRLA = TC_CLKSEL_DIV256_gc;
+}
+
+void CSoundPlayer::SetPWM(uint16_t duty_cycle)
+{
+	TCE0.PER = 1024;	
+	TCE0.CCC = duty_cycle * 10;
+	TCE0.CTRLA = TC_CLKSEL_DIV4_gc;
+}
+
+void CSoundPlayer::UnLock()
+{
+	lock = false;
+	TCE0.CTRLA = TC_CLKSEL_DIV256_gc;
+	TCE0.CCC = 0;
+}
+
 void CSoundPlayer::Initialize()
 {
 	InitializeToneTimer();
@@ -143,6 +171,7 @@ void CSoundPlayer::Initialize()
 
 void CSoundPlayer::Play()
 {
+	if (lock) return;
 	cli();
 
 	beep(a, 500);

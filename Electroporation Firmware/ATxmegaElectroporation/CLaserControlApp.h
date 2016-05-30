@@ -10,6 +10,7 @@
 #define __CLASERCONTROLAPP_H__
 
 #include "CTimerC.h"
+#include "CTimerF.h"
 #include "DGUSGUI.h"
 #include "CDGUSUSART.h"
 #include "CLaserBoard.h"

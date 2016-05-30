@@ -180,14 +180,10 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 
 [GeneratedDocument1]
-DocumentPath=
-DItemRevisionGUID=
-
-[GeneratedDocument2]
 DocumentPath=Project Outputs for PCB_ProjectElectroporation\Design Rule Check - ElectroporationPCB.drc
 DItemRevisionGUID=
 
-[GeneratedDocument3]
+[GeneratedDocument2]
 DocumentPath=Project Outputs for PCB_ProjectElectroporation\Design Rule Check - ElectroporationPCB.html
 DItemRevisionGUID=
 

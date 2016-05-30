@@ -15,6 +15,7 @@ CTimerC timer;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 extern CDGUSDatabase Database;
+extern CTimerF PWMTimer;
 
 void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0)
 {
@@ -282,6 +283,8 @@ void CLaserControlApp::Run()
 			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
 			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
 			
+			PWMTimer.SetCOMPC(m_wPower * 327); //PWMTimer.SetCOMPC(m_wPower * 32768 / 100);
+			
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR1, (uint16_t*)&bar1, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR2, (uint16_t*)&bar2, 2);
@@ -309,6 +312,8 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSTransmitter();
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_MSC, (uint16_t*)&m_wMillSec, 2);
 			m_cpSender->WaitMODBUSTransmitter();
+			
+			player.SetPWM(m_wPower);
 			
 			/*m_wPower++;
 			if (m_wPower > 100) m_wPower = 0;
@@ -341,6 +346,7 @@ void CLaserControlApp::Run()
 			// Start timer
 			timer.Start(25000);
 			laserBoard.Relay1On();
+			player.Lock();
 			
 			state = APP_RUN;
 		break;
@@ -355,6 +361,7 @@ void CLaserControlApp::Run()
 			// Start timer
 			timer.Start(25000);
 			laserBoard.Relay1On();
+			player.Lock();
 			
 			state = APP_RUN;
 		break;
@@ -379,6 +386,8 @@ void CLaserControlApp::Run()
 			m_wSeconds = m_wSetSec;
 			m_wMillSec = 0;
 			
+			player.UnLock();
+			
 			state = APP_SETUP;
 		break;
 		case APP_OnTimerPause:
@@ -389,6 +398,8 @@ void CLaserControlApp::Run()
 			timer.Stop();
 			
 			laserBoard.Relay1Off();
+			
+			player.UnLock();
 			
 			state = APP_RUN;
 		break;

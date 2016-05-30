@@ -1,0 +1,2 @@
+Removed Pin From Net: NetName=EXT_IN8 Pin=P14-1
+Added Pin To Net: NetName=EXT_OUT1 Pin=P14-1
