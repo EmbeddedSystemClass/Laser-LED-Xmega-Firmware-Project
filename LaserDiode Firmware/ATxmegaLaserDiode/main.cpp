@@ -26,7 +26,7 @@
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
 
-#include "avr/boot.h"
+//#include "avr/boot.h"
 
 // Utils
 #include <math.h>

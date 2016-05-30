@@ -12,7 +12,7 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-extern CDGUSDatabase Database;
+//extern CDGUSDatabase Database;
 extern CSensorADC  adc;
 extern CRelayTimer relayTimer;
 extern CLaserBoard laserBoard;
@@ -75,7 +75,7 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 			m_wPower = val;
 		break;
 		case VARIABLE_ADDR_DATABASE:
-			Database.OnVariableReceived(addr, data, length);
+			//Database.OnVariableReceived(addr, data, length);
 		break;
 		default:;
 			// Error
@@ -249,12 +249,8 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSListener();
 			_delay_ms(10);
 			
-			/*bar = (adc.GetValue() * 34) / 1024;
-			//bar = (m_wPower * 34) / 100;
-			bar1 = min(bar, 12);
-			bar2 = min(max(bar, 11), 24);
-			bar3 = min(max(bar, 23), 34);*/
-			bar = (adc.GetValue() * 35) / 512;
+			//bar = (adc.GetValue() * 35) / 512;
+			bar = (m_wPower * 7) / 10;
 			bar1 = min(bar, 23);
 			if (bar >= 22)	bar2 = min(bar-22, 25); else bar2 = 0;
 			if (bar >= 46)	bar3 = min(bar-46, 22); else bar3 = 0;
@@ -265,8 +261,8 @@ void CLaserControlApp::Run()
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			
-			laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
-			//laserBoard.SetDACValue((m_wPower * 512) / 100 + 471);
+			laserBoard.SetDACValue(1024 + 128 + (m_wPower * 512) / 50); // (Power * 2048) / 100
+			//laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
 			
 			if (m_wEncoder != 0)
 			{
@@ -337,7 +333,7 @@ void CLaserControlApp::Run()
 			m_cpSender->WaitMODBUSTransmitter();
 			
 			//laserBoard.SetDACValue((m_wPower * 512) / 100 + 471); // (Power * 2048) / 100 + 410
-			laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
+			//laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
 			
 			if (m_wEncoder != 0)
 			{
