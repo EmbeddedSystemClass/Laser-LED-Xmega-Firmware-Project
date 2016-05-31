@@ -261,7 +261,7 @@ void CLaserControlApp::Run()
 			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_BAR3, (uint16_t*)&bar3, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			
-			laserBoard.SetDACValue(1024 + 128 + (m_wPower * 512) / 50); // (Power * 2048) / 100
+			laserBoard.SetDACValue(512 + 256 +  (m_wPower * (512 + 128)) / 50); // (Power * 2048) / 100
 			//laserBoard.SetDACValue((m_wPower * 512) / 25); // (Power * 2048) / 100
 			
 			if (m_wEncoder != 0)
