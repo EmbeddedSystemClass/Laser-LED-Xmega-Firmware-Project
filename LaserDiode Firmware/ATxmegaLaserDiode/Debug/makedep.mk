@@ -2,7 +2,11 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+CDGUSDatabase.cpp
+
 CLaserControlApp.cpp
+
+DGUSGUI.cpp
 
 LaserLib\CSPI.cpp
 

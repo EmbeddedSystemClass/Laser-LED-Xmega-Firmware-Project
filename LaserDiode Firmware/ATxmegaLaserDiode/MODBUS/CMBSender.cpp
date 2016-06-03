@@ -17,7 +17,7 @@ CMBSender::CMBSender()
 }
 
 
-void CMBSender::Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize)
+void CMBSender::Initialize(CTimer* timer, CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize, uint16_t timeout)
 {
 	rx_bufferSize = rx_bufSize;
 	tx_bufferSize = tx_bufSize;
@@ -34,6 +34,7 @@ void CMBSender::Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx
 	modbus_receiver_state  = rx_Idle;
 	modbus_transmitter_state  = tx_Idle;
 	isTransaction = false;
+	Timeout = timeout;
 	
 	// Set usart interface interrupts
 	pUSART = usart;
@@ -45,6 +46,13 @@ void CMBSender::Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx
 		CallbackHandler = handler;
 	else
 		CallbackHandler = this;
+		
+	// Set timeout timer
+	pTimer = timer;
+	if (pTimer)
+	{
+		pTimer->SetOVFCallback(OnTimeoutInterrupt, (void*)this, TC_OVFINTLVL_LO_gc);
+	}
 } //CMBSender
 
 void CMBSender::Deinitialize()
@@ -125,8 +133,6 @@ void CMBSender::WriteDataToSRAM(uint16_t addr, uint16_t* data, uint16_t length)
 //void CMBSender::RequestDataFromRegister(uint8_t addr, uint8_t length);
 //void CMBSender::RequestDataFromSRAM(uint16_t addr, uint8_t length);
 
-volatile uint16_t cnt = 0;
-
 void CMBSender::OnReceiveByte(uint8_t data)
 {
 	switch (modbus_receiver_state)
@@ -148,7 +154,6 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			rx_frame_length = data;
 			rx_buffer_pos = 0;
 			rx_currt_crc = 0;
-			cnt = 0;
 			modbus_receiver_state = rx_FrameReceive;
 			break;
 		case rx_FrameReceive :
@@ -160,7 +165,6 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			}
 			rx_currt_crc = _crc16_update(rx_currt_crc, data);
 			rx_buffer_pos++;
-			cnt++;
 			if (rx_buffer_pos == rx_frame_length)
 			{
 #ifdef USE_CRC
@@ -229,6 +233,7 @@ void CMBSender::OnTransmitByte()
 
 void CMBSender::OnTimeout()
 {
+	pTimer->Stop();
 	if (modbus_receiver_state != rx_Complete)
 		modbus_receiver_state = rx_TimeOut;
 }
@@ -240,6 +245,7 @@ void CMBSender::StartMODBUSListener()
 	rx_frame_crc     = 0x00;
 	rx_currt_crc     = 0x00;
 	modbus_receiver_state  = rx_Start;
+	pTimer->Start(Timeout);
 }
 
 MODBUS_STATE CMBSender::WaitMODBUSListener()
@@ -264,6 +270,7 @@ void CMBSender::StartMODBUSTransmitter()
 	tx_buffer_pos = 0x00;
 	modbus_transmitter_state  = tx_Start;
 	OnTransmitByte();
+	pTimer->Start(Timeout);
 }
 
 MODBUS_STATE CMBSender::WaitMODBUSTransmitter()
@@ -294,6 +301,12 @@ void CMBSender::OnUSARTTxInterrupt(void* sender)
 {
 	CMBSender* owner = (CMBSender*)sender;
 	owner->OnTransmitByte();
+}
+
+void CMBSender::OnTimeoutInterrupt(void* sender)
+{
+	CMBSender* owner = (CMBSender*)sender;
+	owner->OnTimeout();
 }
 
 void CMBSender::StartMODBUSRegisterTransaction(uint8_t addr, uint8_t length)

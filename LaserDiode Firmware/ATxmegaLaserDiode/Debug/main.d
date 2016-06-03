@@ -21,10 +21,12 @@ main.d main.o: .././main.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stddef.h \
  .././MODBUS/CMBProtocol.h .././MODBUS/../LaserLib/CUSART.h \
- .././Periphery/CTimerC.h .././Periphery/../LaserLib/CTimer.h \
- .././Periphery/CTimerF.h .././LaserLib/CSPI.h .././LaserLib/intx128.h \
- .././LaserLib/CUSART.h .././LaserLib/sys_interrupts.h \
- .././Periphery/CSoundPlayer.h \
+ .././MODBUS/../LaserLib/CTimer.h \
+ .././MODBUS/../LaserLib/sys_interrupts.h .././Periphery/CTimerC.h \
+ .././Periphery/../LaserLib/CTimer.h .././Periphery/CTimerF.h \
+ .././LaserLib/CSPI.h .././LaserLib/intx128.h .././LaserLib/CUSART.h \
+ .././LaserLib/sys_interrupts.h .././Periphery/CSoundPlayer.h \
+ .././Periphery/CTimerD.h .././LaserLib/CTimer.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h
@@ -81,6 +83,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 
 .././MODBUS/../LaserLib/CUSART.h:
 
+.././MODBUS/../LaserLib/CTimer.h:
+
+.././MODBUS/../LaserLib/sys_interrupts.h:
+
 .././Periphery/CTimerC.h:
 
 .././Periphery/../LaserLib/CTimer.h:
@@ -96,6 +102,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 .././LaserLib/sys_interrupts.h:
 
 .././Periphery/CSoundPlayer.h:
+
+.././Periphery/CTimerD.h:
+
+.././LaserLib/CTimer.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 

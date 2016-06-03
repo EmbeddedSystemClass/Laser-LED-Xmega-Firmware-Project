@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include "CMBProtocol.h"
 #include "../LaserLib/CUSART.h"
+#include "../LaserLib/CTimer.h"
 
 typedef enum MODBUS_RECEIVER_STATE_ENUM
 {
@@ -55,7 +56,7 @@ public:
 	CMBSender();
 	~CMBSender();
 	
-	void Initialize(CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize);
+	void Initialize(CTimer* timer, CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize, uint16_t timeout);
 	void Deinitialize();
 	
 	// Send data methods asynchronous
@@ -88,6 +89,7 @@ protected:
 	// ISR Callback
 	static void OnUSARTRxInterrupt(void* sender);
 	static void OnUSARTTxInterrupt(void* sender);
+	static void OnTimeoutInterrupt(void* sender);
 	
 	// CMBEventsHandler overload methods
 	virtual void OnTransactionCallback(uint8_t* data, uint16_t length);
@@ -103,11 +105,13 @@ private:
 	void ProcessTransaction(uint8_t* data, uint16_t length);
 	
 protected:
-	CUSART*  pUSART;
+	CUSART* pUSART;
+	CTimer* pTimer;
 	
 	// Receiver variables
 	volatile MODBUS_RECEIVER_STATE modbus_receiver_state;
 	volatile uint8_t  rx_buffer_pos;
+	uint16_t Timeout;
 	// Variables for final state machine runtime CRC check
 	uint16_t rx_frame_crc;
 	uint16_t rx_currt_crc;

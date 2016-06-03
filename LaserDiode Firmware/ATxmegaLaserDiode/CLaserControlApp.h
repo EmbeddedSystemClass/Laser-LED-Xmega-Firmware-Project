@@ -29,6 +29,15 @@
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
 
+typedef enum APP_PROFILE_ENUM
+{
+	PROFILE_FAST	= 4,
+	PROFILE_MEDIUM	= 3,
+	PROFILE_SLOW	= 2,
+	PROFILE_SINGLE	= 1,
+	PROFILE_DEFAULT = 0
+} APP_PROFILE, *PAPP_PROFILE;
+
 typedef enum APP_STATE_ENUM
 {
 	// DGUS State
@@ -39,7 +48,7 @@ typedef enum APP_STATE_ENUM
 	APP_WORKSTART,
 	APP_WORKSTARTED,
 	
-	// Commands
+	// Events
 	APP_WORKOnReady,
 	APP_WORKOnStart,
 	APP_WORKOnStop,
@@ -56,15 +65,6 @@ typedef enum APP_STATE_ENUM
 	APP_DATABASE,
 	APP_DATABASE_START
 } APP_STATE, *PAPP_STATE;
-
-typedef enum APP_PROFILE_ENUM
-{
-	WorkFast,
-	WorkMedium,
-	WorkSlow
-} APP_PROFILE, *PAPP_PROFILE;
-
-extern volatile uint8_t DatabaseStatusRegister;
 
 class CLaserControlApp : public CMBEventsHandler
 {

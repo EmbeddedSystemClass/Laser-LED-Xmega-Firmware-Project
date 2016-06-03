@@ -28,18 +28,18 @@
 #define VARIABLE_ADDR_PROFINDEX	0x0007
 
 // Picture ids
-#define PICID_LOGO				0x0000
+/*#define PICID_LOGO				0x0000
 #define PICID_WORKFAST			0x0001
 #define PICID_WORKMEDIUM		0x0002
 #define PICID_WORKSLOW			0x0003
-
+// Events
 #define PICID_WORKOnReady		0x0007
 #define PICID_WORKOnStart		0x0008
 #define PICID_WORKOnStop		0x0009
-
+// Work States
 #define PICID_WORKSTART			0x000a
 #define PICID_WORKSTARTED		0x000b
-
+// Phototype
 #define PICID_PHOTOTYPESELECT	0x000c
 #define PICID_PHOTOTYPE1		0x000e
 #define PICID_PHOTOTYPE2		0x000f
@@ -47,11 +47,36 @@
 #define PICID_PHOTOTYPE4		0x0011
 #define PICID_PHOTOTYPE5		0x0012
 #define PICID_PHOTOTYPE6		0x0013
-
+// Database
 #define PICID_DATABASE_MIN		0x0018
 #define PICID_DATABASE_MAX		0x0029
+// Main menu
+#define PICID_MAINMENU			0x0014*/
 
-#define PICID_MAINMENU			0x0014
+#define PICID_LOGO				0
+#define PICID_LOGIN				1
+#define PICID_MAINMENU			3
+#define PICID_LANGUAGEMENU		5
+#define PICID_WORK_PREPARE		7
+#define PICID_WORK_ERROR1		8
+#define PICID_WORK_IDLE			10
+#define PICID_WORK_READY		12
+#define PICID_WORK_POWERON		14
+#define PICID_WORK_STARTED		16
+#define PICID_WORK_NUMPAD		18
+#define PICID_WORK_PHOTOTYPE	20
+#define PICID_WORKOnLaserOff_	22
+#define PICID_WORKOnLaserOff	23
+#define PICID_WORKOnLaserOn		24
+#define PICID_WORKOnReady		25
+#define PICID_DATABASE			26
+#define PICID_DATABASEOnRead	28
+#define PICID_NEWPROFILE		30
+#define PICID_PROFILEKBRD1		32
+#define PICID_PROFILEKBRD2		33
+#define PICID_PROFILEKBRD3		34
+#define PICID_PROFILEKBRD4		35
+#define PICID_DATABASEOnSave	27
 
 // Data structures
 #define STRUCT_ADDR_DATA		0x0001
@@ -83,57 +108,9 @@ typedef struct DGUS_WRITEDATA_STRUCT
 	uint16_t DutyCycle;
 } DGUS_WRITEDATA, *PDGUS_WRITEDATA;
 
-#define STRUCT_ADDR_LINESDATA1	0x0010
-
-typedef struct DGUS_LINESDATA1_STRUCT
-{
-	char line1 [32];
-	char line2 [32];
-	char line3 [32];
-	char line4 [32];
-	char line5 [32];
-	char line6 [32];
-	char line7 [32];
-} DGUS_LINESDATA1, *PDGUS_LINESDATA1;
-
-#define STRUCT_ADDR_LINESDATA2	0x0080
-
-typedef struct DGUS_LINESDATA2_STRUCT
-{
-	char line8 [32];
-	char line9 [32];
-	char line10[32];
-	char line11[32];
-	char line12[32];
-	char line13[32];
-	char line14[32];
-} DGUS_LINESDATA2, *PDGUS_LINESDATA2;
-
-#define STRUCT_ADDR_VALUESDATA1	0x0310
-#define STRUCT_ADDR_VALUESDATA2	0x0380
-
-typedef struct DGUS_VALUESDATA_STRUCT
-{
-	char value1[32];
-	char value2[32];
-	char value3[32];
-	char value4[32];
-	char value5[32];
-	char value6[32];
-	char value7[32];
-} DGUS_VALUESDATA, *PDGUS_VALUESDATA;
-
-#define STRUCT_ADDR_WRITETOFLASH	0x56	// 1 bytes
-
-typedef struct DGUS_WRITETOFLASH_STRUCT
-{
-	uint8_t en;
-	uint8_t op;
-	uint32_t addr;
-	uint16_t vp;
-	uint16_t len;
-} DGUS_WRITETOFLASH;
-
-extern uint16_t swap(uint16_t data);
+void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0);
+uint16_t min(uint16_t x, uint16_t y);
+uint16_t max(uint16_t x, uint16_t y);
+uint16_t swap(uint16_t data);
 
 #endif /* DGUSGUI_H_ */

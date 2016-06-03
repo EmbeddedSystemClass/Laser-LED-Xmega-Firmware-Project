@@ -21,8 +21,8 @@ CLaserControlApp.d CLaserControlApp.o: .././CLaserControlApp.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- .././Periphery/CTimerC.h .././Periphery/../LaserLib/CTimer.h \
- .././Periphery/../LaserLib/sys_interrupts.h .././Periphery/CTimerF.h \
+ .././MODBUS/../LaserLib/CTimer.h .././Periphery/CTimerC.h \
+ .././Periphery/../LaserLib/CTimer.h .././Periphery/CTimerF.h \
  .././Periphery/CDGUSUSART.h .././Periphery/../LaserLib/CUSART.h \
  .././Periphery/CLaserBoard.h .././LaserLib/CSPI.h \
  .././LaserLib/intx128.h .././LaserLib/CUSART.h \
@@ -78,11 +78,11 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
+.././MODBUS/../LaserLib/CTimer.h:
+
 .././Periphery/CTimerC.h:
 
 .././Periphery/../LaserLib/CTimer.h:
-
-.././Periphery/../LaserLib/sys_interrupts.h:
 
 .././Periphery/CTimerF.h:
 

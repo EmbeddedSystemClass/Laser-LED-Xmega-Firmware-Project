@@ -40,7 +40,9 @@ SUBDIRS :=  \
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../CDGUSDatabase.cpp \
 ../CLaserControlApp.cpp \
+../DGUSGUI.cpp \
 ../LaserLib/CSPI.cpp \
 ../LaserLib/CTimer.cpp \
 ../LaserLib/CUSART.cpp \
@@ -63,7 +65,9 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+CDGUSDatabase.o \
 CLaserControlApp.o \
+DGUSGUI.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
 LaserLib/CUSART.o \
@@ -79,7 +83,9 @@ Periphery/CTimerD.o \
 Periphery/CTimerF.o
 
 OBJS_AS_ARGS +=  \
+CDGUSDatabase.o \
 CLaserControlApp.o \
+DGUSGUI.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
 LaserLib/CUSART.o \
@@ -95,7 +101,9 @@ Periphery/CTimerD.o \
 Periphery/CTimerF.o
 
 C_DEPS +=  \
+CDGUSDatabase.d \
 CLaserControlApp.d \
+DGUSGUI.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
 LaserLib/CUSART.d \
@@ -111,7 +119,9 @@ Periphery/CTimerD.d \
 Periphery/CTimerF.d
 
 C_DEPS_AS_ARGS +=  \
+CDGUSDatabase.d \
 CLaserControlApp.d \
+DGUSGUI.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
 LaserLib/CUSART.d \
@@ -140,6 +150,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 
