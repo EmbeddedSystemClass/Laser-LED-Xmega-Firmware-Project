@@ -79,8 +79,8 @@ int main(void)
 	SystemInitialize();
 	
 	// Startup delay (Beep "Imperial March")
-	//player.Play();
-	_delay_ms(1000);
+	player.Play();
+	//_delay_ms(1000);
 	laserBoard.Relay1On();
 	_delay_ms(100);
 	laserBoard.Relay1Off();

@@ -42,16 +42,17 @@ typedef enum APP_STATE_ENUM
 {
 	// DGUS State
 	APP_LOGO,
-	APP_WORKFAST,
-	APP_WORKMEDIUM,
-	APP_WORKSLOW,
-	APP_WORKSTART,
-	APP_WORKSTARTED,
+	APP_WORKIDLE,
+	APP_WORKPREPARE,
+	APP_WORKSETUP,
+	APP_WORKREADY,
+	APP_WORKPOWERON,
+	APP_WORKLIGHT,
 	
 	// Events
 	APP_WORKOnReady,
-	APP_WORKOnStart,
-	APP_WORKOnStop,
+	APP_WORKOnPowerOn,
+	APP_WORKOnPowerOff,
 	
 	// Phototype selector state
 	APP_PHOTOTYPESELECT,
@@ -106,6 +107,7 @@ private :
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
 	uint16_t profileIndex;
+	uint16_t databaseOffset;
 	
 	// Modules
 	CMBSender* m_cpSender;

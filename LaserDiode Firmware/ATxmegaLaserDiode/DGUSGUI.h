@@ -19,39 +19,21 @@
 #define REGISTER_DATABASE_VP	0x5C	// 2 bytes
 #define REGISTER_DATABASE_LEN	0x5E	// 2 bytes
 
-#define VARIABLE_ADDR_FREQ		0x0001
-#define VARIABLE_ADDR_DURATION	0x0002
-#define VARIABLE_ADDR_INTENSITY	0x0003
-#define VARIABLE_ADDR_POWER		0x0004
-#define VARIABLE_ADDR_ENERGY	0x0005
-#define VARIABLE_ADDR_DUTYCYCLE	0x0006
-#define VARIABLE_ADDR_PROFINDEX	0x0007
-
-// Picture ids
-/*#define PICID_LOGO				0x0000
-#define PICID_WORKFAST			0x0001
-#define PICID_WORKMEDIUM		0x0002
-#define PICID_WORKSLOW			0x0003
-// Events
-#define PICID_WORKOnReady		0x0007
-#define PICID_WORKOnStart		0x0008
-#define PICID_WORKOnStop		0x0009
-// Work States
-#define PICID_WORKSTART			0x000a
-#define PICID_WORKSTARTED		0x000b
-// Phototype
-#define PICID_PHOTOTYPESELECT	0x000c
-#define PICID_PHOTOTYPE1		0x000e
-#define PICID_PHOTOTYPE2		0x000f
-#define PICID_PHOTOTYPE3		0x0010
-#define PICID_PHOTOTYPE4		0x0011
-#define PICID_PHOTOTYPE5		0x0012
-#define PICID_PHOTOTYPE6		0x0013
-// Database
-#define PICID_DATABASE_MIN		0x0018
-#define PICID_DATABASE_MAX		0x0029
-// Main menu
-#define PICID_MAINMENU			0x0014*/
+#define VARIABLE_ADDR_MODE		0x0001
+#define VARIABLE_ADDR_FREQ		0x0002
+#define VARIABLE_ADDR_DURATION	0x0003
+#define VARIABLE_ADDR_ENERGYPCT	0x0004
+#define VARIABLE_ADDR_POWER		0x0005
+#define VARIABLE_ADDR_ENERGY	0x0006
+#define VARIABLE_ADDR_DUTYCYCLE	0x0007
+#define VARIABLE_ADDR_LASERCNT	0x0008
+#define VARIABLE_ADDR_MELANIN	0x000a
+#define VARIABLE_ADDR_PHOTOTYPE	0x000b
+#define VARIABLE_ADDR_TEMPER	0x000c
+#define VARIABLE_ADDR_COOLING	0x000d
+#define VARIABLE_ADDR_FLOW		0x000e
+#define VARIABLE_ADDR_DATAOFFS	0x000f
+#define VARIABLE_ADDR_DATAINDEX	0x0010
 
 #define PICID_LOGO				0
 #define PICID_LOGIN				1
@@ -79,34 +61,53 @@
 #define PICID_DATABASEOnSave	27
 
 // Data structures
-#define STRUCT_ADDR_DATA		0x0001
+#define STRUCT_ADDR_LASERDIODE_DATA		0x0001
+#define STRUCT_ADDR_LASERPROFILE_DATA	0x0002
 
-typedef struct DGUS_DATA_STRUCT
+typedef struct DGUS_LASERPROFILE_STRUCT
 {
-	uint16_t Frequency;
-	uint16_t Duration;
-	uint16_t Intensity;
-	uint16_t Power;
-	uint16_t Energy;
-	uint16_t DutyCycle;
-	uint16_t DatabaseSelectedProfile;
-} DGUS_DATA, *PDGUS_DATA;
+	// Basic laser settings
+	uint16_t Frequency;		// Frequency of laser pulses
+	uint16_t Duration;		// Duration of laser pulse
+	uint16_t EnergyPercent; // Energy in percentage of one pulse
 
-typedef struct DGUS_READDATA_STRUCT
+	// Service settings
+	uint16_t Power;			// Power of laser light
+	uint16_t Energy;		// Energy in J
+	uint16_t DutyCycle;		// Duty cycle	
+} DGUS_LASERPROFILE, *PDGUS_LASERPROFILE;
+
+typedef struct DGUS_LASERDIODE_STRUCT
 {
-	uint16_t Frequency;
-	uint16_t Duration;
-	uint16_t Intensity;
-} DGUS_READDATA, *PDGUS_READDATA;
-
-#define STRUCT_ADDR_WRITEDATA	0x0004
-
-typedef struct DGUS_WRITEDATA_STRUCT
-{
-	uint16_t Power;
-	uint16_t Energy;
-	uint16_t DutyCycle;
-} DGUS_WRITEDATA, *PDGUS_WRITEDATA;
+	// Laser mode
+	uint16_t mode;
+	
+	// Basic laser settings
+	uint16_t Frequency;		// Frequency of laser pulses
+	uint16_t Duration;		// Duration of laser pulse
+	uint16_t EnergyPercent; // Energy in percentage of one pulse
+	
+	// Service settings
+	uint16_t Power;			// Power of laser light
+	uint16_t Energy;		// Energy in J
+	uint16_t DutyCycle;		// Duty cycle
+	
+	// Pulse counter
+	uint32_t PulseCounter;
+	
+	// Phototype
+	uint16_t melanin;
+	uint16_t phototype;
+	
+	// Cooling settings
+	uint16_t temperature;
+	uint16_t cooling;
+	uint16_t flow;
+	
+	// Database variables
+	uint16_t DatabasePageOffset;
+	uint16_t DatabaseSelectionIndex;
+} DGUS_LASERDIODE, *PDGUS_LASERDIODE;
 
 void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0);
 uint16_t min(uint16_t x, uint16_t y);
