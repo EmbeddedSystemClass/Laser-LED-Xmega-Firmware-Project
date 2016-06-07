@@ -9,6 +9,8 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
+#define MAX_LASER_POWER		200 //W
+
 // Standard libraries
 #include <stdbool.h>
 
@@ -54,17 +56,11 @@ typedef enum APP_STATE_ENUM
 	APP_WORKOnPowerOn,
 	APP_WORKOnPowerOff,
 	
-	// Phototype selector state
-	APP_PHOTOTYPESELECT,
-	APP_PHOTOTYPE1,
-	APP_PHOTOTYPE2,
-	APP_PHOTOTYPE3,
-	APP_PHOTOTYPE4,
-	APP_PHOTOTYPE5,
-	APP_PHOTOTYPE6,
-	
+	// Database
 	APP_DATABASE,
-	APP_DATABASE_START
+	APP_READPROFILE,
+	APP_SAVEPROFILE,
+	APP_UNMAPDATABASE
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -85,6 +81,12 @@ public:
 	// Process GUI
 	void Run();
 	
+	// helper methods
+	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
+	void SetPictureId(uint16_t pic_id);
+	void GetVariable(uint16_t addr, uint16_t size);
+	void SetVariable(uint16_t addr, uint16_t* data, uint16_t size);
+	
 protected :
 	void OnTimer();
 	void OnLaserTimer();
@@ -95,19 +97,32 @@ protected :
 private :
 	// application state
 	APP_STATE state;
-	APP_PROFILE profile;
+	APP_PROFILE Profile;
 	
 	// Registers
 	volatile uint8_t PIC_ID;
 	volatile bool update;
+	volatile bool prepare;
 	
 	// variables
+	volatile DGUS_LASERPROFILE	m_structLaserProfile[4];
+	volatile DGUS_LASERSETTINGS	m_structLaserSettings;
+	
+	// laser settings
 	uint16_t laserTimerPeriod;
 	uint16_t laserTimerDutyCycle;
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
-	uint16_t profileIndex;
-	uint16_t databaseOffset;
+	
+	// all laser settings
+	DGUS_LASERDIODE laserDiodeData;
+	
+	// timer settings
+	volatile uint16_t m_wMinutes;
+	volatile uint16_t m_wSeconds;
+	volatile uint16_t m_wMillSec;
+	volatile uint16_t m_wSetMin;
+	volatile uint16_t m_wSetSec;
 	
 	// Modules
 	CMBSender* m_cpSender;

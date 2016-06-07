@@ -12,6 +12,7 @@
 // DGUS
 #include "DGUSGUI.h"
 #include "Periphery/CDGUSUSART.h"
+#include "CDGUSDatabase.h"
 
 // Application class
 #include "Periphery/CLaserBoard.h"
@@ -38,6 +39,7 @@
 CSPI dacSPI;
 CTimerD timeout;
 CDGUSUSART usart;
+CDGUSDatabase Database;
 CMBSender sender;
 CLaserBoard laserBoard;
 CSoundPlayer player;
@@ -66,6 +68,7 @@ void SystemInitialize()
 	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 	usart.Initialize(BAUD_115200_ERM0P1, PARITY_DISABLE, STOPBITS_1BIT, true);
 	sender.Initialize(&timeout, &usart, &App, 256, 256, 31250);
+	Database.Initialize(&sender, VARIABLE_ADDR_DATABASE);
 	// TimerC0, TimerF0
 	App.Initialize(&sender);
 	laserBoard.InitializeClock();
@@ -79,8 +82,8 @@ int main(void)
 	SystemInitialize();
 	
 	// Startup delay (Beep "Imperial March")
-	player.Play();
-	//_delay_ms(1000);
+	//player.Play();
+	_delay_ms(1000);
 	laserBoard.Relay1On();
 	_delay_ms(100);
 	laserBoard.Relay1Off();
@@ -97,7 +100,7 @@ int main(void)
 		// Loop delay
 		_delay_ms(1);
 		
-		laserBoard.PortCheck();
+		//laserBoard.PortCheck();
 		
 		// Process application
 		static uint16_t prs = 0;

@@ -41,3 +41,8 @@ uint16_t swap(uint16_t data)
 {
 	return (data >> 8) | (data << 8);
 }
+
+uint32_t swap32(uint32_t data)
+{
+	return ((data & 0xffff) << 16) | ((data & 0xffff0000) >> 16);
+}

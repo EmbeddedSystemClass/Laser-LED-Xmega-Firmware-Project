@@ -32,8 +32,11 @@
 #define VARIABLE_ADDR_TEMPER	0x000c
 #define VARIABLE_ADDR_COOLING	0x000d
 #define VARIABLE_ADDR_FLOW		0x000e
-#define VARIABLE_ADDR_DATAOFFS	0x000f
-#define VARIABLE_ADDR_DATAINDEX	0x0010
+#define VARIABLE_ADDR_TIMMIN	0x000f
+#define VARIABLE_ADDR_TIMSEC	0x0010
+#define VARIABLE_ADDR_DATAOFFS	0x0011
+#define VARIABLE_ADDR_DATAINDEX	0x0012
+#define VARIABLE_ADDR_COOLICON	0x0013
 
 #define PICID_LOGO				0
 #define PICID_LOGIN				1
@@ -58,11 +61,25 @@
 #define PICID_PROFILEKBRD2		33
 #define PICID_PROFILEKBRD3		34
 #define PICID_PROFILEKBRD4		35
-#define PICID_DATABASEOnSave	27
+#define PICID_DATABASEOnSave	37
 
 // Data structures
-#define STRUCT_ADDR_LASERDIODE_DATA		0x0001
-#define STRUCT_ADDR_LASERPROFILE_DATA	0x0002
+#define STRUCT_ADDR_LASERDIODE_DATA			0x0001
+#define STRUCT_ADDR_LASERPROFILE_DATA		0x0002
+#define STRUCT_ADDR_LASERPROSETTINGS_DATA	0x0005
+#define STRUCT_ADDR_PREPARETIMER_DATA		0x000f
+
+// Database
+#define VARIABLE_ADDR_DATABASE	0x0100
+#define VARIABLE_ADDR_PROFILE	0x0D00
+#define PROFILE_SIZE			0x0100
+#define DGUS_DATABASE_ADDR		0x00900000
+
+typedef struct DGUS_PREPARETIMER_STRUCT
+{
+	uint16_t timer_minutes;
+	uint16_t timer_seconds;
+} DGUS_PREPARETIMER, *PDGUS_PREPARETIMER;
 
 typedef struct DGUS_LASERPROFILE_STRUCT
 {
@@ -70,12 +87,15 @@ typedef struct DGUS_LASERPROFILE_STRUCT
 	uint16_t Frequency;		// Frequency of laser pulses
 	uint16_t Duration;		// Duration of laser pulse
 	uint16_t EnergyPercent; // Energy in percentage of one pulse
+} DGUS_LASERPROFILE, *PDGUS_LASERPROFILE;
 
+typedef struct DGUS_LASERSETTINGS_STRUCT
+{
 	// Service settings
 	uint16_t Power;			// Power of laser light
 	uint16_t Energy;		// Energy in J
 	uint16_t DutyCycle;		// Duty cycle	
-} DGUS_LASERPROFILE, *PDGUS_LASERPROFILE;
+} DGUS_LASERSETTINGS, *PDGUS_LASERSETTINGS;
 
 typedef struct DGUS_LASERDIODE_STRUCT
 {
@@ -83,14 +103,10 @@ typedef struct DGUS_LASERDIODE_STRUCT
 	uint16_t mode;
 	
 	// Basic laser settings
-	uint16_t Frequency;		// Frequency of laser pulses
-	uint16_t Duration;		// Duration of laser pulse
-	uint16_t EnergyPercent; // Energy in percentage of one pulse
+	DGUS_LASERPROFILE laserprofile;
 	
 	// Service settings
-	uint16_t Power;			// Power of laser light
-	uint16_t Energy;		// Energy in J
-	uint16_t DutyCycle;		// Duty cycle
+	DGUS_LASERSETTINGS lasersettings;
 	
 	// Pulse counter
 	uint32_t PulseCounter;
@@ -104,14 +120,21 @@ typedef struct DGUS_LASERDIODE_STRUCT
 	uint16_t cooling;
 	uint16_t flow;
 	
+	// Timer
+	DGUS_PREPARETIMER timer;
+	
 	// Database variables
 	uint16_t DatabasePageOffset;
 	uint16_t DatabaseSelectionIndex;
+	
+	// Icons
+	uint16_t coolIcon;
 } DGUS_LASERDIODE, *PDGUS_LASERDIODE;
 
 void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0);
 uint16_t min(uint16_t x, uint16_t y);
 uint16_t max(uint16_t x, uint16_t y);
 uint16_t swap(uint16_t data);
+uint32_t swap32(uint32_t data);
 
 #endif /* DGUSGUI_H_ */
