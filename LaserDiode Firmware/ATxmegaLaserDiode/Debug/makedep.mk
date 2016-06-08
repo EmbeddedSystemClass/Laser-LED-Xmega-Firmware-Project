@@ -24,6 +24,8 @@ MODBUS\CMBSender.cpp
 
 Periphery\CDGUSUSART.cpp
 
+Periphery\CDS18B20.cpp
+
 Periphery\CLaserBoard.cpp
 
 Periphery\CSoundPlayer.cpp

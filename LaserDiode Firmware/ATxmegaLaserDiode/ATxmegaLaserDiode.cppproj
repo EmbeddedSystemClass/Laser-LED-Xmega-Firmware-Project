@@ -243,6 +243,12 @@
     <Compile Include="Periphery\CDGUSUSART.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="Periphery\CDS18B20.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Periphery\CDS18B20.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Periphery\CLaserBoard.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -259,6 +265,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Periphery\CTimerC.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Periphery\CTimerC1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Periphery\CTimerC1.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Periphery\CTimerD.cpp">

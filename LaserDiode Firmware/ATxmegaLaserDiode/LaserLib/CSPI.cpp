@@ -24,12 +24,12 @@ CSPI::~CSPI()
 void CSPI::Initialize(bool Master, SPI_DATA_ORDER dord, SPI_MODE mode, bool doubleClk, SPI_PRESCALER_t prescaler)
 {
 	PORTE.DIRSET = PIN4_bm | PIN5_bm | PIN7_bm; // MOSI, nSS, SCK to out
-	PORTE.DIRCLR = PIN6_bm;						// MISO to in
+	//PORTE.DIRCLR = PIN6_bm;						// MISO to in
 	
 	// All slew rate limit enable with inverting
 	PORTE.PIN4CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm | PORT_INVEN_bm;
 	PORTE.PIN5CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm | PORT_INVEN_bm;
-	PORTE.PIN6CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm | PORT_INVEN_bm;
+	//PORTE.PIN6CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm | PORT_INVEN_bm;
 	PORTE.PIN7CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm | PORT_INVEN_bm;
 	
 	// Set high
@@ -58,6 +58,8 @@ void CSPI::Initialize(bool Master, SPI_DATA_ORDER dord, SPI_MODE mode, bool doub
 void CSPI::Deinitialize()
 {
 	free(buffer);
+	
+	SPIE.CTRL &= ~SPI_ENABLE_bm;
 }
 
 void CSPI::Send(uint8_t* data, uint16_t length)

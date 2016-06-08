@@ -51,6 +51,7 @@ C_SRCS +=  \
 ../MODBUS/CMBProtocol.cpp \
 ../MODBUS/CMBSender.cpp \
 ../Periphery/CDGUSUSART.cpp \
+../Periphery/CDS18B20.cpp \
 ../Periphery/CLaserBoard.cpp \
 ../Periphery/CSoundPlayer.cpp \
 ../Periphery/CTimerC.cpp \
@@ -76,6 +77,7 @@ main.o \
 MODBUS/CMBProtocol.o \
 MODBUS/CMBSender.o \
 Periphery/CDGUSUSART.o \
+Periphery/CDS18B20.o \
 Periphery/CLaserBoard.o \
 Periphery/CSoundPlayer.o \
 Periphery/CTimerC.o \
@@ -94,6 +96,7 @@ main.o \
 MODBUS/CMBProtocol.o \
 MODBUS/CMBSender.o \
 Periphery/CDGUSUSART.o \
+Periphery/CDS18B20.o \
 Periphery/CLaserBoard.o \
 Periphery/CSoundPlayer.o \
 Periphery/CTimerC.o \
@@ -112,6 +115,7 @@ main.d \
 MODBUS/CMBProtocol.d \
 MODBUS/CMBSender.d \
 Periphery/CDGUSUSART.d \
+Periphery/CDS18B20.d \
 Periphery/CLaserBoard.d \
 Periphery/CSoundPlayer.d \
 Periphery/CTimerC.d \
@@ -130,6 +134,7 @@ main.d \
 MODBUS/CMBProtocol.d \
 MODBUS/CMBSender.d \
 Periphery/CDGUSUSART.d \
+Periphery/CDS18B20.d \
 Periphery/CLaserBoard.d \
 Periphery/CSoundPlayer.d \
 Periphery/CTimerC.d \
@@ -150,6 +155,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

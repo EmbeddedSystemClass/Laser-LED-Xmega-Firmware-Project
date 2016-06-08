@@ -75,7 +75,7 @@ void CLaserBoard::InitializeIO()
 	
 	// Configure all pins to "wired and"
 	PORTE.PIN0CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
-	PORTE.PIN1CTRL =PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTE.PIN1CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	
 	PORTE.OUT = 0;//PIN0_bm;
 	

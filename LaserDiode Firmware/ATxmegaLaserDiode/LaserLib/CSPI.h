@@ -41,6 +41,7 @@ public:
 	// Data send
 	void Send(uint8_t* data, uint16_t length);
 	void SendByte(uint8_t data);
+	uint16_t transmitterState() { return rx_pos; };
 	
 	// ISR callback
 	static void StaticOnTransmit(void* sender);

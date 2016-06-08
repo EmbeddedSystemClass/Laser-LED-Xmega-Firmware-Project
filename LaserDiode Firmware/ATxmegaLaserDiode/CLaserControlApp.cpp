@@ -18,27 +18,7 @@ extern CDGUSDatabase Database;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 extern CSPI dacSPI;
-
-/*
-#define c 261
-#define d 294
-#define e 329
-#define f 349
-#define g 391
-#define gS 415
-#define a 440
-#define aS 455
-#define b 466
-#define cH 523
-#define cSH 554
-#define dH 587
-#define dSH 622
-#define eH 659
-#define fH 698
-#define fSH 740
-#define gH 784
-#define gSH 830
-#define aH 880*/
+extern int temperature;
 
 // default constructor
 CLaserControlApp::CLaserControlApp()
@@ -261,7 +241,10 @@ void CLaserControlApp::Run()
 	m_cpSender->StartMODBUSRegisterTransaction(REGISTER_ADDR_PICID, 2);
 	m_cpSender->WaitMODBUSTransmitter();
 	m_cpSender->WaitMODBUSListener();
+	
 	_delay_ms(50);
+	
+	SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
 	
 	switch (state)
 	{		

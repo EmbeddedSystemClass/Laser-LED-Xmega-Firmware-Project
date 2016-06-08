@@ -19,6 +19,7 @@
 #include "CLaserControlApp.h"
 #include "Periphery/CSoundPlayer.h"
 #include "Periphery/CTimerD.h"
+#include "Periphery/CDS18B20.h"
 
 // MODBUS Lib
 #include "MODBUS/CMBSender.h"
@@ -44,6 +45,9 @@ CMBSender sender;
 CLaserBoard laserBoard;
 CSoundPlayer player;
 CLaserControlApp App;
+CDS18B20 D18B20;
+
+int temperature = 0;
 
 extern "C" void __cxa_pure_virtual()
 {	
@@ -59,6 +63,7 @@ void SystemInitialize()
 	
 	// Initialize modules
 	laserBoard.InitializeIO();
+	D18B20.Initialize();
 	// TimerE0, TimerE1
 	player.Initialize();
 	// TimerD0
@@ -104,7 +109,16 @@ int main(void)
 		
 		// Process application
 		static uint16_t prs = 0;
-		if ((prs++ % 200) == 0)
+		if ((prs++ % 100) == 0)
+		{
 			App.Run();
+			
+			while (dacSPI.transmitterState() > 0);
+			dacSPI.Deinitialize();
+			//_delay_ms(1);
+			temperature = D18B20.temp_18b20();
+			//_delay_ms(1);
+			dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
+		}
     }
 }
