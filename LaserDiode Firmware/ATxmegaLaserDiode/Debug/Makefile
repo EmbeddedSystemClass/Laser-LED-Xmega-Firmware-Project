@@ -45,6 +45,7 @@ C_SRCS +=  \
 ../DGUSGUI.cpp \
 ../LaserLib/CSPI.cpp \
 ../LaserLib/CTimer.cpp \
+../LaserLib/CTimer1.cpp \
 ../LaserLib/CUSART.cpp \
 ../LaserLib/intx128.cpp \
 ../main.cpp \
@@ -55,7 +56,9 @@ C_SRCS +=  \
 ../Periphery/CLaserBoard.cpp \
 ../Periphery/CSoundPlayer.cpp \
 ../Periphery/CTimerC.cpp \
+../Periphery/CTimerC1.cpp \
 ../Periphery/CTimerD.cpp \
+../Periphery/CTimerD1.cpp \
 ../Periphery/CTimerF.cpp
 
 
@@ -71,6 +74,7 @@ CLaserControlApp.o \
 DGUSGUI.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
+LaserLib/CTimer1.o \
 LaserLib/CUSART.o \
 LaserLib/intx128.o \
 main.o \
@@ -81,7 +85,9 @@ Periphery/CDS18B20.o \
 Periphery/CLaserBoard.o \
 Periphery/CSoundPlayer.o \
 Periphery/CTimerC.o \
+Periphery/CTimerC1.o \
 Periphery/CTimerD.o \
+Periphery/CTimerD1.o \
 Periphery/CTimerF.o
 
 OBJS_AS_ARGS +=  \
@@ -90,6 +96,7 @@ CLaserControlApp.o \
 DGUSGUI.o \
 LaserLib/CSPI.o \
 LaserLib/CTimer.o \
+LaserLib/CTimer1.o \
 LaserLib/CUSART.o \
 LaserLib/intx128.o \
 main.o \
@@ -100,7 +107,9 @@ Periphery/CDS18B20.o \
 Periphery/CLaserBoard.o \
 Periphery/CSoundPlayer.o \
 Periphery/CTimerC.o \
+Periphery/CTimerC1.o \
 Periphery/CTimerD.o \
+Periphery/CTimerD1.o \
 Periphery/CTimerF.o
 
 C_DEPS +=  \
@@ -109,6 +118,7 @@ CLaserControlApp.d \
 DGUSGUI.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
+LaserLib/CTimer1.d \
 LaserLib/CUSART.d \
 LaserLib/intx128.d \
 main.d \
@@ -119,7 +129,9 @@ Periphery/CDS18B20.d \
 Periphery/CLaserBoard.d \
 Periphery/CSoundPlayer.d \
 Periphery/CTimerC.d \
+Periphery/CTimerC1.d \
 Periphery/CTimerD.d \
+Periphery/CTimerD1.d \
 Periphery/CTimerF.d
 
 C_DEPS_AS_ARGS +=  \
@@ -128,6 +140,7 @@ CLaserControlApp.d \
 DGUSGUI.d \
 LaserLib/CSPI.d \
 LaserLib/CTimer.d \
+LaserLib/CTimer1.d \
 LaserLib/CUSART.d \
 LaserLib/intx128.d \
 main.d \
@@ -138,7 +151,9 @@ Periphery/CDS18B20.d \
 Periphery/CLaserBoard.d \
 Periphery/CSoundPlayer.d \
 Periphery/CTimerC.d \
+Periphery/CTimerC1.d \
 Periphery/CTimerD.d \
+Periphery/CTimerD1.d \
 Periphery/CTimerF.d
 
 OUTPUT_FILE_PATH +=ATxmegaLaserDiode.elf
@@ -155,6 +170,12 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-/* 
+/*
 * CTimerC1.h
 *
 * Created: 08.06.2016 17:15:15
@@ -6,16 +6,16 @@
 */
 
 
-#ifndef __CTIMERC1_H__
-#define __CTIMERC1_H__
+#ifndef __CTIMERD1_H__
+#define __CTIMERD1_H__
 
 #include "../LaserLib/CTimer1.h"
 
-class CTimerC1 : public CTimer1
+class CTimerD1 : public CTimer1
 {
-public:
-	CTimerC1();
-	~CTimerC1();
+	public:
+	CTimerD1();
+	~CTimerD1();
 	
 	// Basic timer functions
 	virtual void Initialize(TIMER_WAVEFORMGEN_MODE wgm, TIMER_CLOCKSELECT clock);
@@ -33,8 +33,8 @@ public:
 	virtual void SetERRCallback(ISRCallback func, void* owner, TC_ERRINTLVL_t intlvl);
 	virtual void SetCOMPACallback(ISRCallback func, void* owner, TC_CCAINTLVL_t intlvl);
 	virtual void SetCOMPBCallback(ISRCallback func, void* owner, TC_CCBINTLVL_t intlvl);
-protected:
-private:
+	protected:
+	private:
 	TIMER_CLOCKSELECT clockSrc;
 }; //CTimerC
 

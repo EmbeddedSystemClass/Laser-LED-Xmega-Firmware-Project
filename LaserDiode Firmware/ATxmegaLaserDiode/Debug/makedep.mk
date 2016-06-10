@@ -12,6 +12,8 @@ LaserLib\CSPI.cpp
 
 LaserLib\CTimer.cpp
 
+LaserLib\CTimer1.cpp
+
 LaserLib\CUSART.cpp
 
 LaserLib\intx128.cpp
@@ -32,7 +34,11 @@ Periphery\CSoundPlayer.cpp
 
 Periphery\CTimerC.cpp
 
+Periphery\CTimerC1.cpp
+
 Periphery\CTimerD.cpp
+
+Periphery\CTimerD1.cpp
 
 Periphery\CTimerF.cpp
 

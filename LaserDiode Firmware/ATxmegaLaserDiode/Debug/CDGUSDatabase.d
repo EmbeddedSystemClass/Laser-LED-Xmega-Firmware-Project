@@ -23,6 +23,7 @@ CDGUSDatabase.d CDGUSDatabase.o: .././CDGUSDatabase.cpp \
  .././MODBUS/CMBProtocol.h .././MODBUS/../LaserLib/CUSART.h \
  .././MODBUS/../LaserLib/CTimer.h \
  .././MODBUS/../LaserLib/sys_interrupts.h \
+ .././MODBUS/../LaserLib/TimerDef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
@@ -81,6 +82,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 .././MODBUS/../LaserLib/CTimer.h:
 
 .././MODBUS/../LaserLib/sys_interrupts.h:
+
+.././MODBUS/../LaserLib/TimerDef.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 

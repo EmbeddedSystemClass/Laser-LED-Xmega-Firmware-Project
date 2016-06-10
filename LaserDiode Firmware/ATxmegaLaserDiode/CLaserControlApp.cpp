@@ -8,12 +8,16 @@
 
 #include "CLaserControlApp.h"
 #include "Periphery/CSoundPlayer.h"
+#include "Periphery/CTimerC1.h"
+#include "Periphery/CTimerD1.h"
 #include "CDGUSDatabase.h"
 #include <string.h>
 #include <util/delay.h>
 
 CTimerC timer;
 CTimerF laserTimer;
+extern CTimerC1 flowtimer;
+extern CTimerD1 pwmtimer;
 extern CDGUSDatabase Database;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
@@ -202,9 +206,9 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	laserDiodeData.PulseCounter = swap32(10000000);
 	laserDiodeData.melanin = 0;
 	laserDiodeData.phototype = 0;
-	laserDiodeData.temperature = 24;
+	laserDiodeData.temperature = temperature;
 	laserDiodeData.cooling = 6;
-	laserDiodeData.flow = 10;
+	laserDiodeData.flow = 0;
 	laserDiodeData.DatabasePageOffset = 0;
 	laserDiodeData.DatabaseSelectionIndex = 13;
 	
@@ -213,7 +217,8 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	laserTimer.SetPeriod(laserTimerPeriod);		// 10 Hz
 	laserTimer.SetCOMPA(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
 	laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
-	laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
+	//laserTimer.SetOVFCallback(OnLaserTimerStatic, this, TC_OVFINTLVL_LO_gc);
+	laserTimer.SetCOMPACallback(OnLaserTimerStatic, this, TC_CCAINTLVL_LO_gc);
 	laserTimer.EnableChannel(TIMER_CHANNEL_A);	// Enable Laser TTL Gate
 	laserTimer.EnableChannel(TIMER_CHANNEL_B);	// Enable Laser TTL Gate
 	laserTimer.ChannelSet(TIMER_CHANNEL_A);
@@ -235,6 +240,45 @@ void CLaserControlApp::Start()
 }
 
 // Process GUI
+void CLaserControlApp::FastRun()
+{
+	static bool first = true;
+	
+	switch (state)
+	{
+		case APP_WORKLIGHT:
+		case APP_WORKPOWERON:
+		{
+			if (!laserBoard.Footswitch())
+			{
+				if (first)
+				{
+					if (laserTimerDutyCycle != 0)
+						TCF0.CNT = laserTimerDutyCycle - 1;
+					
+					laserTimer.SetCOMPA(laserTimerDutyCycle);
+					laserTimer.SetCOMPB(laserTimerDutyCycle);
+					laserTimer.Start(laserTimerPeriod);
+					
+					first = false;
+				}
+			}
+			else
+			{
+				laserTimer.Stop();
+				laserTimer.ChannelSet(TIMER_CHANNEL_A);
+				laserTimer.ChannelSet(TIMER_CHANNEL_B);
+				
+				first = true;
+			}
+		}
+		break;
+		default:
+			first = true;
+		break;
+	}
+}
+
 void CLaserControlApp::Run()
 {	
 	// Get PIC ID
@@ -245,6 +289,11 @@ void CLaserControlApp::Run()
 	_delay_ms(50);
 	
 	SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
+	SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
+	GetVariable(VARIABLE_ADDR_COOLING, 2);
+	
+	uint16_t coolpwm = laserDiodeData.cooling * 170;
+	pwmtimer.SetCOMPA(coolpwm);
 	
 	switch (state)
 	{		
@@ -266,6 +315,9 @@ void CLaserControlApp::Run()
 				if (Profile != prof)	{update = true; Profile = prof;}
 				
 				laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[Profile]);
+				laserPower = m_structLaserProfile[Profile].EnergyPercent;
+				
+				SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile],  sizeof(DGUS_LASERPROFILE));
 				SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));
 			}
 		break;
@@ -287,10 +339,6 @@ void CLaserControlApp::Run()
 			{				
 				if (!laserBoard.Footswitch())
 				{
-					laserTimer.SetCOMPA(laserTimerDutyCycle);
-					laserTimer.SetCOMPB(laserTimerDutyCycle);
-					laserTimer.Start(laserTimerPeriod);
-					// Show power on
 					if (state != APP_WORKLIGHT)
 					{
 						SetPictureId(PICID_WORK_STARTED);
@@ -299,10 +347,6 @@ void CLaserControlApp::Run()
 				}
 				else
 				{
-					laserTimer.Stop();
-					laserTimer.ChannelSet(TIMER_CHANNEL_A);
-					laserTimer.ChannelSet(TIMER_CHANNEL_B);
-					// Show power on
 					if (state != APP_WORKPOWERON)
 					{
 						SetPictureId(PICID_WORK_POWERON);
@@ -315,7 +359,7 @@ void CLaserControlApp::Run()
 		// Commands
 		case APP_WORKOnReady:
 			{
-				laserBoard.Relay2On();
+				//laserBoard.Relay2On();
 				laserBoard.LaserPowerOn();
 				
 				SetPictureId(PICID_WORK_READY);
@@ -323,7 +367,7 @@ void CLaserControlApp::Run()
 		break;
 		case APP_WORKOnPowerOn:
 			{
-				uint16_t data = ((uint16_t)((laserPower * 64) / 63)) << 2;  // (laserPower * 1024) / 1000)
+				uint16_t data = ((uint16_t)((laserPower * 640) / 63)) << 2;  // (laserPower * 1024) / 1000)
 				dacSPI.Send((uint8_t*)&data, sizeof(data));
 				
 				SetPictureId(PICID_WORK_POWERON);
@@ -337,7 +381,7 @@ void CLaserControlApp::Run()
 				laserTimer.ChannelSet(TIMER_CHANNEL_A);
 				laserTimer.ChannelSet(TIMER_CHANNEL_B);
 				laserBoard.LaserPowerOff();
-				laserBoard.Relay2Off();
+				//laserBoard.Relay2Off();
 				
 				uint16_t data = 0;
 				dacSPI.Send((uint8_t*)&data, sizeof(data));
@@ -396,16 +440,16 @@ DGUS_LASERSETTINGS CLaserControlApp::CalculateLaserSettings(DGUS_LASERPROFILE *p
 {
 	DGUS_LASERSETTINGS result;
 	
-	uint32_t period = 1000000ul / (uint32_t)profile->Frequency;	//  period [us]
-	uint32_t dutycycle = period / profile->Duration;			//  period [us] / duration [ms]
-	result.DutyCycle = uint16_t(dutycycle / 10);				// (period [us] * 100) / (duration [ms] * 1000)
+	uint16_t period = 1000 / profile->Frequency;									//  period [ms]
+	uint32_t dutycycle = uint32_t(profile->Duration * 1000ul) / uint32_t(period);	//  duration [ms] / period [us]
+	result.DutyCycle = uint16_t(dutycycle/10);										// (period [us] * 100) / (duration [ms] * 1000)
 	result.Energy = uint16_t((dutycycle * (uint32_t)profile->EnergyPercent * (uint32_t)MAX_LASER_POWER) / 100000ul);
 	result.Power = (profile->EnergyPercent * MAX_LASER_POWER) / 100;
 	
 	// calculate timer settings
 	laserTimerPeriod = (6250 / profile->Frequency) * 10;
-	laserTimerDutyCycle = laserTimerPeriod - ((laserTimerPeriod / 100) * result.DutyCycle);
-	laserTimerDutyCyclems = uint16_t(period / 1000);
+	laserTimerDutyCycle = laserTimerPeriod - uint16_t((uint32_t(laserTimerPeriod) * dutycycle) / 1000ul);
+	laserTimerDutyCyclems = period;
 	
 	return result;
 }
@@ -432,55 +476,72 @@ void CLaserControlApp::SetPictureId(uint16_t pic_id)
 
 void CLaserControlApp::OnTimer()
 {
-	if (m_wMillSec == 0)
+	if (prepare)
 	{
-		if (m_wSeconds == 0)
+		if (m_wMillSec == 0)
 		{
-			if (m_wMinutes == 0)
+			m_wFlow = TCC1.CNT / 8;
+			flowtimer.Reset();
+			
+			if (m_wSeconds == 0)
 			{
-				OnTimeout();
-				/*player.SoundStart(1000, 1000, 2);
-				player.SoundStop();*/
-				player.SoundStart(261, 100, 2);
-				player.SoundStop();
-				player.SoundStart(294, 100, 2);
-				player.SoundStop();
-				player.SoundStart(329, 100, 2);
-				player.SoundStop();
-				player.SoundStart(349, 100, 2);
-				player.SoundStop();
-				
-				//player.beep(1000, 1000);
-				return;
+				if (m_wMinutes == 0)
+				{
+					OnTimeout();
+					/*player.SoundStart(1000, 1000, 2);
+					player.SoundStop();*/
+					player.SoundStart(261, 100, 2);
+					player.SoundStop();
+					player.SoundStart(294, 100, 2);
+					player.SoundStop();
+					player.SoundStart(329, 100, 2);
+					player.SoundStop();
+					player.SoundStart(349, 100, 2);
+					player.SoundStop();
+					
+					//player.beep(1000, 1000);
+					return;
+				}
+				m_wSeconds = 60;
+				m_wMinutes--;
 			}
-			m_wSeconds = 60;
-			m_wMinutes--;
-		}
-		m_wMillSec = 100; // Every 10 ms
-		m_wSeconds--;
-		/*if (m_wMinutes == 0 && m_wSeconds < 10)
-		{
-			if (m_wMinutes == 0 && m_wSeconds < 5)
+			m_wMillSec = 100; // Every 10 ms
+			m_wSeconds--;
+			/*if (m_wMinutes == 0 && m_wSeconds < 10)
 			{
-				player.SoundStart(1000, 100, 2);
-				player.SoundStop();
-				//player.beep(1000, 100);
+				if (m_wMinutes == 0 && m_wSeconds < 5)
+				{
+					player.SoundStart(1000, 100, 2);
+					player.SoundStop();
+					//player.beep(1000, 100);
+				}
+				else
+				{
+					player.SoundStart(1000, 50, 2);
+					player.SoundStop();
+					//player.beep(1000, 50);
+				}
 			}
 			else
 			{
-				player.SoundStart(1000, 50, 2);
+				player.SoundStart(1000, 25, 2);
 				player.SoundStop();
-				//player.beep(1000, 50);
-			}
+				//player.beep(1000, 25);
+			}*/
 		}
-		else
-		{
-			player.SoundStart(1000, 25, 2);
-			player.SoundStop();
-			//player.beep(1000, 25);
-		}*/
+		m_wMillSec-=10;
 	}
-	m_wMillSec-=10;
+	else
+	{
+		if (m_wMillSec == 0)
+		{
+			m_wMillSec = 100;
+			
+			m_wFlow = TCC1.CNT / 8;
+			flowtimer.Reset();
+		}
+		m_wMillSec-=10;
+	}
 }
 
 void CLaserControlApp::OnLaserTimer()
@@ -494,9 +555,58 @@ void CLaserControlApp::OnLaserTimer()
 
 void CLaserControlApp::OnTimeout()
 {
-	timer.Stop();
+	//timer.Stop();
 	prepare = false;
 	//laserBoard.Relay1Off();
+}
+
+void CLaserControlApp::OnPWMTimerOVF()
+{
+	PORTE.OUTCLR = PIN2_bm;
+}
+
+void CLaserControlApp::OnPWMTimerCMP()
+{
+	PORTE.OUTSET = PIN2_bm;
+}
+
+void CLaserControlApp::OnINT0()
+{
+	static bool first = true;
+	
+	switch (state)
+	{
+		case APP_WORKLIGHT:
+		case APP_WORKPOWERON:
+		{
+			if ((PORTC.IN & 0x01) == 0)
+			{
+				if (first)
+				{
+					if (laserTimerDutyCycle != 0)
+					TCF0.CNT = laserTimerDutyCycle - 1;
+					
+					laserTimer.SetCOMPA(laserTimerDutyCycle);
+					laserTimer.SetCOMPB(laserTimerDutyCycle);
+					laserTimer.Start(laserTimerPeriod);
+					
+					first = false;
+				}
+			}
+			else
+			{
+				laserTimer.Stop();
+				laserTimer.ChannelSet(TIMER_CHANNEL_A);
+				laserTimer.ChannelSet(TIMER_CHANNEL_B);
+				
+				first = true;
+			}
+		}
+		break;
+		default:
+			first = true;
+		break;
+	}
 }
 
 void CLaserControlApp::OnTimerStatic(void* sender)
@@ -509,4 +619,22 @@ void CLaserControlApp::OnLaserTimerStatic(void* sender)
 {
 	CLaserControlApp* app = (CLaserControlApp*)sender;
 	app->OnLaserTimer();
+}
+
+void CLaserControlApp::OnPWMTimerOVFStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWMTimerOVF();
+}
+
+void CLaserControlApp::OnPWMTimerCMPStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWMTimerCMP();
+}
+
+void CLaserControlApp::OnINT0Static(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnINT0();
 }

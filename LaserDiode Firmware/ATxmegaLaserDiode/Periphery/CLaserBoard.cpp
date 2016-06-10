@@ -24,10 +24,10 @@ CLaserBoard::~CLaserBoard()
 void CLaserBoard::InitializeIO()
 {
 	// Set all output
-	PORTC.DIRSET = 0xFF;
+	PORTC.DIRSET = 0x00; //0xFF;
 	
 	// Configure all pins to "wired and"
-	PORTC.PIN0CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
+	PORTC.PIN0CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm | PORT_ISC_BOTHEDGES_gc;
 	PORTC.PIN1CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
 	PORTC.PIN2CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
 	PORTC.PIN3CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
@@ -71,11 +71,12 @@ void CLaserBoard::InitializeIO()
 	
 	PORTD.OUT = 0;//PIN0_bm;
 	
-	PORTE.DIRSET = PIN0_bm | PIN1_bm;
+	PORTE.DIRSET = PIN0_bm | PIN1_bm | PIN2_bm;
 	
 	// Configure all pins to "wired and"
 	PORTE.PIN0CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTE.PIN1CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTE.PIN2CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	
 	PORTE.OUT = 0;//PIN0_bm;
 	
@@ -87,7 +88,10 @@ void CLaserBoard::InitializeIO()
 	for (uint8_t i = 0; i < 8; i++)
 		PIN_Cnt[i] = 1;
 		
-	PINThreshold = 10;
+	PINThreshold = 3;
+	
+	PORTC.INT0MASK = PIN0_bm;
+	PORTC.INTCTRL = PORT_INT0LVL_LO_gc;
 }
 
 void CLaserBoard::InitializeClock()
@@ -202,15 +206,15 @@ void CLaserBoard::BeepClassError()
 
 void CLaserBoard::PortCheck()
 {
-	uint8_t inport = PORTC.IN;
+	/*uint8_t inport = PORTC.IN;
 	uint8_t bitpos = 1;
 	for (uint8_t i = 0; i < 8; i++)
 	{
 		if (inport & bitpos)
 		{
 			PIN_Cnt[i]++;
-			if (PIN_Cnt[i] > 128)
-				PIN_Cnt[i] = 128;
+			if (PIN_Cnt[i] > 4)
+				PIN_Cnt[i] = 4;
 		}
 		else
 		{
@@ -225,7 +229,8 @@ void CLaserBoard::PortCheck()
 			Port &= ~bitpos;
 		
 		bitpos <<= 1;
-	}
+	}*/
+	Port = PORTC.IN;
 }
 
 bool CLaserBoard::Footswitch()

@@ -80,6 +80,7 @@ public:
 	
 	// Process GUI
 	void Run();
+	void FastRun();
 	
 	// helper methods
 	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
@@ -87,10 +88,17 @@ public:
 	void GetVariable(uint16_t addr, uint16_t size);
 	void SetVariable(uint16_t addr, uint16_t* data, uint16_t size);
 	
+	static void OnPWMTimerOVFStatic(void* sender);
+	static void OnPWMTimerCMPStatic(void* sender);
+	static void OnINT0Static(void* sender);
+	
 protected :
 	void OnTimer();
 	void OnLaserTimer();
 	void OnTimeout();
+	void OnPWMTimerOVF();
+	void OnPWMTimerCMP();
+	void OnINT0();
 	static void OnTimerStatic(void* sender);
 	static void OnLaserTimerStatic(void* sender);
 	
@@ -123,6 +131,9 @@ private :
 	volatile uint16_t m_wMillSec;
 	volatile uint16_t m_wSetMin;
 	volatile uint16_t m_wSetSec;
+	
+	// Flow control
+	volatile uint16_t m_wFlow;
 	
 	// Modules
 	CMBSender* m_cpSender;

@@ -1,5 +1,5 @@
-Periphery/CTimerD.d Periphery/CTimerD.o: ../Periphery/CTimerD.cpp \
- ../Periphery/CTimerD.h ../Periphery/../LaserLib/CTimer.h \
+Periphery/CTimerD1.d Periphery/CTimerD1.o: ../Periphery/CTimerD1.cpp \
+ ../Periphery/CTimerD1.h ../Periphery/../LaserLib/CTimer1.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdint.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdint.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
@@ -19,9 +19,9 @@ Periphery/CTimerD.d Periphery/CTimerD.o: ../Periphery/CTimerD.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
  ../Periphery/../LaserLib/TimerDef.h ../Periphery/../LaserLib/intx128.h
 
-../Periphery/CTimerD.h:
+../Periphery/CTimerD1.h:
 
-../Periphery/../LaserLib/CTimer.h:
+../Periphery/../LaserLib/CTimer1.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\4.9.2\include\stdint.h:
 

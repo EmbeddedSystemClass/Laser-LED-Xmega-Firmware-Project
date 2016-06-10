@@ -18,7 +18,7 @@ MODBUS/CMBSender.d MODBUS/CMBSender.o: ../MODBUS/CMBSender.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../MODBUS/../LaserLib/CTimer.h \
+ ../MODBUS/../LaserLib/CTimer.h ../MODBUS/../LaserLib/TimerDef.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\crc16.h
 
 ../MODBUS/CMBSender.h:
@@ -64,5 +64,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 ../MODBUS/../LaserLib/CTimer.h:
+
+../MODBUS/../LaserLib/TimerDef.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\crc16.h:

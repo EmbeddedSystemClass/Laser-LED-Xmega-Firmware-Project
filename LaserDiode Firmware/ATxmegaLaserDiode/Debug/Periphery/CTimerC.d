@@ -17,7 +17,7 @@ Periphery/CTimerC.d Periphery/CTimerC.o: ../Periphery/CTimerC.cpp \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\xmega.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
- ../Periphery/../LaserLib/intx128.h
+ ../Periphery/../LaserLib/TimerDef.h ../Periphery/../LaserLib/intx128.h
 
 ../Periphery/CTimerC.h:
 
@@ -56,5 +56,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
+
+../Periphery/../LaserLib/TimerDef.h:
 
 ../Periphery/../LaserLib/intx128.h:

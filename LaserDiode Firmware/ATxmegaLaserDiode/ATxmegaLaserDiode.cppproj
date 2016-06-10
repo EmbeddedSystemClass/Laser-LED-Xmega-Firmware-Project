@@ -207,6 +207,12 @@
     <Compile Include="LaserLib\CTimer.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="LaserLib\CTimer1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="LaserLib\CTimer1.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="LaserLib\CUSART.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -220,6 +226,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="LaserLib\sys_interrupts.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="LaserLib\TimerDef.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.cpp">
@@ -277,6 +286,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Periphery\CTimerD.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Periphery\CTimerD1.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Periphery\CTimerD1.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Periphery\CTimerF.cpp">

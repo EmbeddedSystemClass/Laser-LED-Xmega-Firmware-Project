@@ -25,7 +25,7 @@ void CTimerC1::Initialize(TIMER_WAVEFORMGEN_MODE wgm, TIMER_CLOCKSELECT clock)
 	clockSrc = clock;
 	
 	// Stop timer
-	TCC1.CTRLA = (TCC1.CTRLA & ~TC0_CLKSEL_gm) | TC_CLKSEL_OFF_gc;
+	TCC1.CTRLA = (TCC1.CTRLA & ~TC1_CLKSEL_gm) | TC_CLKSEL_OFF_gc;
 	
 	// No events
 	TCC1.CTRLD = TC_EVACT_OFF_gc | TC_EVSEL_OFF_gc;
@@ -34,12 +34,10 @@ void CTimerC1::Initialize(TIMER_WAVEFORMGEN_MODE wgm, TIMER_CLOCKSELECT clock)
 	TCC1.CNT = 0;
 	TCC1.CCA = 0;
 	TCC1.CCB = 0;
-	TCC1.CCC = 0;
-	TCC1.CCD = 0;
 	TCC1.PER = 0;
 	
 	// Waveform generation mode
-	TCC1.CTRLB = (TCC1.CTRLB & ~TC0_WGMODE_gm) | wgm;
+	TCC1.CTRLB = (TCC1.CTRLB & ~TC1_WGMODE_gm) | wgm;
 	
 	// Start timer
 	//TCC1.CTRLA = (TCC1.CTRLA & TC0_CLKSEL_gm) | clock;
@@ -55,14 +53,23 @@ void CTimerC1::Start(uint16_t period)
 	TCC1.PER = period;
 	
 	// Start timer
-	TCC1.CTRLA = (TCC1.CTRLA & ~TC0_CLKSEL_gm) | clockSrc;
+	TCC1.CTRLA = (TCC1.CTRLA & ~TC1_CLKSEL_gm) | clockSrc;
 }
 
 void CTimerC1::Stop()
 {
 	// Stop timer
-	TCC1.CTRLA = (TCC1.CTRLA & ~TC0_CLKSEL_gm) | TC_CLKSEL_OFF_gc;
+	TCC1.CTRLA = (TCC1.CTRLA & ~TC1_CLKSEL_gm) | TC_CLKSEL_OFF_gc;
 	TCC1.CNT = 0;
+}
+
+void CTimerC1::Reset()
+{
+	// Stop timer
+	uint16_t tmp = TCC1.CTRLA;
+	TCC1.CTRLA = (TCC1.CTRLA & ~TC1_CLKSEL_gm) | TC_CLKSEL_OFF_gc;
+	TCC1.CNT = 0;
+	TCC1.CTRLA = tmp;
 }
 
 void CTimerC1::EnableChannel(TIMER_CHANNELS channels)
@@ -88,16 +95,6 @@ void CTimerC1::SetCOMPA(uint16_t value)
 void CTimerC1::SetCOMPB(uint16_t value)
 {
 	TCC1.CCB = value;
-}
-
-void CTimerC1::SetCOMPC(uint16_t value)
-{
-	TCC1.CCC = value;
-}
-
-void CTimerC1::SetCOMPD(uint16_t value)
-{
-	TCC1.CCD = value;
 }
 
 // Interrupts
