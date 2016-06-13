@@ -40,7 +40,7 @@ void CTimerC1::Initialize(TIMER_WAVEFORMGEN_MODE wgm, TIMER_CLOCKSELECT clock)
 	TCC1.CTRLB = (TCC1.CTRLB & ~TC1_WGMODE_gm) | wgm;
 	
 	// Start timer
-	//TCC1.CTRLA = (TCC1.CTRLA & TC0_CLKSEL_gm) | clock;
+	//TCC1.CTRLA = (TCC1.CTRLA & TC1_CLKSEL_gm) | clock;
 	
 	// Disable interrupts
 	TCC1.INTCTRLA = TC_OVFINTLVL_OFF_gc;
@@ -101,7 +101,7 @@ void CTimerC1::SetCOMPB(uint16_t value)
 void CTimerC1::SetOVFCallback(ISRCallback func, void* owner, TC_OVFINTLVL_t intlvl)
 {
 	if (func != NULL)
-	TCC1.INTCTRLA = (TCC1.INTCTRLA & TC0_OVFINTLVL_gm) | intlvl;
+	TCC1.INTCTRLA = (TCC1.INTCTRLA & TC1_OVFINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC1_OVF_vect_num] = func;
 	InterruptSenderTable[TCC1_OVF_vect_num] = owner;
@@ -110,7 +110,7 @@ void CTimerC1::SetOVFCallback(ISRCallback func, void* owner, TC_OVFINTLVL_t intl
 void CTimerC1::SetERRCallback(ISRCallback func, void* owner, TC_ERRINTLVL_t intlvl)
 {
 	if (func != NULL)
-	TCC1.INTCTRLA = (TCC1.INTCTRLA & TC0_ERRINTLVL_gm) | intlvl;
+	TCC1.INTCTRLA = (TCC1.INTCTRLA & TC1_ERRINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC1_ERR_vect_num] = func;
 	InterruptSenderTable[TCC1_ERR_vect_num] = owner;
@@ -119,7 +119,7 @@ void CTimerC1::SetERRCallback(ISRCallback func, void* owner, TC_ERRINTLVL_t intl
 void CTimerC1::SetCOMPACallback(ISRCallback func, void* owner, TC_CCAINTLVL_t intlvl)
 {
 	if (func != NULL)
-	TCC1.INTCTRLB = (TCC1.INTCTRLB & TC0_CCAINTLVL_gm) | intlvl;
+	TCC1.INTCTRLB = (TCC1.INTCTRLB & TC1_CCAINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC1_CCA_vect_num] = func;
 	InterruptSenderTable[TCC1_CCA_vect_num] = owner;
@@ -128,7 +128,7 @@ void CTimerC1::SetCOMPACallback(ISRCallback func, void* owner, TC_CCAINTLVL_t in
 void CTimerC1::SetCOMPBCallback(ISRCallback func, void* owner, TC_CCBINTLVL_t intlvl)
 {
 	if (func != NULL)
-	TCC1.INTCTRLB = (TCC1.INTCTRLB & TC0_CCBINTLVL_gm) | intlvl;
+	TCC1.INTCTRLB = (TCC1.INTCTRLB & TC1_CCBINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC1_CCB_vect_num] = func;
 	InterruptSenderTable[TCC1_CCB_vect_num] = owner;

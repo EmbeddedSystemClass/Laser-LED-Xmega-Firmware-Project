@@ -13,6 +13,7 @@
 #include "CDGUSDatabase.h"
 #include <string.h>
 #include <util/delay.h>
+#include <avr/eeprom.h>
 
 CTimerC timer;
 CTimerF laserTimer;
@@ -56,7 +57,7 @@ void CLaserControlApp::OnVariableReceived(uint16_t addr, uint16_t* data, uint16_
 			case VARIABLE_ADDR_POWER:		laserDiodeData.lasersettings.Power = val;			break;
 			case VARIABLE_ADDR_ENERGY:		laserDiodeData.lasersettings.Energy = val;			break;
 			case VARIABLE_ADDR_DUTYCYCLE:	laserDiodeData.lasersettings.DutyCycle = val;		break;
-			case VARIABLE_ADDR_LASERCNT:	laserDiodeData.PulseCounter = val;					break;
+			case VARIABLE_ADDR_LASERCNT:	laserCounter = swap32(*(uint32_t*)data);			break;
 			case VARIABLE_ADDR_MELANIN:		laserDiodeData.melanin = val;						break;
 			case VARIABLE_ADDR_PHOTOTYPE:	laserDiodeData.phototype = val;						break;
 			case VARIABLE_ADDR_TEMPER:		laserDiodeData.temperature = val;					break;
@@ -146,7 +147,7 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 			state = APP_UNMAPDATABASE;
 		break;;
 		default:
-			state = APP_WORKIDLE;
+			//state = APP_WORKIDLE;
 		break;
 	}
 }
@@ -197,13 +198,13 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	Profile = PROFILE_FAST;
 	
 	// Set all laser settings
+	laserCounter = eeprom_read_dword((uint32_t*)LASER_CNT_EEPROMADDR);
 	laserDiodeData.mode = Profile;
-	// Ебаный GCC со своей строгой типизацией для volatile просто достал!!!
 	memcpy((void*)&laserDiodeData.laserprofile, (void*)&m_structLaserProfile[PROFILE_FAST], sizeof(DGUS_LASERPROFILE));
 	laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[PROFILE_FAST]);
 	laserDiodeData.timer.timer_minutes = m_wSetMin;
 	laserDiodeData.timer.timer_seconds = m_wSetSec;
-	laserDiodeData.PulseCounter = swap32(10000000);
+	laserDiodeData.PulseCounter = swap32(laserCounter);
 	laserDiodeData.melanin = 0;
 	laserDiodeData.phototype = 0;
 	laserDiodeData.temperature = temperature;
@@ -242,55 +243,28 @@ void CLaserControlApp::Start()
 // Process GUI
 void CLaserControlApp::FastRun()
 {
-	static bool first = true;
-	
-	switch (state)
-	{
-		case APP_WORKLIGHT:
-		case APP_WORKPOWERON:
-		{
-			if (!laserBoard.Footswitch())
-			{
-				if (first)
-				{
-					if (laserTimerDutyCycle != 0)
-						TCF0.CNT = laserTimerDutyCycle - 1;
-					
-					laserTimer.SetCOMPA(laserTimerDutyCycle);
-					laserTimer.SetCOMPB(laserTimerDutyCycle);
-					laserTimer.Start(laserTimerPeriod);
-					
-					first = false;
-				}
-			}
-			else
-			{
-				laserTimer.Stop();
-				laserTimer.ChannelSet(TIMER_CHANNEL_A);
-				laserTimer.ChannelSet(TIMER_CHANNEL_B);
-				
-				first = true;
-			}
-		}
-		break;
-		default:
-			first = true;
-		break;
-	}
+
 }
 
 void CLaserControlApp::Run()
 {	
 	// Get PIC ID
-	m_cpSender->StartMODBUSRegisterTransaction(REGISTER_ADDR_PICID, 2);
-	m_cpSender->WaitMODBUSTransmitter();
-	m_cpSender->WaitMODBUSListener();
+	static uint16_t prs = 0;
+	if ((prs++ % 4) == 0)
+	{
+		m_cpSender->StartMODBUSRegisterTransaction(REGISTER_ADDR_PICID, 2);
+		m_cpSender->WaitMODBUSTransmitter();
+		m_cpSender->WaitMODBUSListener();
+		
+		_delay_ms(1);
+		
+		GetVariable(VARIABLE_ADDR_COOLING, 2);
+	}
 	
-	_delay_ms(50);
+	_delay_ms(1);
 	
 	SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
 	SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-	GetVariable(VARIABLE_ADDR_COOLING, 2);
 	
 	uint16_t coolpwm = laserDiodeData.cooling * 170;
 	pwmtimer.SetCOMPA(coolpwm);
@@ -317,13 +291,15 @@ void CLaserControlApp::Run()
 				laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[Profile]);
 				laserPower = m_structLaserProfile[Profile].EnergyPercent;
 				
-				SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile],  sizeof(DGUS_LASERPROFILE));
-				SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));
+				//SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile],  sizeof(DGUS_LASERPROFILE));
+				//SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));
 			}
 		break;
 		case APP_WORKPREPARE:
 			{
 				DGUS_PREPARETIMER timervar;
+				
+				SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile], sizeof(DGUS_LASERPROFILE));
 				if (prepare)
 				{
 					timervar.timer_minutes = m_wMinutes;
@@ -353,6 +329,9 @@ void CLaserControlApp::Run()
 						state = APP_WORKPOWERON;
 					}
 				}
+			
+				uint32_t cnt = swap32(laserCounter);
+				SetVariable(VARIABLE_ADDR_LASERCNT, (uint16_t*)&cnt,  4);
 			}
 		break;
 		
@@ -381,6 +360,7 @@ void CLaserControlApp::Run()
 				laserTimer.ChannelSet(TIMER_CHANNEL_A);
 				laserTimer.ChannelSet(TIMER_CHANNEL_B);
 				laserBoard.LaserPowerOff();
+				eeprom_write_dword((uint32_t*)LASER_CNT_EEPROMADDR, laserCounter);
 				//laserBoard.Relay2Off();
 				
 				uint16_t data = 0;
@@ -395,7 +375,7 @@ void CLaserControlApp::Run()
 			GetVariable(VARIABLE_ADDR_DATAINDEX, 2);
 			_delay_ms(50);
 			
-			Database.MapDatabaseToRead(VARIABLE_ADDR_DATABASE, DGUS_DATABASE_ADDR + laserDiodeData.DatabasePageOffset * PROFILE_SIZE, 0x0C00);
+			Database.MapDatabaseToRead(VARIABLE_ADDR_DATABASE, DGUS_DATABASE_ADDR + (uint32_t)laserDiodeData.DatabasePageOffset * (uint32_t)PROFILE_SIZE, 0x0C00);
 			
 			/*if (laserDiodeData.DatabaseSelectionIndex != 13)
 			{				
@@ -414,12 +394,12 @@ void CLaserControlApp::Run()
 			
 			Database.MapDatabaseToRead(
 				VARIABLE_ADDR_PROFILE, 
-				DGUS_DATABASE_ADDR + (laserDiodeData.DatabasePageOffset + laserDiodeData.DatabaseSelectionIndex) * PROFILE_SIZE, 0x0100);
+				DGUS_DATABASE_ADDR + (uint32_t)(laserDiodeData.DatabasePageOffset + laserDiodeData.DatabaseSelectionIndex) * (uint32_t)PROFILE_SIZE, 0x0100);
 		break;
 		case APP_SAVEPROFILE:
 			Database.MapDatabaseToWrite(
 				VARIABLE_ADDR_PROFILE,
-				DGUS_DATABASE_ADDR + (laserDiodeData.DatabasePageOffset + laserDiodeData.DatabaseSelectionIndex) * PROFILE_SIZE, 0x0100);
+				DGUS_DATABASE_ADDR + (uint32_t)(laserDiodeData.DatabasePageOffset + laserDiodeData.DatabaseSelectionIndex) * (uint32_t)PROFILE_SIZE, 0x0100);
 		break;
 		case APP_UNMAPDATABASE:
 			Database.UnMap();
@@ -432,6 +412,7 @@ void CLaserControlApp::Run()
 	if (update)
 	{		
 		SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile], sizeof(DGUS_LASERPROFILE));
+		SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));
 		update = false;
 	}
 }
@@ -474,13 +455,20 @@ void CLaserControlApp::SetPictureId(uint16_t pic_id)
 	m_cpSender->WaitMODBUSTransmitter();
 }
 
+void CLaserControlApp::SetPictureIdAsync(uint16_t pic_id)
+{
+	uint16_t pic = swap(pic_id);
+	m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic, 2);
+	m_cpSender->WaitMODBUSTransmitter();
+}
+
 void CLaserControlApp::OnTimer()
 {
 	if (prepare)
 	{
 		if (m_wMillSec == 0)
 		{
-			m_wFlow = TCC1.CNT / 8;
+			m_wFlow = (TCC1.CNT * 10) / 8;
 			flowtimer.Reset();
 			
 			if (m_wSeconds == 0)
@@ -490,13 +478,13 @@ void CLaserControlApp::OnTimer()
 					OnTimeout();
 					/*player.SoundStart(1000, 1000, 2);
 					player.SoundStop();*/
-					player.SoundStart(261, 100, 2);
+					player.SoundStart(261, 100, 4);
 					player.SoundStop();
-					player.SoundStart(294, 100, 2);
+					player.SoundStart(294, 100, 4);
 					player.SoundStop();
-					player.SoundStart(329, 100, 2);
+					player.SoundStart(329, 100, 4);
 					player.SoundStop();
-					player.SoundStart(349, 100, 2);
+					player.SoundStart(349, 100, 4);
 					player.SoundStop();
 					
 					//player.beep(1000, 1000);
@@ -537,7 +525,7 @@ void CLaserControlApp::OnTimer()
 		{
 			m_wMillSec = 100;
 			
-			m_wFlow = TCC1.CNT / 8;
+			m_wFlow = (TCC1.CNT * 10) / 8;
 			flowtimer.Reset();
 		}
 		m_wMillSec-=10;
@@ -546,10 +534,19 @@ void CLaserControlApp::OnTimer()
 
 void CLaserControlApp::OnLaserTimer()
 {
+	laserCounter++;
+	
+	if (Profile == PROFILE_SINGLE)
+	{
+		laserTimer.Stop();
+		laserTimer.ChannelSet(TIMER_CHANNEL_A);
+		laserTimer.ChannelSet(TIMER_CHANNEL_B);
+	}
+	
 	if (laserTimerDutyCyclems > 100)
-		player.SoundStart(1000, 50, 0);
+		player.SoundStart(1000, 50, 2);
 	else
-		player.SoundStart(1000, laserTimerDutyCyclems/2, 0);
+		player.SoundStart(1000, laserTimerDutyCyclems/2, 2);
 	player.SoundStop();
 }
 
@@ -562,18 +559,16 @@ void CLaserControlApp::OnTimeout()
 
 void CLaserControlApp::OnPWMTimerOVF()
 {
-	PORTE.OUTCLR = PIN2_bm;
+	laserBoard.PWMOn();
 }
 
 void CLaserControlApp::OnPWMTimerCMP()
 {
-	PORTE.OUTSET = PIN2_bm;
+	laserBoard.PWMOff();
 }
 
 void CLaserControlApp::OnINT0()
 {
-	static bool first = true;
-	
 	switch (state)
 	{
 		case APP_WORKLIGHT:
@@ -581,17 +576,19 @@ void CLaserControlApp::OnINT0()
 		{
 			if ((PORTC.IN & 0x01) == 0)
 			{
-				if (first)
-				{
-					if (laserTimerDutyCycle != 0)
+				if (laserTimerDutyCycle != 0)
 					TCF0.CNT = laserTimerDutyCycle - 1;
 					
-					laserTimer.SetCOMPA(laserTimerDutyCycle);
-					laserTimer.SetCOMPB(laserTimerDutyCycle);
-					laserTimer.Start(laserTimerPeriod);
-					
-					first = false;
-				}
+				laserTimer.SetCOMPA(laserTimerDutyCycle);
+				laserTimer.SetCOMPB(laserTimerDutyCycle);
+				laserTimer.Start(laserTimerPeriod);
+				
+				/*//sei();
+				if (state != APP_WORKLIGHT)
+				{
+					SetPictureIdAsync(PICID_WORK_STARTED);
+					state = APP_WORKLIGHT;
+				}*/
 			}
 			else
 			{
@@ -599,12 +596,16 @@ void CLaserControlApp::OnINT0()
 				laserTimer.ChannelSet(TIMER_CHANNEL_A);
 				laserTimer.ChannelSet(TIMER_CHANNEL_B);
 				
-				first = true;
+				/*//sei();
+				if (state != APP_WORKPOWERON)
+				{
+					SetPictureIdAsync(PICID_WORK_POWERON);
+					state = APP_WORKPOWERON;
+				}*/
 			}
 		}
 		break;
 		default:
-			first = true;
 		break;
 	}
 }

@@ -140,6 +140,16 @@ void CLaserBoard::InitializeClock()
 	//-----------------------
 }
 
+void CLaserBoard::PWMOn()
+{
+	PORTE.OUTSET = PIN2_bm;
+}
+
+void CLaserBoard::PWMOff()
+{
+	PORTE.OUTCLR = PIN2_bm;
+}
+
 void CLaserBoard::Relay1On()
 {
 	PORTD.DIRCLR = PIN0_bm;

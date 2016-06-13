@@ -8,6 +8,7 @@
 // Xmega
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 
 // DGUS
 #include "DGUSGUI.h"
@@ -63,6 +64,9 @@ extern "C" void __cxa_pure_virtual()
 
 void SystemInitialize()
 {
+	//LASER_CNT_EEPROMADDR
+	//eeprom_write_dword((uint32_t*)LASER_CNT_EEPROMADDR, 0);
+	
 	cli();	/* Disable global interrupts */
 	
 	EVSYS.CH0MUX = EVSYS_CHMUX_PORTC_PIN4_gc;
@@ -100,11 +104,45 @@ void SystemInitialize()
 	
 	sei();	/* Enable global interrupts */
 }
+
+DGUS_PROFILE empty_record;
 	 
 int main(void)
-{	
+{
+	//eeprom_write_dword((uint32_t*)LASER_CNT_EEPROMADDR, 0);
 	// Initialization system
 	SystemInitialize();
+	
+	float x = 0.0f;
+	char empty_name[] = "Empty\0";
+	char empty_time[] = "00:00\0";
+	
+	empty_record.ID = 0;
+	ConvertData(empty_record.Name, empty_name, 6, 0);
+	ConvertData(empty_record.Time, empty_time, 6, 0);
+	empty_record.Power = 0;
+	
+	/*uint32_t flash_addr = DGUS_DATABASE_ADDR;
+	for (uint32_t i = 0; i < 16; i++)
+	{
+		// Initialize Empty database
+		for (uint32_t j = 0; j < 64; j++)
+		{
+			empty_record.ID = (uint16_t)(i * 64 + j);
+			sender.WriteDataToSRAM(0x0100 + j * 0x0100, (uint16_t*)&empty_record, (uint16_t)sizeof(empty_record));
+		}
+		
+		_delay_ms(200);
+		
+		Database.MapDatabaseToWrite(0x0100, flash_addr, 0x4000);
+		flash_addr += (uint32_t)0x4000;
+		
+		_delay_ms(1000);
+		
+		Database.UnMap();
+		
+		_delay_ms(200);
+	}*/
 	
 	// Startup delay (Beep "Imperial March")
 	//player.Play();
@@ -129,8 +167,8 @@ int main(void)
 		//App.FastRun();
 		
 		// Process application
-		static uint16_t prs = 0;
-		if ((prs++ % 100) == 0)
+		/*static uint16_t prs = 0;
+		if ((prs++ % 100) == 0)*/
 		{
 			App.Run();
 			
@@ -143,7 +181,8 @@ int main(void)
 			
 			if (temperature > 265)
 				laserBoard.Relay2On();
-			else
+			
+			if (temperature <255)
 				laserBoard.Relay2Off();			
 		}
     }

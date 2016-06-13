@@ -64,6 +64,8 @@ public:
 	// Port, Clock
 	void InitializeIO();
 	void InitializeClock();
+	void PWMOn();
+	void PWMOff();
 	
 	// Relays
 	void Relay1On();

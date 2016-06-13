@@ -73,7 +73,7 @@
 #define VARIABLE_ADDR_DATABASE	0x0100
 #define VARIABLE_ADDR_PROFILE	0x0D00
 #define PROFILE_SIZE			0x0100
-#define DGUS_DATABASE_ADDR		0x00900000
+#define DGUS_DATABASE_ADDR		0x00F00000
 
 typedef struct DGUS_PREPARETIMER_STRUCT
 {
@@ -130,6 +130,14 @@ typedef struct DGUS_LASERDIODE_STRUCT
 	// Icons
 	uint16_t coolIcon;
 } DGUS_LASERDIODE, *PDGUS_LASERDIODE;
+
+typedef struct DGUS_PROFILE_STRUCT
+{
+	uint16_t ID;
+	char Name[32];
+	char Time[32];
+	uint16_t Power;
+} DGUS_PROFILE, *PDGUS_PROFILE;
 
 void ConvertData(void* dst, void* src, uint16_t size, uint16_t offset = 0);
 uint16_t min(uint16_t x, uint16_t y);

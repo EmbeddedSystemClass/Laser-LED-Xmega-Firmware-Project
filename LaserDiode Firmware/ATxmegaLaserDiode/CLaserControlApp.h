@@ -31,6 +31,8 @@
 #include "LaserLib/CUSART.h"
 #include "LaserLib/sys_interrupts.h"
 
+#define LASER_CNT_EEPROMADDR	0x0001
+
 typedef enum APP_PROFILE_ENUM
 {
 	PROFILE_FAST	= 4,
@@ -85,6 +87,7 @@ public:
 	// helper methods
 	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
 	void SetPictureId(uint16_t pic_id);
+	void SetPictureIdAsync(uint16_t pic_id);
 	void GetVariable(uint16_t addr, uint16_t size);
 	void SetVariable(uint16_t addr, uint16_t* data, uint16_t size);
 	
@@ -121,6 +124,7 @@ private :
 	uint16_t laserTimerDutyCycle;
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
+	uint32_t laserCounter;
 	
 	// all laser settings
 	DGUS_LASERDIODE laserDiodeData;
