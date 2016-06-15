@@ -84,10 +84,11 @@ void SystemInitialize()
 	flowtimer.SetPeriod(65535);
 	flowtimer.Start(65535);
 	// TimerD1
-	pwmtimer.Initialize(WGM_SingleSlopePWM, CS_DIV64);
-	pwmtimer.Start(1024);
+	pwmtimer.Initialize(WGM_SingleSlopePWM, CS_DIV256);
+	//pwmtimer.Start(1024);
 	pwmtimer.SetCOMPA(512);
-	pwmtimer.EnableChannel(TIMER_CHANNEL_A);
+	laserBoard.PWMOn();
+	//pwmtimer.EnableChannel(TIMER_CHANNEL_A);
 	pwmtimer.SetOVFCallback(App.OnPWMTimerOVFStatic, &App, TC_OVFINTLVL_LO_gc);
 	pwmtimer.SetCOMPACallback(App.OnPWMTimerCMPStatic, &App, TC_CCAINTLVL_LO_gc);
 	
@@ -146,7 +147,7 @@ int main(void)
 	
 	// Startup delay (Beep "Imperial March")
 	//player.Play();
-	_delay_ms(3000);
+	_delay_ms(5000);
 	laserBoard.Relay1On();
 	_delay_ms(100);
 	//laserBoard.Relay1Off();
@@ -167,17 +168,17 @@ int main(void)
 		//App.FastRun();
 		
 		// Process application
-		/*static uint16_t prs = 0;
-		if ((prs++ % 100) == 0)*/
+		//static uint16_t prs = 0;
+		//if ((prs++ % 5) == 0)
 		{
 			App.Run();
 			
-			while (dacSPI.transmitterState() > 0);
-			dacSPI.Deinitialize();
+			//while (dacSPI.transmitterState() > 0);
+			//dacSPI.Deinitialize();
 			//_delay_ms(1);
 			temperature = D18B20.temp_18b20();
 			//_delay_ms(1);
-			dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
+			//dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 			
 			if (temperature > 265)
 				laserBoard.Relay2On();

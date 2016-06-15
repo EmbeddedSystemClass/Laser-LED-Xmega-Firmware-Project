@@ -68,6 +68,7 @@ void CLaserBoard::InitializeIO()
 	// Configure all pins to "wired and"
 	PORTD.PIN0CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTD.PIN4CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTD.PIN5CTRL = PORT_OPC_TOTEM_gc;
 	
 	PORTD.OUT = 0;//PIN0_bm;
 	

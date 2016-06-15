@@ -53,6 +53,7 @@ void CTimerF::Start(uint16_t period)
 {
 	// Set period of timer
 	TCF0.PER = period;
+	//TCF0.CNT = 0;
 	
 	// Start timer
 	TCF0.CTRLA = (TCF0.CTRLA & ~TC0_CLKSEL_gm) | clockSrc;

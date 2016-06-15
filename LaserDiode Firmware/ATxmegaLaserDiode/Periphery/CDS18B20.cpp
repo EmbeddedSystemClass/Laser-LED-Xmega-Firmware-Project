@@ -25,13 +25,13 @@ CDS18B20::~CDS18B20()
 
 bool CDS18B20::w1_find()
 {
-	PORTE.DIRSET = PIN6_bm;	// pull down 1-wire bus
+	PORTD.DIRSET = PIN7_bm;	// pull down 1-wire bus
 	_delay_us(485);			// wait for 480 us
-	PORTE.DIRCLR = PIN6_bm; // 1-wire bus pull up
+	PORTD.DIRCLR = PIN7_bm; // 1-wire bus pull up
 	_delay_us(65);			// wait for 65 us
 	
 	bool result;
-	if((PORTE.IN & PIN6_bm) == 0x00)
+	if((PORTD.IN & PIN7_bm) == 0x00)
 		result = true;
 	else
 		result = false;
@@ -46,17 +46,17 @@ void CDS18B20::w1_sendcmd(unsigned char cmd)
 	{
 		if((cmd & (1<<i)) == 1<<i)
 		{
-			PORTE.DIRSET = PIN6_bm;
+			PORTD.DIRSET = PIN7_bm;
 			_delay_us(2);
-			PORTE.DIRCLR = PIN6_bm;
+			PORTD.DIRCLR = PIN7_bm;
 			_delay_us(65);
 		}
 		else
 		{
 			
-			PORTE.DIRSET = PIN6_bm;
+			PORTD.DIRSET = PIN7_bm;
 			_delay_us(65);
-			PORTE.DIRCLR = PIN6_bm;
+			PORTD.DIRCLR = PIN7_bm;
 			_delay_us(5);
 		}
 	}
@@ -67,11 +67,11 @@ unsigned char CDS18B20::w1_receive_byte()
 	unsigned char data=0;
 	for(unsigned char i = 0; i < 8; i++)
 	{
-		PORTE.DIRSET = PIN6_bm;
+		PORTD.DIRSET = PIN7_bm;
 		_delay_us(2);
-		PORTE.DIRCLR = PIN6_bm;
+		PORTD.DIRCLR = PIN7_bm;
 		_delay_us(10);
-		if((PORTE.IN & PIN6_bm) == 0x00)
+		if((PORTD.IN & PIN7_bm) == 0x00)
 			data &= ~(1<<i);
 		else
 			data |= 1<<i;
@@ -107,6 +107,6 @@ int CDS18B20::temp_18b20()
 
 void CDS18B20::Initialize()
 {
-	PORTE.OUTCLR = PIN6_bm;
-	PORTE.PIN6CTRL = PORT_OPC_TOTEM_gc;// | PORT_SRLEN_bm;
+	PORTD.OUTCLR = PIN7_bm;
+	PORTD.PIN7CTRL = PORT_OPC_TOTEM_gc;// | PORT_SRLEN_bm;
 }

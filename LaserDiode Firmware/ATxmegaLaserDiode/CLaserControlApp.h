@@ -52,17 +52,24 @@ typedef enum APP_STATE_ENUM
 	APP_WORKREADY,
 	APP_WORKPOWERON,
 	APP_WORKLIGHT,
+	APP_WORKTEMPERWAIT,
 	
 	// Events
 	APP_WORKOnReady,
 	APP_WORKOnPowerOn,
 	APP_WORKOnPowerOff,
+	APP_OnPhototypeSelect,
 	
 	// Database
 	APP_DATABASE,
 	APP_READPROFILE,
 	APP_SAVEPROFILE,
-	APP_UNMAPDATABASE
+	APP_UNMAPDATABASE,
+	
+	// Errors
+	APP_POWERERR,
+	APP_FLOWERR,
+	APP_TEMPERERR
 } APP_STATE, *PAPP_STATE;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -98,12 +105,18 @@ public:
 protected :
 	void OnTimer();
 	void OnLaserTimer();
+	void OnLaserTimerStop();
 	void OnTimeout();
 	void OnPWMTimerOVF();
 	void OnPWMTimerCMP();
 	void OnINT0();
 	static void OnTimerStatic(void* sender);
+	static void OnLaserTimerStopStatic(void* sender);
 	static void OnLaserTimerStatic(void* sender);
+	
+	void MelaninPreset(uint16_t melanin);
+	void PhototypePreset(uint16_t phototype);
+	bool CheckLimits(uint16_t &freq, uint16_t &duration, APP_PROFILE mode);
 	
 private :
 	// application state
@@ -112,8 +125,13 @@ private :
 	
 	// Registers
 	volatile uint8_t PIC_ID;
+	volatile uint8_t PIC_ID_last;
 	volatile bool update;
 	volatile bool prepare;
+	
+	// Limits
+	volatile uint16_t m_wMaxEnergy;
+	volatile uint16_t m_wMaxDuration;
 	
 	// variables
 	volatile DGUS_LASERPROFILE	m_structLaserProfile[4];
@@ -138,6 +156,8 @@ private :
 	
 	// Flow control
 	volatile uint16_t m_wFlow;
+	// Single pulse dead time counter
+	volatile uint16_t m_wDeadTime;
 	
 	// Modules
 	CMBSender* m_cpSender;
