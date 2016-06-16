@@ -21,6 +21,10 @@ public:
 	void w1_sendcmd(unsigned char cmd);
 	unsigned char w1_receive_byte();
 	int temp_18b20();
+	
+	int temperature;
+	bool req;
+	bool find;
 }; //CDS18B20
 
 #endif //__CDS18B20_H__

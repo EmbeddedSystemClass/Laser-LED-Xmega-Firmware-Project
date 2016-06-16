@@ -114,7 +114,7 @@ int main(void)
 	// Initialization system
 	SystemInitialize();
 	
-	float x = 0.0f;
+	/*float x = 0.0f;
 	char empty_name[] = "Empty\0";
 	char empty_time[] = "00:00\0";
 	
@@ -123,7 +123,7 @@ int main(void)
 	ConvertData(empty_record.Time, empty_time, 6, 0);
 	empty_record.Power = 0;
 	
-	/*uint32_t flash_addr = DGUS_DATABASE_ADDR;
+	uint32_t flash_addr = DGUS_DATABASE_ADDR;
 	for (uint32_t i = 0; i < 16; i++)
 	{
 		// Initialize Empty database
@@ -176,7 +176,11 @@ int main(void)
 			//while (dacSPI.transmitterState() > 0);
 			//dacSPI.Deinitialize();
 			//_delay_ms(1);
-			temperature = D18B20.temp_18b20();
+			
+			static uint16_t prs = 0;
+			if ((prs++ % 15) == 0)
+				temperature = D18B20.temp_18b20();
+			
 			//_delay_ms(1);
 			//dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 			

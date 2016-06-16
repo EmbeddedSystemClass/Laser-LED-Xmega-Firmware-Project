@@ -84,29 +84,49 @@ int CDS18B20::temp_18b20()
 {
 	unsigned char data[2];
 	int temp = 0;
-	if(w1_find())
+	
+	if (req)
 	{
-		w1_sendcmd(0xcc);	//skip ROM
-		w1_sendcmd(0x44);	//start conversion
-		_delay_ms(750);		//wait for conversion 750 ms
-		w1_find();			//send Presence & Reset
-		w1_sendcmd(0xcc);
-		w1_sendcmd(0xbe);	//read temperature
-		data[0] = w1_receive_byte();
-		data[1] = w1_receive_byte();
-		
-		temp = data[1];
-		temp = temp<<8;
-		temp |= data[0];
-		
-		temp *= 0.625;
+		if(w1_find())
+		{
+			w1_sendcmd(0xcc);	//skip ROM
+			w1_sendcmd(0x44);	//start conversion
+			find = true;
+		}
+		else
+			find = false;
+	}
+	else
+	{
+		if (find)
+		{
+			w1_find();
+			w1_sendcmd(0xcc);
+			w1_sendcmd(0xbe);	//read temperature
+			data[0] = w1_receive_byte();
+			data[1] = w1_receive_byte();
+			
+			temp = data[1];
+			temp = temp<<8;
+			temp |= data[0];
+			
+			temp *= 0.625;
+			
+			temperature = temp;
+		}
 	}
 	
-	return temp;
+	req = !req;
+	
+	return temperature;
 }
 
 void CDS18B20::Initialize()
 {
 	PORTD.OUTCLR = PIN7_bm;
 	PORTD.PIN7CTRL = PORT_OPC_TOTEM_gc;// | PORT_SRLEN_bm;
+	
+	temperature = 0;
+	find = false;
+	req = true;
 }

@@ -25,7 +25,7 @@ extern CSoundPlayer player;
 extern CSPI dacSPI;
 extern int temperature;
 
-#define FLOW_CONTROL
+//#define FLOW_CONTROL
 
 uint16_t MinDurationTable[11] = {100, 100,  20,  20, 20, 10, 10, 10, 10, 10, 10};
 uint16_t MaxDurationTable[11] = {400, 400, 120, 120, 100, 80, 70, 70, 60, 50, 40};
@@ -196,8 +196,8 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	PIC_ID = 0;
 	update = false;
 	prepare = false;
-	m_wSetMin = 1;
-	m_wSetSec = 40;
+	m_wSetMin = 0;
+	m_wSetSec = 10;
 	m_wMillSec = 0;
 	m_wMinutes = m_wSetMin;
 	m_wSeconds = m_wSetSec;
@@ -286,6 +286,27 @@ void CLaserControlApp::Run()
 	
 	_delay_ms(10);
 	
+	// show sensors
+	if ((state & 0xFFF) != 0)
+	{
+		SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
+		if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
+		if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
+		if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
+		SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
+		SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
+	}
+	
+	// temperature check
+	if ((state & (APP_WORKPOWERON | APP_WORKLIGHT | APP_WORKREADY)) != 0)
+	{
+		if (temperature > 300)
+		{
+			SetPictureId(PICID_WORK_ERRORHEATING);
+			PIC_ID_last = PIC_ID;
+		}
+	}
+	
 	switch (state)
 	{		
 		// DGUS State
@@ -311,14 +332,9 @@ void CLaserControlApp::Run()
 				GetVariable(VARIABLE_ADDR_PHOTOTYPE, 2);
 				_delay_ms(10);
 				
+				laserDiodeData.PulseCounter = swap32(laserCounter);
 				laserDiodeData.temperature = temperature;
 				laserDiodeData.flow = m_wFlow;
-				SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-				if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-				if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-				if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-				SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-				SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
 				
 				if (phototype != laserDiodeData.phototype)
 				{
@@ -350,21 +366,11 @@ void CLaserControlApp::Run()
 					laserPower = m_wMaxEnergy;
 					update = true;
 				}*/
-				
-				//SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile],  sizeof(DGUS_LASERPROFILE));
-				//SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));
 			}
 		break;
 		case APP_WORKPREPARE:
 			{
 				DGUS_PREPARETIMER timervar;
-				
-				SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-				if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-				if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-				if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-				SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-				SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
 				
 				if (prepare)
 				{
@@ -384,14 +390,7 @@ void CLaserControlApp::Run()
 				DGUS_PREPARETIMER timervar;
 				timervar.timer_minutes = temperature / 10;
 				timervar.timer_seconds = temperature % 10;
-				
 				SetVariable(STRUCT_ADDR_PREPARETIMER_DATA, (uint16_t*)&timervar, sizeof(timervar));
-				SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-				if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-				if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-				if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-				SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-				SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
 				
 				m_wMinutes = m_wSetMin;
 				m_wSeconds = m_wSetSec;
@@ -402,39 +401,17 @@ void CLaserControlApp::Run()
 			}
 		break;
 		case APP_WORKREADY:
-			{
-				SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-				if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-				if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-				if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-				SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-				SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-				
+			{				
 				if (temperature > 300)
 				{
 					SetPictureId(PICID_WORK_ERRORHEATING);
 					PIC_ID_last = PIC_ID;
 				}
-/*
-#ifdef FLOW_CONTROL
-				if (m_wFlow < 30)
-				{
-					SetPictureId(PICID_WORK_ERRORFLOW);
-					PIC_ID_last = PIC_ID;
-				}
-#endif*/
 			}
 		break;
 		case APP_WORKLIGHT:
 		case APP_WORKPOWERON:
-			{
-				SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-				if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-				if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-				if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-				SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-				SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-				
+			{				
 				uint16_t data = ((uint16_t)((laserPower * 640) / 63)) << 2;  // (laserPower * 1024) / 1000)
 				dacSPI.Send((uint8_t*)&data, sizeof(data));
 							
@@ -458,11 +435,6 @@ void CLaserControlApp::Run()
 				uint32_t cnt = swap32(laserCounter);
 				SetVariable(VARIABLE_ADDR_LASERCNT, (uint16_t*)&cnt,  4);
 				
-				if (temperature > 300)
-				{
-					SetPictureId(PICID_WORK_ERRORHEATING);
-					PIC_ID_last = PIC_ID;
-				}
 #ifdef FLOW_CONTROL
 				if (m_wFlow < 30)
 				{
@@ -472,27 +444,13 @@ void CLaserControlApp::Run()
 #endif
 			}
 		break;
-		case APP_FLOWERR:
-			SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-			if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-			if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-			if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-			SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-			SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-			
+		case APP_FLOWERR:			
 			laserBoard.LaserPowerOff();
 			
 			if (m_wFlow > 60)
 				SetPictureId(PICID_WORKOnReady);
 		break;
-		case APP_TEMPERERR:
-			SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-			if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-			if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-			if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-			SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-			SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-			
+		case APP_TEMPERERR:			
 			laserBoard.LaserPowerOff();
 			
 			prepare = false;
@@ -502,14 +460,7 @@ void CLaserControlApp::Run()
 				SetPictureId(PIC_ID_last);
 			}
 		break;
-		case APP_POWERERR:
-			SetVariable(VARIABLE_ADDR_TEMPER, (uint16_t*)&temperature, 2);
-			if (m_wFlow < 20) laserDiodeData.coolIcon = 1;
-			if (m_wFlow >= 20 && m_wFlow <= 40) laserDiodeData.coolIcon = 2;
-			if (m_wFlow > 40) laserDiodeData.coolIcon = 3;
-			SetVariable(VARIABLE_ADDR_COOLICON, (uint16_t*)&laserDiodeData.coolIcon, 2);
-			SetVariable(VARIABLE_ADDR_FLOW, (uint16_t*)&m_wFlow, 2);
-			
+		case APP_POWERERR:			
 			laserBoard.LaserPowerOff();
 			
 			if ((PORTD.IN & PIN5_bm) != 0)
@@ -617,10 +568,7 @@ void CLaserControlApp::Run()
 		break;
 	}
 	
-	/*if ((Profile != APP_WORKPREPARE) && (Profile != APP_WORKTEMPERWAIT))
-		prepare = false;*/
-	
-	if ((PORTD.IN & PIN5_bm) == 0)
+	if ((PORTD.IN & PIN6_bm) == 0)
 		{
 			PIC_ID_last = PIC_ID;
 			SetPictureId(PICID_WORK_ERROR1);
@@ -628,8 +576,6 @@ void CLaserControlApp::Run()
 	
 	if (update)
 	{		
-		/*SetVariable(STRUCT_ADDR_LASERPROFILE_DATA, (uint16_t*)&m_structLaserProfile[Profile], sizeof(DGUS_LASERPROFILE));
-		SetVariable(STRUCT_ADDR_LASERPROSETTINGS_DATA, (uint16_t*)&laserDiodeData.lasersettings,  sizeof(DGUS_LASERSETTINGS));*/
 		SetVariable(STRUCT_ADDR_LASERDIODE_DATA, (uint16_t*)&laserDiodeData, sizeof(DGUS_LASERDIODE));
 		update = false;
 	}
@@ -696,7 +642,7 @@ void CLaserControlApp::OnTimer()
 			{
 				if (m_wMinutes == 0)
 				{
-					if (Profile == APP_WORKREADY)
+					if (state == APP_WORKPREPARE)
 					{
 						/*player.SoundStart(1000, 1000, 2);
 						player.SoundStop();*/
@@ -719,7 +665,9 @@ void CLaserControlApp::OnTimer()
 			}
 			m_wMillSec = 100; // Every 10 ms
 			m_wSeconds--;
-			/*if (m_wMinutes == 0 && m_wSeconds < 10)
+			
+			// ****************** Tick sound
+			if (m_wMinutes == 0 && m_wSeconds < 10 && state == APP_WORKPREPARE)
 			{
 				if (m_wMinutes == 0 && m_wSeconds < 5)
 				{
@@ -739,7 +687,8 @@ void CLaserControlApp::OnTimer()
 				player.SoundStart(1000, 25, 2);
 				player.SoundStop();
 				//player.beep(1000, 25);
-			}*/
+			}
+			// ************************************
 		}
 		m_wMillSec-=10;
 	}
