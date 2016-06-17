@@ -28,9 +28,9 @@ void CLaserBoard::InitializeIO()
 	
 	// Configure all pins to "wired and"
 	PORTC.PIN0CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm | PORT_ISC_BOTHEDGES_gc;
-	PORTC.PIN1CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
-	PORTC.PIN2CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
-	PORTC.PIN3CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
+	PORTC.PIN1CTRL = /*PORT_OPC_WIREDAND_gc |*/ PORT_SRLEN_bm;
+	PORTC.PIN2CTRL = /*PORT_OPC_WIREDAND_gc |*/ PORT_SRLEN_bm;
+	PORTC.PIN3CTRL = /*PORT_OPC_WIREDAND_gc |*/ PORT_SRLEN_bm;
 	PORTC.PIN4CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
 	PORTC.PIN5CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
 	PORTC.PIN6CTRL = PORT_OPC_WIREDAND_gc | PORT_SRLEN_bm;
@@ -48,7 +48,7 @@ void CLaserBoard::InitializeIO()
 	
 	// Configure all pins of PWM to inverted
 	PORTF.PIN0CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
-	PORTF.PIN1CTRL = /*PORT_INVEN_bm |*/ PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+	PORTF.PIN1CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN2CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN3CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN4CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
@@ -149,6 +149,36 @@ void CLaserBoard::PWMOn()
 void CLaserBoard::PWMOff()
 {
 	PORTE.OUTCLR = PIN2_bm;
+}
+
+void CLaserBoard::REDOn()
+{
+	PORTF.OUTSET = PIN1_bm;	
+}
+
+void CLaserBoard::REDOff()
+{
+	PORTF.OUTCLR = PIN1_bm;
+}
+
+void CLaserBoard::GRNOn()
+{
+	PORTF.OUTSET = PIN2_bm;
+}
+
+void CLaserBoard::GRNOff()
+{
+	PORTF.OUTCLR = PIN2_bm;
+}
+
+void CLaserBoard::BLUOn()
+{
+	PORTF.OUTSET = PIN3_bm;
+}
+
+void CLaserBoard::BLUOff()
+{
+	PORTF.OUTCLR = PIN3_bm;
 }
 
 void CLaserBoard::Relay1On()

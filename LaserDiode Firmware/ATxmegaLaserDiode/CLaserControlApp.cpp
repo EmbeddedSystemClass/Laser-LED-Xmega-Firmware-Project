@@ -9,16 +9,16 @@
 #include "CLaserControlApp.h"
 #include "Periphery/CSoundPlayer.h"
 #include "Periphery/CTimerC1.h"
-#include "Periphery/CTimerD1.h"
+#include "Periphery/CTimerD.h"
 #include "CDGUSDatabase.h"
 #include <string.h>
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-CTimerC timer;
-CTimerF laserTimer;
+extern CTimerC timer;
+extern CTimerF laserTimer;
 extern CTimerC1 flowtimer;
-extern CTimerD1 pwmtimer;
+extern CTimerD pwmtimer;
 extern CDGUSDatabase Database;
 extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
@@ -40,6 +40,10 @@ uint16_t PowerTable[110]      ={500,	480,	450,	432,	420,	411,	405,	0,		0,		0,		0
 								500,	500,	500,	500,	490,	485,	0,		0,		0,		0,		0,
 								500,	500,	500,	500,	490,	0,		0,		0,		0,		0,		0,
 								500,	500,	500,	500,	0,		0,		0,		0,		0,		0,		0};
+								
+uint16_t tableRED[7] = {1000, 1000, 10, 10, 10, 1000, 10};
+uint16_t tableGRN[7] = {10, 1000, 1000, 10, 1000, 10, 10};
+uint16_t tableBLU[7] = {10, 10, 1000, 1000, 10, 10, 1000};
 								
 // default constructor
 CLaserControlApp::CLaserControlApp()
@@ -186,16 +190,11 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	// GUI class initialization
 	m_cpSender = sender;
 	
-	// Initialize prepare timer
-	timer.Initialize(WGM_Normal, CS_DIV256);
-	timer.SetPeriod(25000); // Every 10 ms
-	timer.SetOVFCallback(OnTimerStatic, this, TC_OVFINTLVL_LO_gc); // Enable interrupt
-	//timer.Start(25000);
-	
 	// Set global variables
 	PIC_ID = 0;
 	update = false;
 	prepare = false;
+	peltier_en = false;
 	m_wSetMin = 0;
 	m_wSetSec = 10;
 	m_wMillSec = 0;
@@ -246,13 +245,13 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
 	laserTimer.SetPeriod(laserTimerPeriod);		// 10 Hz
 	laserTimer.SetCOMPA(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
-	laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	//laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
 	laserTimer.SetOVFCallback(OnLaserTimerStopStatic, this, TC_OVFINTLVL_LO_gc);
 	laserTimer.SetCOMPACallback(OnLaserTimerStatic, this, TC_CCAINTLVL_LO_gc);
 	laserTimer.EnableChannel(TIMER_CHANNEL_A);	// Enable Laser TTL Gate
-	laserTimer.EnableChannel(TIMER_CHANNEL_B);	// Enable Laser TTL Gate
+	//laserTimer.EnableChannel(TIMER_CHANNEL_B);	// Enable Laser TTL Gate
 	laserTimer.ChannelSet(TIMER_CHANNEL_A);
-	laserTimer.ChannelSet(TIMER_CHANNEL_B);
+	//laserTimer.ChannelSet(TIMER_CHANNEL_B);
 }
 
 void CLaserControlApp::Start()
@@ -475,7 +474,8 @@ void CLaserControlApp::Run()
 				
 				uint16_t coolpwm = laserDiodeData.cooling * 204;
 				pwmtimer.SetCOMPA(coolpwm);
-				pwmtimer.Start(1024);
+				//pwmtimer.Start(1024);
+				peltier_en = true;
 				
 				prepare = true;
 				m_wMinutes = m_wSetMin;
@@ -512,7 +512,8 @@ void CLaserControlApp::Run()
 				laserTimer.ChannelSet(TIMER_CHANNEL_A);
 				laserTimer.ChannelSet(TIMER_CHANNEL_B);
 				laserBoard.LaserPowerOff();
-				pwmtimer.Stop();
+				//pwmtimer.Stop();
+				peltier_en = false;
 				laserBoard.PWMOn(); // Cooling off
 				eeprom_write_dword((uint32_t*)LASER_CNT_EEPROMADDR, laserCounter);
 				//laserBoard.Relay2Off();
@@ -735,12 +736,62 @@ void CLaserControlApp::OnTimeout()
 
 void CLaserControlApp::OnPWMTimerOVF()
 {
-	laserBoard.PWMOff();
+	if (peltier_en)
+	{
+		laserBoard.PWMOff();
+	}
+	laserBoard.REDOff();
+	laserBoard.GRNOff();
+	laserBoard.BLUOff();
+	
+	static int pos = 0;
+	static int delay = 1000;
+	static uint16_t red = 0;
+	static uint16_t grn = 0;
+	static uint16_t blu = 0;
+	
+	if (tableGRN[pos] > grn) grn++;
+	if (tableGRN[pos] < grn) grn--;
+	
+	if (tableRED[pos] > red) red++;
+	if (tableRED[pos] < red) red--;
+	
+	if (tableBLU[pos] > blu) blu++;
+	if (tableBLU[pos] < blu) blu--;
+	
+	if (tableBLU[pos] == blu && tableRED[pos] == red && tableGRN[pos] == grn)
+	{
+		if (delay == 0)
+		{
+			pos++;
+			if (pos == 7) pos = 0;
+			delay = 1000;
+		}
+		delay --;
+	}
+	
+	pwmtimer.SetCOMPB(red);
+	pwmtimer.SetCOMPC(grn);
+	pwmtimer.SetCOMPD(blu);
 }
 
 void CLaserControlApp::OnPWMTimerCMP()
 {
-	laserBoard.PWMOn();
+	if (peltier_en)
+		laserBoard.PWMOn();
+}
+
+void CLaserControlApp::OnPWMTimerRED()
+{
+	laserBoard.REDOn();
+}
+void CLaserControlApp::OnPWMTimerGRN()
+{
+	laserBoard.GRNOn();
+}
+void CLaserControlApp::OnPWMTimerBLU()
+{
+	laserBoard.BLUOn();
 }
 
 void CLaserControlApp::OnINT0()
@@ -841,6 +892,23 @@ void CLaserControlApp::OnPWMTimerCMPStatic(void* sender)
 {
 	CLaserControlApp* app = (CLaserControlApp*)sender;
 	app->OnPWMTimerCMP();
+}
+
+void CLaserControlApp::OnPWMTimerREDStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWMTimerRED();
+}
+
+void CLaserControlApp::OnPWMTimerGRNStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWMTimerGRN();
+}
+void CLaserControlApp::OnPWMTimerBLUStatic(void* sender)
+{
+	CLaserControlApp* app = (CLaserControlApp*)sender;
+	app->OnPWMTimerBLU();
 }
 
 void CLaserControlApp::OnINT0Static(void* sender)

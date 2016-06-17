@@ -100,7 +100,13 @@ public:
 	
 	static void OnPWMTimerOVFStatic(void* sender);
 	static void OnPWMTimerCMPStatic(void* sender);
+	static void OnPWMTimerREDStatic(void* sender);
+	static void OnPWMTimerGRNStatic(void* sender);
+	static void OnPWMTimerBLUStatic(void* sender);
 	static void OnINT0Static(void* sender);
+	static void OnTimerStatic(void* sender);
+	static void OnLaserTimerStopStatic(void* sender);
+	static void OnLaserTimerStatic(void* sender);
 	
 protected :
 	void OnTimer();
@@ -109,10 +115,10 @@ protected :
 	void OnTimeout();
 	void OnPWMTimerOVF();
 	void OnPWMTimerCMP();
+	void OnPWMTimerRED();
+	void OnPWMTimerGRN();
+	void OnPWMTimerBLU();
 	void OnINT0();
-	static void OnTimerStatic(void* sender);
-	static void OnLaserTimerStopStatic(void* sender);
-	static void OnLaserTimerStatic(void* sender);
 	
 	void MelaninPreset(uint16_t melanin);
 	void PhototypePreset(uint16_t phototype);
@@ -128,6 +134,7 @@ private :
 	volatile uint8_t PIC_ID_last;
 	volatile bool update;
 	volatile bool prepare;
+	volatile bool peltier_en;
 	
 	// Limits
 	volatile uint16_t m_wMaxEnergy;

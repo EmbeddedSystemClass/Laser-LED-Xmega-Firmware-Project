@@ -41,9 +41,11 @@
 
 /* Global variables */
 CSPI dacSPI;
-CTimerD timeout;
+CTimerC timer;
+CTimerD1 timeout;
+CTimerF laserTimer;
 CTimerC1 flowtimer;
-CTimerD1 pwmtimer;
+CTimerD pwmtimer; // Cooling PWM
 CDGUSUSART usart;
 CDGUSDatabase Database;
 CMBSender sender;
@@ -76,21 +78,35 @@ void SystemInitialize()
 	D18B20.Initialize();
 	// TimerE0, TimerE1
 	player.Initialize();
-	// TimerD0
+	// TimerC0 Initialize prepare timer
+	timer.Initialize(WGM_Normal, CS_DIV256);
+	timer.SetPeriod(25000); // Every 10 ms
+	timer.SetOVFCallback(App.OnTimerStatic, &App, TC_OVFINTLVL_LO_gc); // Enable interrupt
+	// TimerD1
 	timeout.Initialize(WGM_Normal, CS_DIV1024);
 	timeout.SetPeriod(31250); //1s timeout
 	// TimerC1
 	flowtimer.Initialize(WGM_Normal, CS_EventChannel0);
 	flowtimer.SetPeriod(65535);
 	flowtimer.Start(65535);
-	// TimerD1
-	pwmtimer.Initialize(WGM_SingleSlopePWM, CS_DIV256);
-	//pwmtimer.Start(1024);
+	// TimerD0
+	pwmtimer.Initialize(WGM_SingleSlopePWM, CS_DIV64);//CS_DIV256);
 	pwmtimer.SetCOMPA(512);
 	laserBoard.PWMOn();
+	laserBoard.REDOn();
+	laserBoard.GRNOn();
+	laserBoard.BLUOn();
 	//pwmtimer.EnableChannel(TIMER_CHANNEL_A);
 	pwmtimer.SetOVFCallback(App.OnPWMTimerOVFStatic, &App, TC_OVFINTLVL_LO_gc);
 	pwmtimer.SetCOMPACallback(App.OnPWMTimerCMPStatic, &App, TC_CCAINTLVL_LO_gc);
+	// Set RGB Led control
+	pwmtimer.SetCOMPB(256);
+	pwmtimer.SetCOMPC(512);
+	pwmtimer.SetCOMPD(768);
+	pwmtimer.SetCOMPBCallback(App.OnPWMTimerREDStatic, &App, TC_CCBINTLVL_HI_gc);
+	pwmtimer.SetCOMPCCallback(App.OnPWMTimerGRNStatic, &App, TC_CCCINTLVL_HI_gc);
+	pwmtimer.SetCOMPDCallback(App.OnPWMTimerBLUStatic, &App, TC_CCDINTLVL_HI_gc);
+	pwmtimer.Start(1024);
 	
 	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);
 	usart.Initialize(BAUD_115200_ERM0P1, PARITY_DISABLE, STOPBITS_1BIT, true);

@@ -17,7 +17,7 @@ CMBSender::CMBSender()
 }
 
 
-void CMBSender::Initialize(CTimer* timer, CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize, uint16_t timeout)
+void CMBSender::Initialize(CTimer1* timer, CUSART* usart, CMBEventsHandler *handler, uint16_t rx_bufSize, uint16_t tx_bufSize, uint16_t timeout)
 {
 	rx_bufferSize = rx_bufSize;
 	tx_bufferSize = tx_bufSize;
