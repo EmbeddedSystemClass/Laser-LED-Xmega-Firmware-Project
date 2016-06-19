@@ -1,0 +1,17 @@
+Added Component: Designator=P_LED(HDR1X2)
+Added Component: Designator=Q4(SOT23)
+Added Component: Designator=R?(RES0805)
+Added Pin To Net: NetName=VCC5V Pin=P_LED-2
+Added Pin To Net: NetName=GND Pin=Q4-2
+Added Pin To Net: NetName=NetP_LED_1 Pin=P_LED-1
+Added Pin To Net: NetName=NetP_LED_1 Pin=Q4-3
+Added Net: Name=NetP_LED_1
+Added Pin To Net: NetName=NetQ4_1 Pin=Q4-1
+Added Pin To Net: NetName=NetQ4_1 Pin=R?-2
+Added Net: Name=NetQ4_1
+Added Pin To Net: NetName=ROLL_LED Pin=R?-1
+Added Pin To Net: NetName=ROLL_LED Pin=U4-42
+Added Net: Name=ROLL_LED
+Added Member To Class: ClassName=Xmega Member=Component P_LED Header 2
+Added Member To Class: ClassName=Xmega Member=Component Q4 BC847
+Added Member To Class: ClassName=Xmega Member=Component R? ChipRes

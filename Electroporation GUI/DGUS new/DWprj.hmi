@@ -1,0 +1,79 @@
+[INIT]
+VARCount=64
+PICFIX=1
+SCREENDSIZE=800X600
+SPADDRESS=5000
+[CMD]
+CMD0=0080=À
+CMD1=0081=Á
+CMD2=0082=Â
+CMD3=0083=Ã
+CMD4=0084=Ä
+CMD5=0085=Å
+CMD6=0086=Æ
+CMD7=0087=Ç
+CMD8=0088=È
+CMD9=0089=É
+CMD10=008A=Ê
+CMD11=008B=Ë
+CMD12=008C=Ì
+CMD13=008D=Í
+CMD14=008E=Î
+CMD15=008F=Ï
+CMD16=0090=Ð
+CMD17=0091=Ñ
+CMD18=0092=Ò
+CMD19=0093=Ó
+CMD20=0094=Ô
+CMD21=0095=Õ
+CMD22=0096=Ö
+CMD23=0097=×
+CMD24=0098=Ø
+CMD25=0099=Ù
+CMD26=009A=Ú
+CMD27=009B=Û
+CMD28=009C=Ü
+CMD29=009D=Ý
+CMD30=009E=Þ
+CMD31=009F=ß
+[IMG]
+0=0_Logo.bmp
+1=1 Main menu RU.bmp
+2=2 Main menu RU (pressed).bmp
+3=3 Language menu RU.bmp
+4=4 Language menu RU (pressed).bmp
+5=5 Database RU.bmp
+6=6 Database RU (pressed).bmp
+7=7 ProfilePopup RU.bmp
+8=8 ProfilePopup RU (pressed).bmp
+9=9 Edit profile RU.bmp
+10=10 Edit profile RU (pressed).bmp
+11=11 Save profile RU.bmp
+12=12 Save profile RU (pressed).bmp
+13=13 Profile Keyboard RU.bmp
+14=14 Profile Keyboard RU (pressed).bmp
+15=15 Profile Keyboard RU Capslock.bmp
+16=16 Profile Keyboard RU Capslock (pressed).bmp
+17=17 Profile Keyboard EN.bmp
+18=18 Profile Keyboard EN (pressed).bmp
+19=19 Profile Keyboard EN Capslock.bmp
+20=20 Profile Keyboard EN Capslock (pressed).bmp
+21=21 New profile.bmp
+22=22 New profile (pressed).bmp
+23=23 Setup RU.bmp
+24=24 Setup RU (pressed).bmp
+25=25 Timer RU.bmp
+26=26 TimerStoped RU.bmp
+27=27 Timer RU (pressed).bmp
+28=28 OnStart RU.bmp
+29=29 OnHL RU.bmp
+30=30 OnPause RU.bmp
+31=31 OnRestart RU.bmp
+32=32 OnStop RU.bmp
+33=33 OnTimerStart RU.bmp
+34=34 OnTimerSave RU.bmp
+35=35 Service menu RU.bmp
+36=36 Service menu RU (pressed).bmp
+37=37 Password RU.bmp
+38=38 Password RU (pressed).bmp
+39=39 Login RU.bmp

@@ -1,0 +1,1155 @@
+Archive member included to satisfy reference by file (symbol)
+
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+                              CLaserControlApp.o (__udivmodqi4)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+                              CLaserControlApp.o (__udivmodhi4)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+                              C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o (exit)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+                              CDGUSUSART.o (__do_copy_data)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+                              CLaserControlApp.o (__do_clear_bss)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+                              main.o (__do_global_ctors)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+                              main.o (__do_global_dtors)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+                              CDGUSDatabase.o (__bswapsi2)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+                              c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o) (__tablejump2__)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+                              MODBUS/CMBProtocol.o (malloc)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+                              CDGUSDatabase.o (memcpy)
+
+Allocating common symbols
+Common symbol       size              file
+
+__brkval            0x2               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+__flp               0x2               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+
+Discarded input sections
+
+ .text          0x00000000        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+ .data          0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+ .bss           0x00000000        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+ .text          0x00000000        0x0 CDGUSDatabase.o
+ .data          0x00000000        0x0 CDGUSDatabase.o
+ .bss           0x00000000        0x0 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabaseC2Ev
+                0x00000000        0x2 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabaseD2Ev
+                0x00000000        0x2 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase10InitializeEP9CMBSenderj
+                0x00000000       0x18 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase15WriteToDatabaseEPvjm
+                0x00000000       0xa8 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase16ReadFromDatabaseEPvjm
+                0x00000000       0xa4 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase18MapDatabaseToWriteEjmj
+                0x00000000       0x72 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase17MapDatabaseToReadEjmj
+                0x00000000       0x72 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase5UnMapEv
+                0x00000000       0x38 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase11WriteEnableEv
+                0x00000000       0x3a CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase12WriteDisableEv
+                0x00000000       0x38 CDGUSDatabase.o
+ .text._ZN13CDGUSDatabase18OnVariableReceivedEjPjj
+                0x00000000       0x1e CDGUSDatabase.o
+ .comment       0x00000000       0x31 CDGUSDatabase.o
+ .group         0x00000000        0x8 CDGUSUSART.o
+ .text          0x00000000        0x0 CDGUSUSART.o
+ .data          0x00000000        0x0 CDGUSUSART.o
+ .bss           0x00000000        0x0 CDGUSUSART.o
+ .text          0x00000000        0x0 CLaserBoard.o
+ .data          0x00000000        0x0 CLaserBoard.o
+ .bss           0x00000000        0x0 CLaserBoard.o
+ .group         0x00000000        0x8 CLaserControlApp.o
+ .text          0x00000000        0x0 CLaserControlApp.o
+ .data          0x00000000        0x0 CLaserControlApp.o
+ .bss           0x00000000        0x0 CLaserControlApp.o
+ .text._Z4swapj
+                0x00000000        0x8 CLaserControlApp.o
+ .text._Z3minjj
+                0x00000000        0xa CLaserControlApp.o
+ .text._Z3maxjj
+                0x00000000        0xa CLaserControlApp.o
+ .group         0x00000000        0x8 CRelayTimer.o
+ .text          0x00000000        0x0 CRelayTimer.o
+ .data          0x00000000        0x0 CRelayTimer.o
+ .bss           0x00000000        0x0 CRelayTimer.o
+ .text._ZN11CRelayTimer18WaitTCNTUpdateBusyEh
+                0x00000000       0x16 CRelayTimer.o
+ .text._ZN11CRelayTimer27WaitOutputCompareUpdateBusyEh
+                0x00000000       0x14 CRelayTimer.o
+ .text._ZN11CRelayTimer21WaitControlUpdateBusyEh
+                0x00000000       0x12 CRelayTimer.o
+ .text._ZN11CRelayTimer14ResetPrescalerEv
+                0x00000000        0x8 CRelayTimer.o
+ .group         0x00000000        0x8 CSensorADC.o
+ .text          0x00000000        0x0 CSensorADC.o
+ .data          0x00000000        0x0 CSensorADC.o
+ .bss           0x00000000        0x0 CSensorADC.o
+ .group         0x00000000        0x8 LaserLib/CTimer.o
+ .text          0x00000000        0x0 LaserLib/CTimer.o
+ .data          0x00000000        0x0 LaserLib/CTimer.o
+ .bss           0x00000000        0x0 LaserLib/CTimer.o
+ .group         0x00000000        0x8 LaserLib/CUSART.o
+ .group         0x00000000        0x8 LaserLib/CUSART.o
+ .group         0x00000000        0x8 LaserLib/CUSART.o
+ .text          0x00000000        0x0 LaserLib/CUSART.o
+ .data          0x00000000        0x0 LaserLib/CUSART.o
+ .bss           0x00000000        0x0 LaserLib/CUSART.o
+ .text          0x00000000        0x0 LaserLib/int8a.o
+ .data          0x00000000        0x0 LaserLib/int8a.o
+ .bss           0x00000000        0x0 LaserLib/int8a.o
+ .text          0x00000000        0x0 main.o
+ .data          0x00000000        0x0 main.o
+ .bss           0x00000000        0x0 main.o
+ .group         0x00000000        0x8 MODBUS/CMBProtocol.o
+ .text          0x00000000        0x0 MODBUS/CMBProtocol.o
+ .data          0x00000000        0x0 MODBUS/CMBProtocol.o
+ .bss           0x00000000        0x0 MODBUS/CMBProtocol.o
+ .rodata._ZTV16CMBEventsHandler
+                0x00000000       0x16 MODBUS/CMBProtocol.o
+ .group         0x00000000        0x8 MODBUS/CMBSender.o
+ .text          0x00000000        0x0 MODBUS/CMBSender.o
+ .data          0x00000000        0x0 MODBUS/CMBSender.o
+ .bss           0x00000000        0x0 MODBUS/CMBSender.o
+ .text._ZN9CMBSender12DeinitializeEv
+                0x00000000       0x16 MODBUS/CMBSender.o
+ .text._ZN9CMBSender19WriteDataToRegisterEhPhh
+                0x00000000       0x66 MODBUS/CMBSender.o
+ .text._ZN9CMBSender15WriteDataToSRAMEjPjj
+                0x00000000       0x66 MODBUS/CMBSender.o
+ .text._ZN9CMBSender9OnTimeoutEv
+                0x00000000        0xe MODBUS/CMBSender.o
+ .text._ZN9CMBSender18StopMODBUSListenerEv
+                0x00000000        0x8 MODBUS/CMBSender.o
+ .text._ZN9CMBSender21StopMODBUSTransmitterEv
+                0x00000000        0x8 MODBUS/CMBSender.o
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.builtins
+                0x00000000        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_bswapsi2.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+ .text.avr-libc
+                0x00000000       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00002000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+user_signatures  0x00850000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+LOAD CDGUSDatabase.o
+LOAD CDGUSUSART.o
+LOAD CLaserBoard.o
+LOAD CLaserControlApp.o
+LOAD CRelayTimer.o
+LOAD CSensorADC.o
+LOAD LaserLib/CTimer.o
+LOAD LaserLib/CUSART.o
+LOAD LaserLib/int8a.o
+LOAD main.o
+LOAD MODBUS/CMBProtocol.o
+LOAD MODBUS/CMBSender.o
+START GROUP
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libm.a
+END GROUP
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libm.a
+START GROUP
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libm.a
+LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a
+LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4\libatmega8.a
+END GROUP
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x1eec
+ *(.vectors)
+ .vectors       0x00000000       0x26 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+                0x00000000                __vector_default
+                0x00000000                __vectors
+ *(.vectors)
+ *(.progmem.gcc*)
+ .progmem.gcc_sw_table._ZN16CLaserControlApp18OnRegisterReceivedEhPhh
+                0x00000026       0x46 CLaserControlApp.o
+ .progmem.gcc_sw_table._ZN16CLaserControlApp3RunEv
+                0x0000006c       0x16 CLaserControlApp.o
+ .progmem.gcc_sw_table._ZN9CMBSender13OnReceiveByteEh
+                0x00000082       0x16 MODBUS/CMBSender.o
+                0x00000098                . = ALIGN (0x2)
+                0x00000098                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000098        0x0 linker stubs
+ *(.trampolines*)
+                0x00000098                __trampolines_end = .
+ *(.progmem*)
+                0x00000098                . = ALIGN (0x2)
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000098                __ctors_start = .
+ *(.ctors)
+ .ctors         0x00000098        0x2 main.o
+                0x0000009a                __ctors_end = .
+                0x0000009a                __dtors_start = .
+ *(.dtors)
+ .dtors         0x0000009a        0x2 main.o
+                0x0000009c                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x0000009c        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+                0x0000009c                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x0000009c        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000000a8       0x16 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_copy_data.o)
+                0x000000a8                __do_copy_data
+ .init4         0x000000be       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_clear_bss.o)
+                0x000000be                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ .init6         0x000000ce       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_ctors.o)
+                0x000000ce                __do_global_ctors
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000e2        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+ *(.init9)
+ *(.text)
+                0x000000e6                . = ALIGN (0x2)
+ *(.text.*)
+ .text._ZN10CDGUSUSART10InitializeE13BAUDRATE_ENUM11PARITY_ENUM12STOBITS_ENUMb
+                0x000000e6       0x52 CDGUSUSART.o
+                0x000000e6                _ZN10CDGUSUSART10InitializeE13BAUDRATE_ENUM11PARITY_ENUM12STOBITS_ENUMb
+ .text._ZN10CDGUSUSART15GetReceivedByteEv
+                0x00000138        0x4 CDGUSUSART.o
+                0x00000138                _ZN10CDGUSUSART15GetReceivedByteEv
+ .text._ZN10CDGUSUSART19SetTransmittingByteEh
+                0x0000013c        0x4 CDGUSUSART.o
+                0x0000013c                _ZN10CDGUSUSART19SetTransmittingByteEh
+ .text._ZN10CDGUSUSART25SetRxInterruptionCallbackEPvPFvS0_E
+                0x00000140       0x12 CDGUSUSART.o
+                0x00000140                _ZN10CDGUSUSART25SetRxInterruptionCallbackEPvPFvS0_E
+ .text._ZN10CDGUSUSART25SetTxInterruptionCallbackEPvPFvS0_E
+                0x00000152       0x12 CDGUSUSART.o
+                0x00000152                _ZN10CDGUSUSART25SetTxInterruptionCallbackEPvPFvS0_E
+ .text._ZN10CDGUSUSART14IsTransmittingEv
+                0x00000164        0xe CDGUSUSART.o
+                0x00000164                _ZN10CDGUSUSART14IsTransmittingEv
+ .text._ZN10CDGUSUSART11IsReceivingEv
+                0x00000172        0xc CDGUSUSART.o
+                0x00000172                _ZN10CDGUSUSART11IsReceivingEv
+ .text._ZN10CDGUSUSART11IsDataEmptyEv
+                0x0000017e        0xe CDGUSUSART.o
+                0x0000017e                _ZN10CDGUSUSART11IsDataEmptyEv
+ .text._ZN10CDGUSUSARTC2Ev
+                0x0000018c       0x16 CDGUSUSART.o
+                0x0000018c                _ZN10CDGUSUSARTC1Ev
+                0x0000018c                _ZN10CDGUSUSARTC2Ev
+ .text._ZN10CDGUSUSARTD2Ev
+                0x000001a2        0xc CDGUSUSART.o
+                0x000001a2                _ZN10CDGUSUSARTD2Ev
+                0x000001a2                _ZN10CDGUSUSARTD1Ev
+ .text._ZN11CLaserBoardC2Ev
+                0x000001ae        0x2 CLaserBoard.o
+                0x000001ae                _ZN11CLaserBoardC1Ev
+                0x000001ae                _ZN11CLaserBoardC2Ev
+ .text._ZN11CLaserBoardD2Ev
+                0x000001b0        0x2 CLaserBoard.o
+                0x000001b0                _ZN11CLaserBoardD2Ev
+                0x000001b0                _ZN11CLaserBoardD1Ev
+ .text._ZN11CLaserBoard8Relay1OnEv
+                0x000001b2        0x4 CLaserBoard.o
+                0x000001b2                _ZN11CLaserBoard8Relay1OnEv
+ .text._ZN11CLaserBoard8Relay2OnEv
+                0x000001b6        0x4 CLaserBoard.o
+                0x000001b6                _ZN11CLaserBoard8Relay2OnEv
+ .text._ZN11CLaserBoard9Relay1OffEv
+                0x000001ba        0x4 CLaserBoard.o
+                0x000001ba                _ZN11CLaserBoard9Relay1OffEv
+ .text._ZN11CLaserBoard9Relay2OffEv
+                0x000001be        0x4 CLaserBoard.o
+                0x000001be                _ZN11CLaserBoard9Relay2OffEv
+ .text._ZN11CLaserBoard14SPI_MasterInitEv
+                0x000001c2        0xe CLaserBoard.o
+                0x000001c2                _ZN11CLaserBoard14SPI_MasterInitEv
+ .text._ZN11CLaserBoard10Init_RelayEv
+                0x000001d0       0x2e CLaserBoard.o
+                0x000001d0                _ZN11CLaserBoard10Init_RelayEv
+ .text._ZN11CLaserBoard18SPI_MasterTransmitEc
+                0x000001fe        0x8 CLaserBoard.o
+                0x000001fe                _ZN11CLaserBoard18SPI_MasterTransmitEc
+ .text._ZN11CLaserBoard11SetDACValueEj
+                0x00000206       0x24 CLaserBoard.o
+                0x00000206                _ZN11CLaserBoard11SetDACValueEj
+ .text._ZN11CLaserBoard15SetINT1CallbackEPFvPvES0_
+                0x0000022a       0x1a CLaserBoard.o
+                0x0000022a                _ZN11CLaserBoard15SetINT1CallbackEPFvPvES0_
+ .text._ZN11CLaserBoard15SetTIM1CallbackEPFvPvES0_
+                0x00000244       0x12 CLaserBoard.o
+                0x00000244                _ZN11CLaserBoard15SetTIM1CallbackEPFvPvES0_
+ .text._ZN16CLaserControlApp21OnTransactionCallbackEPhj
+                0x00000256        0x2 CLaserControlApp.o
+                0x00000256                _ZN16CLaserControlApp21OnTransactionCallbackEPhj
+ .text._ZN16CLaserControlApp18OnVariableReceivedEjPjj
+                0x00000258       0x38 CLaserControlApp.o
+                0x00000258                _ZN16CLaserControlApp18OnVariableReceivedEjPjj
+ .text._ZN16CLaserControlApp18OnRegisterReceivedEhPhh
+                0x00000290       0x76 CLaserControlApp.o
+                0x00000290                _ZN16CLaserControlApp18OnRegisterReceivedEhPhh
+ .text._ZN16CLaserControlAppC2Ev
+                0x00000306        0xc CLaserControlApp.o
+                0x00000306                _ZN16CLaserControlAppC2Ev
+                0x00000306                _ZN16CLaserControlAppC1Ev
+ .text._ZN16CLaserControlAppD2Ev
+                0x00000312        0xc CLaserControlApp.o
+                0x00000312                _ZN16CLaserControlAppD2Ev
+                0x00000312                _ZN16CLaserControlAppD1Ev
+ .text._ZN16CLaserControlApp10InitializeEP9CMBSender
+                0x0000031e       0x32 CLaserControlApp.o
+                0x0000031e                _ZN16CLaserControlApp10InitializeEP9CMBSender
+ .text._ZN16CLaserControlApp5StartEv
+                0x00000350      0x144 CLaserControlApp.o
+                0x00000350                _ZN16CLaserControlApp5StartEv
+ .text._ZN16CLaserControlApp9OnEncoderEv
+                0x00000494       0x1a CLaserControlApp.o
+                0x00000494                _ZN16CLaserControlApp9OnEncoderEv
+ .text._ZN16CLaserControlApp5OnPWMEv
+                0x000004ae       0xaa CLaserControlApp.o
+                0x000004ae                _ZN16CLaserControlApp5OnPWMEv
+ .text._ZN16CLaserControlApp11OnPWMStaticEPv
+                0x00000558        0x2 CLaserControlApp.o
+                0x00000558                _ZN16CLaserControlApp11OnPWMStaticEPv
+ .text._ZN16CLaserControlApp15OnEncoderStaticEPv
+                0x0000055a        0x2 CLaserControlApp.o
+                0x0000055a                _ZN16CLaserControlApp15OnEncoderStaticEPv
+ .text._ZN16CLaserControlApp3RunEv
+                0x0000055c      0x754 CLaserControlApp.o
+                0x0000055c                _ZN16CLaserControlApp3RunEv
+ .text._ZN16CLaserControlApp9OnTimeoutEv
+                0x00000cb0        0xc CLaserControlApp.o
+                0x00000cb0                _ZN16CLaserControlApp9OnTimeoutEv
+ .text._ZN16CLaserControlApp7OnTimerEv
+                0x00000cbc       0x4e CLaserControlApp.o
+                0x00000cbc                _ZN16CLaserControlApp7OnTimerEv
+ .text._ZN16CLaserControlApp13OnTimerStaticEPv
+                0x00000d0a        0x2 CLaserControlApp.o
+                0x00000d0a                _ZN16CLaserControlApp13OnTimerStaticEPv
+ .text._ZN11CRelayTimer10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM31TIMER_COMPAREMATCHOUT_MODE_ENUM22TIMER_CLOCKSELECT_ENUMb
+                0x00000d0c       0x48 CRelayTimer.o
+                0x00000d0c                _ZN11CRelayTimer10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM31TIMER_COMPAREMATCHOUT_MODE_ENUM22TIMER_CLOCKSELECT_ENUMb
+ .text._ZN11CRelayTimer5StartEj
+                0x00000d54        0x2 CRelayTimer.o
+                0x00000d54                _ZN11CRelayTimer5StartEj
+ .text._ZN11CRelayTimer4StopEv
+                0x00000d56        0xc CRelayTimer.o
+                0x00000d56                _ZN11CRelayTimer4StopEv
+ .text._ZN11CRelayTimer8SetCOMPAEj
+                0x00000d62        0x2 CRelayTimer.o
+                0x00000d62                _ZN11CRelayTimer8SetCOMPAEj
+ .text._ZN11CRelayTimer8SetCOMPBEj
+                0x00000d64        0x2 CRelayTimer.o
+                0x00000d64                _ZN11CRelayTimer8SetCOMPBEj
+ .text._ZN11CRelayTimer8SetCOMPCEj
+                0x00000d66        0x2 CRelayTimer.o
+                0x00000d66                _ZN11CRelayTimer8SetCOMPCEj
+ .text._ZN11CRelayTimer8SetCOMPAEh
+                0x00000d68        0x4 CRelayTimer.o
+                0x00000d68                _ZN11CRelayTimer8SetCOMPAEh
+ .text._ZN11CRelayTimer8SetCOMPBEh
+                0x00000d6c        0x2 CRelayTimer.o
+                0x00000d6c                _ZN11CRelayTimer8SetCOMPBEh
+ .text._ZN11CRelayTimer8SetCOMPCEh
+                0x00000d6e        0x2 CRelayTimer.o
+                0x00000d6e                _ZN11CRelayTimer8SetCOMPCEh
+ .text._ZN11CRelayTimer14SetOVFCallbackEPFvPvES0_
+                0x00000d70       0x12 CRelayTimer.o
+                0x00000d70                _ZN11CRelayTimer14SetOVFCallbackEPFvPvES0_
+ .text._ZN11CRelayTimer15SetCAPTCallbackEPFvPvES0_
+                0x00000d82        0x2 CRelayTimer.o
+                0x00000d82                _ZN11CRelayTimer15SetCAPTCallbackEPFvPvES0_
+ .text._ZN11CRelayTimer16SetCOMPACallbackEPFvPvES0_
+                0x00000d84       0x12 CRelayTimer.o
+                0x00000d84                _ZN11CRelayTimer16SetCOMPACallbackEPFvPvES0_
+ .text._ZN11CRelayTimer16SetCOMPBCallbackEPFvPvES0_
+                0x00000d96        0x2 CRelayTimer.o
+                0x00000d96                _ZN11CRelayTimer16SetCOMPBCallbackEPFvPvES0_
+ .text._ZN11CRelayTimer16SetCOMPCCallbackEPFvPvES0_
+                0x00000d98        0x2 CRelayTimer.o
+                0x00000d98                _ZN11CRelayTimer16SetCOMPCCallbackEPFvPvES0_
+ .text._ZN11CRelayTimer5StartEh
+                0x00000d9a       0x16 CRelayTimer.o
+                0x00000d9a                _ZN11CRelayTimer5StartEh
+ .text._ZN11CRelayTimerC2Ev
+                0x00000db0       0x16 CRelayTimer.o
+                0x00000db0                _ZN11CRelayTimerC2Ev
+                0x00000db0                _ZN11CRelayTimerC1Ev
+ .text._ZN11CRelayTimerD2Ev
+                0x00000dc6        0xc CRelayTimer.o
+                0x00000dc6                _ZN11CRelayTimerD1Ev
+                0x00000dc6                _ZN11CRelayTimerD2Ev
+ .text._ZN11CRelayTimer9AsyncModeEb
+                0x00000dd2       0x10 CRelayTimer.o
+                0x00000dd2                _ZN11CRelayTimer9AsyncModeEb
+ .text._ZN10CSensorADC10InitializeE18ADC_REFERENCE_ENUM16ADC_CHANNEL_ENUM18ADC_PRESCALER_ENUMbb
+                0x00000de2       0x50 CSensorADC.o
+                0x00000de2                _ZN10CSensorADC10InitializeE18ADC_REFERENCE_ENUM16ADC_CHANNEL_ENUM18ADC_PRESCALER_ENUMbb
+ .text._ZN10CSensorADC5StartEv
+                0x00000e32        0x4 CSensorADC.o
+                0x00000e32                _ZN10CSensorADC5StartEv
+ .text._ZN10CSensorADC14SetADCCallbackEPFvPvES0_
+                0x00000e36       0x12 CSensorADC.o
+                0x00000e36                _ZN10CSensorADC14SetADCCallbackEPFvPvES0_
+ .text._ZN10CSensorADC8GetValueEv
+                0x00000e48        0x8 CSensorADC.o
+                0x00000e48                _ZN10CSensorADC8GetValueEv
+ .text._ZN10CSensorADC29StaticADCConvCompleteCallbackEPv
+                0x00000e50        0xe CSensorADC.o
+                0x00000e50                _ZN10CSensorADC29StaticADCConvCompleteCallbackEPv
+ .text._ZN10CSensorADC23ADCConvCompleteCallbackEv
+                0x00000e5e        0xc CSensorADC.o
+                0x00000e5e                _ZN10CSensorADC23ADCConvCompleteCallbackEv
+ .text._ZN10CSensorADCC2Ev
+                0x00000e6a        0xc CSensorADC.o
+                0x00000e6a                _ZN10CSensorADCC1Ev
+                0x00000e6a                _ZN10CSensorADCC2Ev
+ .text._ZN10CSensorADCD2Ev
+                0x00000e76        0x2 CSensorADC.o
+                0x00000e76                _ZN10CSensorADCD1Ev
+                0x00000e76                _ZN10CSensorADCD2Ev
+ .text._ZN6CTimer10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM31TIMER_COMPAREMATCHOUT_MODE_ENUM22TIMER_CLOCKSELECT_ENUMb
+                0x00000e78        0x2 LaserLib/CTimer.o
+                0x00000e78                _ZN6CTimer10InitializeE27TIMER_WAVEFORMGEN_MODE_ENUM31TIMER_COMPAREMATCHOUT_MODE_ENUM22TIMER_CLOCKSELECT_ENUMb
+ .text._ZN6CTimer5StartEh
+                0x00000e7a        0x2 LaserLib/CTimer.o
+                0x00000e7a                _ZN6CTimer5StartEh
+ .text._ZN6CTimer5StartEj
+                0x00000e7c        0x2 LaserLib/CTimer.o
+                0x00000e7c                _ZN6CTimer5StartEj
+ .text._ZN6CTimer4StopEv
+                0x00000e7e        0x2 LaserLib/CTimer.o
+                0x00000e7e                _ZN6CTimer4StopEv
+ .text._ZN6CTimer8SetCOMPAEj
+                0x00000e80        0x2 LaserLib/CTimer.o
+                0x00000e80                _ZN6CTimer8SetCOMPAEj
+ .text._ZN6CTimer8SetCOMPBEj
+                0x00000e82        0x2 LaserLib/CTimer.o
+                0x00000e82                _ZN6CTimer8SetCOMPBEj
+ .text._ZN6CTimer8SetCOMPCEj
+                0x00000e84        0x2 LaserLib/CTimer.o
+                0x00000e84                _ZN6CTimer8SetCOMPCEj
+ .text._ZN6CTimer8SetCOMPAEh
+                0x00000e86        0x2 LaserLib/CTimer.o
+                0x00000e86                _ZN6CTimer8SetCOMPAEh
+ .text._ZN6CTimer8SetCOMPBEh
+                0x00000e88        0x2 LaserLib/CTimer.o
+                0x00000e88                _ZN6CTimer8SetCOMPBEh
+ .text._ZN6CTimer8SetCOMPCEh
+                0x00000e8a        0x2 LaserLib/CTimer.o
+                0x00000e8a                _ZN6CTimer8SetCOMPCEh
+ .text._ZN6CTimer14SetOVFCallbackEPFvPvES0_
+                0x00000e8c        0x2 LaserLib/CTimer.o
+                0x00000e8c                _ZN6CTimer14SetOVFCallbackEPFvPvES0_
+ .text._ZN6CTimer15SetCAPTCallbackEPFvPvES0_
+                0x00000e8e        0x2 LaserLib/CTimer.o
+                0x00000e8e                _ZN6CTimer15SetCAPTCallbackEPFvPvES0_
+ .text._ZN6CTimer16SetCOMPACallbackEPFvPvES0_
+                0x00000e90        0x2 LaserLib/CTimer.o
+                0x00000e90                _ZN6CTimer16SetCOMPACallbackEPFvPvES0_
+ .text._ZN6CTimer16SetCOMPBCallbackEPFvPvES0_
+                0x00000e92        0x2 LaserLib/CTimer.o
+                0x00000e92                _ZN6CTimer16SetCOMPBCallbackEPFvPvES0_
+ .text._ZN6CTimer16SetCOMPCCallbackEPFvPvES0_
+                0x00000e94        0x2 LaserLib/CTimer.o
+                0x00000e94                _ZN6CTimer16SetCOMPCCallbackEPFvPvES0_
+ .text._ZN6CTimerC2Ev
+                0x00000e96        0xc LaserLib/CTimer.o
+                0x00000e96                _ZN6CTimerC1Ev
+                0x00000e96                _ZN6CTimerC2Ev
+ .text._ZN6CTimerD2Ev
+                0x00000ea2        0x2 LaserLib/CTimer.o
+                0x00000ea2                _ZN6CTimerD1Ev
+                0x00000ea2                _ZN6CTimerD2Ev
+ .text._ZN6CUSART25SetRxInterruptionCallbackEPvPFvS0_E
+                0x00000ea4        0x2 LaserLib/CUSART.o
+                0x00000ea4                _ZN6CUSART25SetRxInterruptionCallbackEPvPFvS0_E
+ .text._ZN6CUSART25SetTxInterruptionCallbackEPvPFvS0_E
+                0x00000ea6        0x2 LaserLib/CUSART.o
+                0x00000ea6                _ZN6CUSART25SetTxInterruptionCallbackEPvPFvS0_E
+ .text._ZN6CUSARTC2Ev
+                0x00000ea8        0xc LaserLib/CUSART.o
+                0x00000ea8                _ZN6CUSARTC2Ev
+                0x00000ea8                _ZN6CUSARTC1Ev
+ .text._ZN6CUSARTD2Ev
+                0x00000eb4        0x2 LaserLib/CUSART.o
+                0x00000eb4                _ZN6CUSARTD1Ev
+                0x00000eb4                _ZN6CUSARTD2Ev
+ .text.__vector_1
+                0x00000eb6       0x5a LaserLib/int8a.o
+                0x00000eb6                __vector_1
+ .text.__vector_2
+                0x00000f10       0x5a LaserLib/int8a.o
+                0x00000f10                __vector_2
+ .text.__vector_3
+                0x00000f6a       0x5a LaserLib/int8a.o
+                0x00000f6a                __vector_3
+ .text.__vector_4
+                0x00000fc4       0x5a LaserLib/int8a.o
+                0x00000fc4                __vector_4
+ .text.__vector_5
+                0x0000101e       0x5a LaserLib/int8a.o
+                0x0000101e                __vector_5
+ .text.__vector_6
+                0x00001078       0x5a LaserLib/int8a.o
+                0x00001078                __vector_6
+ .text.__vector_7
+                0x000010d2       0x5a LaserLib/int8a.o
+                0x000010d2                __vector_7
+ .text.__vector_8
+                0x0000112c       0x5a LaserLib/int8a.o
+                0x0000112c                __vector_8
+ .text.__vector_9
+                0x00001186       0x5a LaserLib/int8a.o
+                0x00001186                __vector_9
+ .text.__vector_10
+                0x000011e0       0x5a LaserLib/int8a.o
+                0x000011e0                __vector_10
+ .text.__vector_11
+                0x0000123a       0x5a LaserLib/int8a.o
+                0x0000123a                __vector_11
+ .text.__vector_12
+                0x00001294       0x5a LaserLib/int8a.o
+                0x00001294                __vector_12
+ .text.__vector_13
+                0x000012ee       0x5a LaserLib/int8a.o
+                0x000012ee                __vector_13
+ .text.__vector_14
+                0x00001348       0x5a LaserLib/int8a.o
+                0x00001348                __vector_14
+ .text.__vector_15
+                0x000013a2       0x5a LaserLib/int8a.o
+                0x000013a2                __vector_15
+ .text.__vector_16
+                0x000013fc       0x5a LaserLib/int8a.o
+                0x000013fc                __vector_16
+ .text.__vector_17
+                0x00001456       0x5a LaserLib/int8a.o
+                0x00001456                __vector_17
+ .text.__vector_18
+                0x000014b0       0x5a LaserLib/int8a.o
+                0x000014b0                __vector_18
+ .text.__cxa_pure_virtual
+                0x0000150a        0x2 main.o
+                0x0000150a                __cxa_pure_virtual
+ .text.startup._GLOBAL__sub_I_usart
+                0x0000150c       0x24 main.o
+ .text.exit._GLOBAL__sub_D_usart
+                0x00001530       0x24 main.o
+ .text._Z16SystemInitializev
+                0x00001554       0xb0 main.o
+                0x00001554                _Z16SystemInitializev
+ .text.startup.main
+                0x00001604       0x50 main.o
+                0x00001604                main
+ .text._ZN16CMBEventsHandler13FillRegDataTxEhPhh
+                0x00001654       0x60 MODBUS/CMBProtocol.o
+                0x00001654                _ZN16CMBEventsHandler13FillRegDataTxEhPhh
+ .text._ZN16CMBEventsHandler13FillRegDataRqEhh
+                0x000016b4       0x3e MODBUS/CMBProtocol.o
+                0x000016b4                _ZN16CMBEventsHandler13FillRegDataRqEhh
+ .text._ZN16CMBEventsHandler13FillVarDataTxEjPjj
+                0x000016f2       0x92 MODBUS/CMBProtocol.o
+                0x000016f2                _ZN16CMBEventsHandler13FillVarDataTxEjPjj
+ .text._ZN16CMBEventsHandler13FillVarDataRqEjj
+                0x00001784       0x46 MODBUS/CMBProtocol.o
+                0x00001784                _ZN16CMBEventsHandler13FillVarDataRqEjj
+ .text._ZN16CMBEventsHandler15AllocateBuffersEjj
+                0x000017ca       0x32 MODBUS/CMBProtocol.o
+                0x000017ca                _ZN16CMBEventsHandler15AllocateBuffersEjj
+ .text._ZN16CMBEventsHandler11FreeBuffersEv
+                0x000017fc       0x16 MODBUS/CMBProtocol.o
+                0x000017fc                _ZN16CMBEventsHandler11FreeBuffersEv
+ .text._ZN16CMBEventsHandlerD2Ev
+                0x00001812        0x2 MODBUS/CMBProtocol.o
+                0x00001812                _ZN16CMBEventsHandlerD2Ev
+                0x00001812                _ZN16CMBEventsHandlerD1Ev
+ .text._ZN9CMBSender18OnVariableReceivedEjPjj
+                0x00001814       0x1e MODBUS/CMBSender.o
+                0x00001814                _ZN9CMBSender18OnVariableReceivedEjPjj
+ .text._ZN9CMBSender18OnRegisterReceivedEhPhh
+                0x00001832       0x1e MODBUS/CMBSender.o
+                0x00001832                _ZN9CMBSender18OnRegisterReceivedEhPhh
+ .text._ZN9CMBSenderC2Ev
+                0x00001850        0xc MODBUS/CMBSender.o
+                0x00001850                _ZN9CMBSenderC2Ev
+                0x00001850                _ZN9CMBSenderC1Ev
+ .text._ZN9CMBSender10InitializeEP6CUSARTP16CMBEventsHandlerjj
+                0x0000185c       0x9a MODBUS/CMBSender.o
+                0x0000185c                _ZN9CMBSender10InitializeEP6CUSARTP16CMBEventsHandlerjj
+ .text._ZN9CMBSenderD2Ev
+                0x000018f6        0xc MODBUS/CMBSender.o
+                0x000018f6                _ZN9CMBSenderD1Ev
+                0x000018f6                _ZN9CMBSenderD2Ev
+ .text._ZN9CMBSender13OnReceiveByteEh
+                0x00001902      0x138 MODBUS/CMBSender.o
+                0x00001902                _ZN9CMBSender13OnReceiveByteEh
+ .text._ZN9CMBSender18OnUSARTRxInterruptEPv
+                0x00001a3a       0x22 MODBUS/CMBSender.o
+                0x00001a3a                _ZN9CMBSender18OnUSARTRxInterruptEPv
+ .text._ZN9CMBSender19StartMODBUSListenerEv
+                0x00001a5c       0x12 MODBUS/CMBSender.o
+                0x00001a5c                _ZN9CMBSender19StartMODBUSListenerEv
+ .text._ZN9CMBSender14OnTransmitByteEv
+                0x00001a6e       0x90 MODBUS/CMBSender.o
+                0x00001a6e                _ZN9CMBSender14OnTransmitByteEv
+ .text._ZN9CMBSender18OnUSARTTxInterruptEPv
+                0x00001afe        0x2 MODBUS/CMBSender.o
+                0x00001afe                _ZN9CMBSender18OnUSARTTxInterruptEPv
+ .text._ZN9CMBSender18WaitMODBUSListenerEv
+                0x00001b00       0x20 MODBUS/CMBSender.o
+                0x00001b00                _ZN9CMBSender18WaitMODBUSListenerEv
+ .text._ZN9CMBSender22StartMODBUSTransmitterEv
+                0x00001b20        0x8 MODBUS/CMBSender.o
+                0x00001b20                _ZN9CMBSender22StartMODBUSTransmitterEv
+ .text._ZN9CMBSender24WriteDataToRegisterAsyncEhPhh
+                0x00001b28       0x1a MODBUS/CMBSender.o
+                0x00001b28                _ZN9CMBSender24WriteDataToRegisterAsyncEhPhh
+ .text._ZN9CMBSender20WriteDataToSRAMAsyncEjPjj
+                0x00001b42       0x1a MODBUS/CMBSender.o
+                0x00001b42                _ZN9CMBSender20WriteDataToSRAMAsyncEjPjj
+ .text._ZN9CMBSender28RequestDataFromRegisterAsyncEhh
+                0x00001b5c       0x1a MODBUS/CMBSender.o
+                0x00001b5c                _ZN9CMBSender28RequestDataFromRegisterAsyncEhh
+ .text._ZN9CMBSender24RequestDataFromSRAMAsyncEjh
+                0x00001b76       0x1c MODBUS/CMBSender.o
+                0x00001b76                _ZN9CMBSender24RequestDataFromSRAMAsyncEjh
+ .text._ZN9CMBSender21WaitMODBUSTransmitterEv
+                0x00001b92       0x20 MODBUS/CMBSender.o
+                0x00001b92                _ZN9CMBSender21WaitMODBUSTransmitterEv
+ .text._ZN9CMBSender30StartMODBUSRegisterTransactionEhh
+                0x00001bb2        0x8 MODBUS/CMBSender.o
+                0x00001bb2                _ZN9CMBSender30StartMODBUSRegisterTransactionEhh
+ .text._ZN9CMBSender30StartMODBUSVariableTransactionEjh
+                0x00001bba        0x8 MODBUS/CMBSender.o
+                0x00001bba                _ZN9CMBSender30StartMODBUSVariableTransactionEjh
+ .text._ZN9CMBSender18ProcessTransactionEPhj
+                0x00001bc2       0x6a MODBUS/CMBSender.o
+                0x00001bc2                _ZN9CMBSender18ProcessTransactionEPhj
+ .text._ZN9CMBSender21OnTransactionCallbackEPhj
+                0x00001c2c        0x2 MODBUS/CMBSender.o
+                0x00001c2c                _ZN9CMBSender21OnTransactionCallbackEPhj
+ .text.libgcc.div
+                0x00001c2e       0x18 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodqi4.o)
+                0x00001c2e                __udivmodqi4
+ .text.libgcc.div
+                0x00001c46       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_udivmodhi4.o)
+                0x00001c46                __udivmodhi4
+ .text.libgcc   0x00001c6e        0xc c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_tablejump2.o)
+                0x00001c6e                __tablejump2__
+ .text.avr-libc
+                0x00001c7a      0x25a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+                0x00001c7a                malloc
+                0x00001da4                free
+                0x00001ed4                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00001ed4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+                0x00001ed4                _exit
+                0x00001ed4                exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ .fini6         0x00001ed4       0x14 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_dtors.o)
+                0x00001ed4                __do_global_dtors
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00001ee8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00001eec                _etext = .
+
+.data           0x00800060       0xce load address 0x00001eec
+                0x00800060                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800060        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+                0x00800060                __malloc_heap_end
+                0x00800062                __malloc_heap_start
+                0x00800064                __malloc_margin
+ *(.data*)
+ .data.ubrr_table
+                0x00800066       0x1c CDGUSUSART.o
+                0x00800066                ubrr_table
+ .data._ZZN16CLaserControlApp5OnPWMEvE2dx
+                0x00800082        0x2 CLaserControlApp.o
+ .data._ZZN16CLaserControlApp3RunEvE2hl
+                0x00800084        0x1 CLaserControlApp.o
+ .data._ZZN16CLaserControlApp3RunEvE4anim
+                0x00800085        0x2 CLaserControlApp.o
+ *(.rodata)
+ *(.rodata*)
+ .rodata._ZTV10CDGUSUSART
+                0x00800087       0x14 CDGUSUSART.o
+                0x00800087                _ZTV10CDGUSUSART
+ .rodata._ZTV16CLaserControlApp
+                0x0080009b       0x16 CLaserControlApp.o
+                0x0080009b                _ZTV16CLaserControlApp
+ .rodata._ZTV11CRelayTimer
+                0x008000b1       0x22 CRelayTimer.o
+                0x008000b1                _ZTV11CRelayTimer
+ .rodata._ZTV10CSensorADC
+                0x008000d3        0xe CSensorADC.o
+                0x008000d3                _ZTV10CSensorADC
+ .rodata._ZTV6CTimer
+                0x008000e1       0x22 LaserLib/CTimer.o
+                0x008000e1                _ZTV6CTimer
+ .rodata._ZTV6CUSART
+                0x00800103       0x14 LaserLib/CUSART.o
+                0x00800103                _ZTV6CUSART
+ .rodata._ZTV9CMBSender
+                0x00800117       0x16 MODBUS/CMBSender.o
+                0x00800117                _ZTV9CMBSender
+ *(.gnu.linkonce.d*)
+                0x0080012e                . = ALIGN (0x2)
+ *fill*         0x0080012d        0x1 
+                0x0080012e                _edata = .
+                0x0080012e                PROVIDE (__data_end, .)
+
+.bss            0x0080012e       0x9b
+                0x0080012e                PROVIDE (__bss_start, .)
+ *(.bss)
+ *(.bss*)
+ .bss._ZZN16CLaserControlApp5OnPWMEvE9pwm_pulse
+                0x0080012e        0x2 CLaserControlApp.o
+ .bss._ZZN16CLaserControlApp5OnPWMEvE8prescale
+                0x00800130        0x1 CLaserControlApp.o
+ .bss._ZZN16CLaserControlApp3RunEvE3bar
+                0x00800131        0x2 CLaserControlApp.o
+ .bss.InterruptFuncTable
+                0x00800133       0x26 LaserLib/int8a.o
+                0x00800133                InterruptFuncTable
+ .bss.InterruptSenderTable
+                0x00800159       0x26 LaserLib/int8a.o
+                0x00800159                InterruptSenderTable
+ .bss._ZZ4mainE3prs
+                0x0080017f        0x2 main.o
+ .bss.App       0x00800181       0x1f main.o
+                0x00800181                App
+ .bss.laserBoard
+                0x008001a0        0x1 main.o
+                0x008001a0                laserBoard
+ .bss.adc       0x008001a1        0x4 main.o
+                0x008001a1                adc
+ .bss.relayTimer
+                0x008001a5        0x3 main.o
+                0x008001a5                relayTimer
+ .bss.sender    0x008001a8       0x19 main.o
+                0x008001a8                sender
+ .bss.usart     0x008001c1        0x2 main.o
+                0x008001c1                usart
+ .bss.cnt       0x008001c3        0x2 MODBUS/CMBSender.o
+                0x008001c3                cnt
+ *(COMMON)
+ COMMON         0x008001c5        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+                0x008001c5                __brkval
+                0x008001c7                __flp
+                0x008001c9                PROVIDE (__bss_end, .)
+                0x00001eec                __data_load_start = LOADADDR (.data)
+                0x00001fba                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x008001c9        0x0
+                0x008001c9                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x008001c9                PROVIDE (__noinit_end, .)
+                0x008001c9                _end = .
+                0x008001c9                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.user_signatures
+ *(.user_signatures*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x00000000       0x30
+ *(.comment)
+ .comment       0x00000000       0x30 CDGUSUSART.o
+                                 0x31 (size before relaxing)
+ .comment       0x00000030       0x31 CLaserBoard.o
+ .comment       0x00000030       0x31 CLaserControlApp.o
+ .comment       0x00000030       0x31 CRelayTimer.o
+ .comment       0x00000030       0x31 CSensorADC.o
+ .comment       0x00000030       0x31 LaserLib/CTimer.o
+ .comment       0x00000030       0x31 LaserLib/CUSART.o
+ .comment       0x00000030       0x31 LaserLib/int8a.o
+ .comment       0x00000030       0x31 main.o
+ .comment       0x00000030       0x31 MODBUS/CMBProtocol.o
+ .comment       0x00000030       0x31 MODBUS/CMBSender.o
+ .comment       0x00000030       0x31 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(malloc.o)
+
+.note.gnu.avr.deviceinfo
+                0x00000000       0x3c
+ .note.gnu.avr.deviceinfo
+                0x00000000       0x3c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.0.90/gcc/dev/atmega8/avr4/crtatmega8.o
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info .gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line .debug_line.* .debug_line_end)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges
+ *(.debug_ranges)
+
+.debug_macro
+ *(.debug_macro)
+OUTPUT(Electroporation.elf elf32-avr)
+LOAD linker stubs

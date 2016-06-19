@@ -1,0 +1,6 @@
+Removed Pin From Net: NetName=IGND Pin=D9-2
+Added Pin To Net: NetName=IGND Pin=D9-1
+Added Pin To Net: NetName=NetD9_2 Pin=D9-2
+Added Pin To Net: NetName=NetD9_2 Pin=R24-2
+Added Pin To Net: NetName=NetD9_2 Pin=R25-2
+Added Net: Name=NetD9_2
