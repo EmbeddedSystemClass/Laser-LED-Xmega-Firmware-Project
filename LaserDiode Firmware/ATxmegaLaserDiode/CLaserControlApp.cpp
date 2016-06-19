@@ -41,9 +41,9 @@ uint16_t PowerTable[110]      ={500,	480,	450,	432,	420,	411,	405,	0,		0,		0,		0
 								500,	500,	500,	500,	490,	0,		0,		0,		0,		0,		0,
 								500,	500,	500,	500,	0,		0,		0,		0,		0,		0,		0};
 								
-uint16_t tableRED[7] = {1000, 1000, 10, 10, 10, 1000, 10};
-uint16_t tableGRN[7] = {10, 1000, 1000, 10, 1000, 10, 10};
-uint16_t tableBLU[7] = {10, 10, 1000, 1000, 10, 10, 1000};
+uint16_t tableRED[8] = {1000, 1000, 10, 10, 10, 1000, 10, 1000};
+uint16_t tableGRN[8] = {10, 1000, 1000, 10, 1000, 10, 10, 1000};
+uint16_t tableBLU[8] = {1000, 10, 1000, 1000, 10, 10, 1000, 1000};
 								
 // default constructor
 CLaserControlApp::CLaserControlApp()
@@ -764,7 +764,7 @@ void CLaserControlApp::OnPWMTimerOVF()
 		if (delay == 0)
 		{
 			pos++;
-			if (pos == 7) pos = 0;
+			if (pos == 8) pos = 0;
 			delay = 1000;
 		}
 		delay --;
