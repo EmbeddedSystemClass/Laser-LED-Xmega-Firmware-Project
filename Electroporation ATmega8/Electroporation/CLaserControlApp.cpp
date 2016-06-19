@@ -441,21 +441,33 @@ void CLaserControlApp::Run()
 			state = APP_RUN;
 		break;
 		case APP_OnHL:
+		{
 			// Turn HL (return to Setup) state
 			pic_id = swap(PICID_SETUP);
 			m_cpSender->WriteDataToRegisterAsync(REGISTER_ADDR_PICID, (uint8_t*)&pic_id, 2);
 			m_cpSender->WaitMODBUSTransmitter();
 			
 			static bool hl = true;
+			uint16_t hli = 0;
 			
 			if (hl)
+			{
+				hli = 1;
 				laserBoard.Relay2On();
+			}
 			else
+			{
+				hli = 0;
 				laserBoard.Relay2Off();
+			}
+			
+			m_cpSender->WriteDataToSRAMAsync(VARIABLE_ADDR_HLICON, (uint16_t*)&hli, 2);
+			m_cpSender->WaitMODBUSTransmitter();
 				
 			hl = !hl;
 			
 			state = APP_SETUP;
+		}
 		break;
 		case APP_OnSaveSetup :
 			pic_id = swap(PICID_SETUP);
