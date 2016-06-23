@@ -150,6 +150,7 @@ private :
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
 	uint32_t laserCounter;
+	uint32_t laserCounterSession;
 	
 	// all laser settings
 	DGUS_LASERDIODE laserDiodeData;

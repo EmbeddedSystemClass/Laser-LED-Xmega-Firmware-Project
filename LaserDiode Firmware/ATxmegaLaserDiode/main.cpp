@@ -100,12 +100,14 @@ void SystemInitialize()
 	pwmtimer.SetOVFCallback(App.OnPWMTimerOVFStatic, &App, TC_OVFINTLVL_LO_gc);
 	pwmtimer.SetCOMPACallback(App.OnPWMTimerCMPStatic, &App, TC_CCAINTLVL_LO_gc);
 	// Set RGB Led control
+//#ifndef LED_LASER_INDICATOR
 	pwmtimer.SetCOMPB(256);
 	pwmtimer.SetCOMPC(512);
 	pwmtimer.SetCOMPD(768);
 	pwmtimer.SetCOMPBCallback(App.OnPWMTimerREDStatic, &App, TC_CCBINTLVL_HI_gc);
 	pwmtimer.SetCOMPCCallback(App.OnPWMTimerGRNStatic, &App, TC_CCCINTLVL_HI_gc);
 	pwmtimer.SetCOMPDCallback(App.OnPWMTimerBLUStatic, &App, TC_CCDINTLVL_HI_gc);
+//#endif
 	pwmtimer.Start(1024);
 	
 	dacSPI.Initialize(true, SPI_DORD_MSBtoLSB, SPI_MODE_LFSTP_TRSMP, false, SPI_PRESCALER_DIV128_gc);

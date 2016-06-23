@@ -37,6 +37,7 @@
 #define VARIABLE_ADDR_DATAOFFS	0x0011
 #define VARIABLE_ADDR_DATAINDEX	0x0012
 #define VARIABLE_ADDR_COOLICON	0x0013
+#define VARIABLE_ADDR_SESSNCNT	0x0014
 
 #define PICID_LOGO				0
 #define PICID_LOGIN				1
@@ -133,6 +134,9 @@ typedef struct DGUS_LASERDIODE_STRUCT
 	
 	// Icons
 	uint16_t coolIcon;
+	
+	// Pulse counter
+	uint32_t SessionPulseCounter;
 } DGUS_LASERDIODE, *PDGUS_LASERDIODE;
 
 typedef struct DGUS_PROFILE_STRUCT
