@@ -66,6 +66,12 @@ public:
 	void InitializeClock();
 	void PWMOn();
 	void PWMOff();
+	void REDOn();
+	void REDOff();
+	void GRNOn();
+	void GRNOff();
+	void BLUOn();
+	void BLUOff();
 	
 	// Relays
 	void Relay1On();

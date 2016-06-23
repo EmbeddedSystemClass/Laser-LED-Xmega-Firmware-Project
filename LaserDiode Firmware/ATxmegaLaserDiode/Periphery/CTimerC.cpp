@@ -104,7 +104,7 @@ void CTimerC::SetCOMPD(uint16_t value)
 void CTimerC::SetOVFCallback(ISRCallback func, void* owner, TC_OVFINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLA = (TCC0.INTCTRLA & TC0_OVFINTLVL_gm) | intlvl;
+		TCC0.INTCTRLA |= intlvl;// = (TCC0.INTCTRLA & TC0_OVFINTLVL_gm) | intlvl;
 		
 	InterruptFuncTable[TCC0_OVF_vect_num] = func;
 	InterruptSenderTable[TCC0_OVF_vect_num] = owner;
@@ -113,7 +113,7 @@ void CTimerC::SetOVFCallback(ISRCallback func, void* owner, TC_OVFINTLVL_t intlv
 void CTimerC::SetERRCallback(ISRCallback func, void* owner, TC_ERRINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLA = (TCC0.INTCTRLA & TC0_ERRINTLVL_gm) | intlvl;
+		TCC0.INTCTRLA |= intlvl;// = (TCC0.INTCTRLA & TC0_ERRINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC0_ERR_vect_num] = func;
 	InterruptSenderTable[TCC0_ERR_vect_num] = owner;
@@ -122,7 +122,7 @@ void CTimerC::SetERRCallback(ISRCallback func, void* owner, TC_ERRINTLVL_t intlv
 void CTimerC::SetCOMPACallback(ISRCallback func, void* owner, TC_CCAINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLB = (TCC0.INTCTRLB & TC0_CCAINTLVL_gm) | intlvl;
+		TCC0.INTCTRLB |= intlvl;// = (TCC0.INTCTRLB & TC0_CCAINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC0_CCA_vect_num] = func;
 	InterruptSenderTable[TCC0_CCA_vect_num] = owner;
@@ -131,7 +131,7 @@ void CTimerC::SetCOMPACallback(ISRCallback func, void* owner, TC_CCAINTLVL_t int
 void CTimerC::SetCOMPBCallback(ISRCallback func, void* owner, TC_CCBINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLB = (TCC0.INTCTRLB & TC0_CCBINTLVL_gm) | intlvl;
+		TCC0.INTCTRLB |= intlvl;// = (TCC0.INTCTRLB & TC0_CCBINTLVL_gm) | intlvl;
 	
 	InterruptFuncTable[TCC0_CCB_vect_num] = func;
 	InterruptSenderTable[TCC0_CCB_vect_num] = owner;
@@ -140,7 +140,7 @@ void CTimerC::SetCOMPBCallback(ISRCallback func, void* owner, TC_CCBINTLVL_t int
 void CTimerC::SetCOMPCCallback(ISRCallback func, void* owner, TC_CCCINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLB = (TCC0.INTCTRLB & TC0_CCCINTLVL_gm) | intlvl;
+		TCC0.INTCTRLB |= intlvl;// = (TCC0.INTCTRLB & TC0_CCCINTLVL_gm) | intlvl;
 		
 	InterruptFuncTable[TCC0_CCC_vect_num] = func;
 	InterruptSenderTable[TCC0_CCC_vect_num] = owner;
@@ -149,7 +149,7 @@ void CTimerC::SetCOMPCCallback(ISRCallback func, void* owner, TC_CCCINTLVL_t int
 void CTimerC::SetCOMPDCallback(ISRCallback func, void* owner, TC_CCDINTLVL_t intlvl)
 {
 	if (func != NULL)
-		TCC0.INTCTRLB = (TCC0.INTCTRLB & TC0_CCDINTLVL_gm) | intlvl;
+		TCC0.INTCTRLB |= intlvl;// = (TCC0.INTCTRLB & TC0_CCDINTLVL_gm) | intlvl;
 		
 	InterruptFuncTable[TCC0_CCD_vect_num] = func;
 	InterruptSenderTable[TCC0_CCD_vect_num] = owner;
