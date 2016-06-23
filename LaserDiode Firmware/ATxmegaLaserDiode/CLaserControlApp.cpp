@@ -15,6 +15,9 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
+//#define FLOW_CONTROL
+#define LED_LASER_INDICATOR
+
 extern CTimerC timer;
 extern CTimerF laserTimer;
 extern CTimerC1 flowtimer;
@@ -24,8 +27,6 @@ extern CLaserBoard laserBoard;
 extern CSoundPlayer player;
 extern CSPI dacSPI;
 extern int temperature;
-
-//#define FLOW_CONTROL
 
 uint16_t MinDurationTable[11] = {100, 100,  20,  20, 20, 10, 10, 10, 10, 10, 10};
 uint16_t MaxDurationTable[11] = {400, 400, 120, 120, 100, 80, 70, 70, 60, 50, 40};
@@ -234,24 +235,27 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	laserDiodeData.timer.timer_seconds = m_wSetSec;
 	laserDiodeData.PulseCounter = swap32(laserCounter);
 	laserDiodeData.melanin = 0;
-	laserDiodeData.phototype = 0;
+	laserDiodeData.phototype = 1;
 	laserDiodeData.temperature = temperature;
 	laserDiodeData.cooling = 3;
 	laserDiodeData.flow = 0;
 	laserDiodeData.DatabasePageOffset = 0;
 	laserDiodeData.DatabaseSelectionIndex = 13;
+	laserDiodeData.SessionPulseCounter = 0;
 	
 	// Initialize Laser timer
 	laserTimer.Initialize(WGM_SingleSlopePWM, CS_DIV1024);
 	laserTimer.SetPeriod(laserTimerPeriod);		// 10 Hz
 	laserTimer.SetCOMPA(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
-	//laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
 	laserTimer.SetOVFCallback(OnLaserTimerStopStatic, this, TC_OVFINTLVL_LO_gc);
 	laserTimer.SetCOMPACallback(OnLaserTimerStatic, this, TC_CCAINTLVL_LO_gc);
 	laserTimer.EnableChannel(TIMER_CHANNEL_A);	// Enable Laser TTL Gate
-	//laserTimer.EnableChannel(TIMER_CHANNEL_B);	// Enable Laser TTL Gate
 	laserTimer.ChannelSet(TIMER_CHANNEL_A);
-	//laserTimer.ChannelSet(TIMER_CHANNEL_B);
+#ifdef LED_LASER_INDICATOR
+	laserTimer.SetCOMPB(laserTimerDutyCycle);	// 50 ms, 50% duty cycle
+	laserTimer.EnableChannel(TIMER_CHANNEL_B);	// Enable Laser TTL Gate
+	laserTimer.ChannelSet(TIMER_CHANNEL_B);
+#endif
 }
 
 void CLaserControlApp::Start()
@@ -433,6 +437,8 @@ void CLaserControlApp::Run()
 			
 				uint32_t cnt = swap32(laserCounter);
 				SetVariable(VARIABLE_ADDR_LASERCNT, (uint16_t*)&cnt,  4);
+				cnt = swap32(laserCounterSession);
+				SetVariable(VARIABLE_ADDR_SESSNCNT, (uint16_t*)&cnt,  4);
 				
 #ifdef FLOW_CONTROL
 				if (m_wFlow < 30)
@@ -469,6 +475,8 @@ void CLaserControlApp::Run()
 		// Commands
 		case APP_WORKOnReady:
 			{
+				laserCounterSession = 0;
+				
 				//laserBoard.Relay2On();
 				laserBoard.LaserPowerOn();
 				
@@ -709,6 +717,7 @@ void CLaserControlApp::OnTimer()
 void CLaserControlApp::OnLaserTimer()
 {
 	laserCounter++;
+	laserCounterSession++;
 	
 	if (laserTimerDutyCyclems > 100)
 		player.SoundStart(500, 50, 0);
@@ -740,6 +749,8 @@ void CLaserControlApp::OnPWMTimerOVF()
 	{
 		laserBoard.PWMOff();
 	}
+
+#ifndef LED_LASER_INDICATOR
 	laserBoard.REDOff();
 	laserBoard.GRNOff();
 	laserBoard.BLUOff();
@@ -773,6 +784,7 @@ void CLaserControlApp::OnPWMTimerOVF()
 	pwmtimer.SetCOMPB(red);
 	pwmtimer.SetCOMPC(grn);
 	pwmtimer.SetCOMPD(blu);
+#endif
 }
 
 void CLaserControlApp::OnPWMTimerCMP()
@@ -783,15 +795,21 @@ void CLaserControlApp::OnPWMTimerCMP()
 
 void CLaserControlApp::OnPWMTimerRED()
 {
+#ifndef LED_LASER_INDICATOR
 	laserBoard.REDOn();
+#endif
 }
 void CLaserControlApp::OnPWMTimerGRN()
 {
+#ifndef LED_LASER_INDICATOR
 	laserBoard.GRNOn();
+#endif
 }
 void CLaserControlApp::OnPWMTimerBLU()
 {
+#ifndef LED_LASER_INDICATOR
 	laserBoard.BLUOn();
+#endif
 }
 
 void CLaserControlApp::OnINT0()
@@ -812,6 +830,7 @@ void CLaserControlApp::OnINT0()
 						m_wDeadTime = 10;
 						
 						laserCounter++;
+						laserCounterSession++;
 						
 						if (laserTimerDutyCyclems > 100)
 							player.SoundStart(500, 50, 0);
