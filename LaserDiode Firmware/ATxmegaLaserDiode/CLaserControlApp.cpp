@@ -16,7 +16,7 @@
 #include <avr/eeprom.h>
 
 //#define FLOW_CONTROL
-#define LED_LASER_INDICATOR
+//#define LED_LASER_INDICATOR
 
 extern CTimerC timer;
 extern CTimerF laserTimer;
@@ -644,7 +644,7 @@ void CLaserControlApp::OnTimer()
 	{
 		if (m_wMillSec == 0)
 		{
-			m_wFlow = (TCC1.CNT * 10) / 8;
+			m_wFlow = (TCC1.CNT * 73) / 104; // ((cnt * 10) / 8) * (7,3 / 13)
 			flowtimer.Reset();
 			
 			if (m_wSeconds == 0)
