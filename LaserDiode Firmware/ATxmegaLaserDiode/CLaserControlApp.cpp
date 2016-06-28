@@ -417,6 +417,7 @@ void CLaserControlApp::Run()
 			{				
 				uint16_t data = ((uint16_t)((laserPower * 640) / 63)) << 2;  // (laserPower * 1024) / 1000)
 				dacSPI.Send((uint8_t*)&data, sizeof(data));
+				laserBoard.LaserPowerOn();
 							
 				if (!laserBoard.Footswitch())
 				{
@@ -456,20 +457,25 @@ void CLaserControlApp::Run()
 				SetPictureId(PICID_WORKOnReady);
 		break;
 		case APP_TEMPERERR:			
-			laserBoard.LaserPowerOff();
+			laserBoard.LaserPowerOff(); // Power off error
 			
 			prepare = false;
 			if (temperature < 290)
 			{
 				prepare = true;
 				SetPictureId(PIC_ID_last);
+				
+				if ((PIC_ID_last == PICID_WORK_POWERON) || (PIC_ID_last == PICID_WORK_STARTED))
+					laserBoard.LaserPowerOn();
 			}
 		break;
-		case APP_POWERERR:			
+		case APP_POWERERR:
+#ifdef LASER_POWER_CHECK
 			laserBoard.LaserPowerOff();
 			
-			if ((PORTD.IN & PIN5_bm) != 0)
+			if ((PORTD.IN & PIN6_bm) != 0)
 				SetPictureId(PIC_ID_last);
+#endif
 		break;
 		
 		// Commands
@@ -576,12 +582,14 @@ void CLaserControlApp::Run()
 			Database.UnMap();
 		break;
 	}
-	
+
+#ifdef LASER_POWER_CHECK	
 	if ((PORTD.IN & PIN6_bm) == 0)
 		{
 			PIC_ID_last = PIC_ID;
 			SetPictureId(PICID_WORK_ERROR1);
 		}
+#endif
 	
 	if (update)
 	{		
