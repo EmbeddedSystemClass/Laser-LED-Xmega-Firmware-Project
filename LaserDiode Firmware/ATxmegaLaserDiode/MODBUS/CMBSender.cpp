@@ -30,7 +30,7 @@ void CMBSender::Initialize(CTimer1* timer, CUSART* usart, CMBEventsHandler *hand
 	rx_buffer_pos    = 0x00;
 	rx_frame_length  = 0x00;
 	rx_frame_crc     = 0x00;
-	rx_currt_crc     = 0x00;
+	rx_currt_crc     = 0xffff;
 	modbus_receiver_state  = rx_Idle;
 	modbus_transmitter_state  = tx_Idle;
 	isTransaction = false;
@@ -153,7 +153,7 @@ void CMBSender::OnReceiveByte(uint8_t data)
 		case rx_FrameLength :
 			rx_frame_length = data;
 			rx_buffer_pos = 0;
-			rx_currt_crc = 0;
+			rx_currt_crc = 0xffff;
 			modbus_receiver_state = rx_FrameReceive;
 			break;
 		case rx_FrameReceive :
@@ -165,17 +165,19 @@ void CMBSender::OnReceiveByte(uint8_t data)
 			}
 			rx_currt_crc = _crc16_update(rx_currt_crc, data);
 			rx_buffer_pos++;
+			
+#ifdef USE_CRC
+			if (rx_buffer_pos == (rx_frame_length - 2))
+				modbus_receiver_state = rx_CRC0;
+#else				
 			if (rx_buffer_pos == rx_frame_length)
 			{
-#ifdef USE_CRC
-				modbus_receiver_state = rx_CRC0;
-#else
 				modbus_receiver_state = rx_Complete;
-#endif
 				OnTransactionCallback(rx_buffer, rx_frame_length);
 				if (CallbackHandler != 0)
 					CallbackHandler->OnTransactionCallback(rx_buffer, rx_frame_length);
 			}
+#endif
 			break;
 		case rx_CRC0 :
 			rx_frame_crc = data;

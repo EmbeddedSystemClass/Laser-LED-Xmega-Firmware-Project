@@ -20,6 +20,8 @@
 #define FRAMEHEADER_HIGHBYTE	0xCC
 #endif
 
+#define USE_CRC
+
 class CMBEventsHandler
 {
 public:

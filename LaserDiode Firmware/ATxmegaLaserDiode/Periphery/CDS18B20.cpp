@@ -13,6 +13,14 @@
 
 #include <util/delay.h>
 
+uint8_t onewire_crc_update(uint8_t crc, uint8_t b) {
+	for (uint8_t p = 8; p; p--) {
+		crc = ((crc ^ b) & 1) ? (crc >> 1) ^ 0b10001100 : (crc >> 1);
+		b >>= 1;
+	}
+	return crc;
+}
+
 // default constructor
 CDS18B20::CDS18B20()
 {
@@ -82,7 +90,7 @@ unsigned char CDS18B20::w1_receive_byte()
 
 int CDS18B20::temp_18b20()
 {
-	unsigned char data[2];
+	unsigned char data[9];
 	int temp = 0;
 	
 	if (req)
@@ -103,8 +111,14 @@ int CDS18B20::temp_18b20()
 			w1_find();
 			w1_sendcmd(0xcc);
 			w1_sendcmd(0xbe);	//read temperature
-			data[0] = w1_receive_byte();
-			data[1] = w1_receive_byte();
+			/*data[0] = w1_receive_byte();
+			data[1] = w1_receive_byte();*/
+			uint8_t crc = 0;
+			for (int i = 0; i < 9; i++)
+			{
+				data[i] = w1_receive_byte();
+				crc = onewire_crc_update(crc, data[i]);
+			}
 			
 			temp = data[1];
 			temp = temp<<8;
@@ -112,7 +126,8 @@ int CDS18B20::temp_18b20()
 			
 			temp *= 0.625;
 			
-			temperature = temp;
+			if (crc == 0)
+				temperature = temp;
 		}
 	}
 	

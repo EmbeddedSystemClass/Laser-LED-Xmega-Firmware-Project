@@ -15,8 +15,8 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-//#define FLOW_CONTROL
-//#define LED_LASER_INDICATOR
+#define FLOW_CONTROL
+#define LED_LASER_INDICATOR
 
 extern CTimerC timer;
 extern CTimerF laserTimer;
@@ -196,6 +196,7 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	update = false;
 	prepare = false;
 	peltier_en = false;
+	isstarted = false;
 	m_wSetMin = 0;
 	m_wSetSec = 10;
 	m_wMillSec = 0;
@@ -307,8 +308,20 @@ void CLaserControlApp::Run()
 		{
 			SetPictureId(PICID_WORK_ERRORHEATING);
 			PIC_ID_last = PIC_ID;
+			
+			if (isstarted)
+			{
+				laserTimer.Stop();
+				laserTimer.ChannelSet(TIMER_CHANNEL_A);
+				laserTimer.ChannelSet(TIMER_CHANNEL_B);
+				laserBoard.LaserPowerOff();
+				PIC_ID_last = PICID_WORK_PREPARE;
+			}
 		}
 	}
+	
+	if ((state & (APP_WORKPOWERON | APP_WORKLIGHT)) == 0)
+		isstarted = false;
 	
 	switch (state)
 	{		
@@ -420,6 +433,7 @@ void CLaserControlApp::Run()
 							
 				if (!laserBoard.Footswitch())
 				{
+					isstarted = true;
 					if (state != APP_WORKLIGHT)
 					{
 						SetPictureId(PICID_WORK_STARTED);
@@ -433,6 +447,9 @@ void CLaserControlApp::Run()
 						SetPictureId(PICID_WORK_POWERON);
 						state = APP_WORKPOWERON;
 					}
+					laserTimer.Stop();
+					laserTimer.ChannelSet(TIMER_CHANNEL_A);
+					laserTimer.ChannelSet(TIMER_CHANNEL_B);
 				}
 			
 				uint32_t cnt = swap32(laserCounter);
@@ -643,10 +660,7 @@ void CLaserControlApp::OnTimer()
 	if (prepare)
 	{
 		if (m_wMillSec == 0)
-		{
-			m_wFlow = (TCC1.CNT * 73) / 104; // ((cnt * 10) / 8) * (7,3 / 13)
-			flowtimer.Reset();
-			
+		{			
 			if (m_wSeconds == 0)
 			{
 				if (m_wMinutes == 0)
@@ -676,41 +690,46 @@ void CLaserControlApp::OnTimer()
 			m_wSeconds--;
 			
 			// ****************** Tick sound
-			if (m_wMinutes == 0 && m_wSeconds < 10 && state == APP_WORKPREPARE)
+			if (state == APP_WORKPREPARE)
 			{
-				if (m_wMinutes == 0 && m_wSeconds < 5)
+				if (m_wMinutes == 0 && m_wSeconds < 10 && state == APP_WORKPREPARE)
 				{
-					player.SoundStart(1000, 100, 2);
-					player.SoundStop();
-					//player.beep(1000, 100);
+					if (m_wMinutes == 0 && m_wSeconds < 5)
+					{
+						player.SoundStart(1000, 100, 2);
+						player.SoundStop();
+						//player.beep(1000, 100);
+					}
+					else
+					{
+						player.SoundStart(1000, 50, 2);
+						player.SoundStop();
+						//player.beep(1000, 50);
+					}
 				}
 				else
 				{
-					player.SoundStart(1000, 50, 2);
+					player.SoundStart(1000, 25, 2);
 					player.SoundStop();
-					//player.beep(1000, 50);
-				}
-			}
-			else
-			{
-				player.SoundStart(1000, 25, 2);
-				player.SoundStop();
-				//player.beep(1000, 25);
+					//player.beep(1000, 25);
+					}
 			}
 			// ************************************
 		}
 		m_wMillSec-=10;
 	}
-	else
+	
+	// Flow sensor
 	{
-		if (m_wMillSec == 0)
+		static uint16_t millsec = 100;
+		if (millsec == 0)
 		{
-			m_wMillSec = 100;
+			millsec = 100;
 			
-			m_wFlow = (TCC1.CNT * 10) / 8;
+			m_wFlow = (TCC1.CNT * 73) / 104; // ((cnt * 10) / 8) * (7,3 / 13)
 			flowtimer.Reset();
 		}
-		m_wMillSec-=10;
+		millsec-=10;
 	}
 }
 
@@ -814,7 +833,7 @@ void CLaserControlApp::OnPWMTimerBLU()
 
 void CLaserControlApp::OnINT0()
 {
-	static bool isstarted = false;
+	//static bool isstarted = false;
 	
 	switch (state)
 	{
