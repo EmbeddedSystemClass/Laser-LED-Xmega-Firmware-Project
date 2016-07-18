@@ -47,7 +47,11 @@ void CLaserBoard::InitializeIO()
 	PORTE.OUT = 0;
 	
 	// Configure all pins of PWM to inverted
-	PORTF.PIN0CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+#ifdef USE_LDD
+	PORTF.PIN0CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;	// Laser TTL pulse
+#else
+	PORTF.PIN0CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;	// Laser TTL pulse
+#endif
 	PORTF.PIN1CTRL = /*PORT_INVEN_bm |*/ PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN2CTRL = /*PORT_INVEN_bm |*/ PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	PORTF.PIN3CTRL = /*PORT_INVEN_bm |*/ PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
@@ -76,7 +80,11 @@ void CLaserBoard::InitializeIO()
 	
 	// Configure all pins to "wired and"
 	PORTE.PIN0CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
-	PORTE.PIN1CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
+#ifdef USE_LDD
+	PORTE.PIN1CTRL = PORT_INVEN_bm | PORT_OPC_TOTEM_gc | PORT_SRLEN_bm; // Laser power enable
+#else
+	PORTE.PIN1CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm; // Laser power enable
+#endif
 	PORTE.PIN2CTRL = PORT_OPC_TOTEM_gc | PORT_SRLEN_bm;
 	
 	PORTE.OUT = 0;//PIN0_bm;

@@ -196,7 +196,7 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	update = false;
 	prepare = false;
 	peltier_en = false;
-	isstarted = false;
+	//isstarted = false;
 	m_wSetMin = 0;
 	m_wSetSec = 10;
 	m_wMillSec = 0;
@@ -309,7 +309,7 @@ void CLaserControlApp::Run()
 			SetPictureId(PICID_WORK_ERRORHEATING);
 			PIC_ID_last = PIC_ID;
 			
-			if (isstarted)
+			//if (isstarted)
 			{
 				laserTimer.Stop();
 				laserTimer.ChannelSet(TIMER_CHANNEL_A);
@@ -320,8 +320,8 @@ void CLaserControlApp::Run()
 		}
 	}
 	
-	if ((state & (APP_WORKPOWERON | APP_WORKLIGHT)) == 0)
-		isstarted = false;
+	/*if ((state & (APP_WORKPOWERON | APP_WORKLIGHT)) == 0)
+		isstarted = false;*/
 	
 	switch (state)
 	{		
@@ -433,7 +433,7 @@ void CLaserControlApp::Run()
 							
 				if (!laserBoard.Footswitch())
 				{
-					isstarted = true;
+					//isstarted = true;
 					if (state != APP_WORKLIGHT)
 					{
 						SetPictureId(PICID_WORK_STARTED);
@@ -447,9 +447,9 @@ void CLaserControlApp::Run()
 						SetPictureId(PICID_WORK_POWERON);
 						state = APP_WORKPOWERON;
 					}
-					laserTimer.Stop();
+					/*laserTimer.Stop();
 					laserTimer.ChannelSet(TIMER_CHANNEL_A);
-					laserTimer.ChannelSet(TIMER_CHANNEL_B);
+					laserTimer.ChannelSet(TIMER_CHANNEL_B);*/
 				}
 			
 				uint32_t cnt = swap32(laserCounter);
@@ -594,7 +594,7 @@ void CLaserControlApp::Run()
 		break;
 	}
 	
-	if ((PORTD.IN & PIN6_bm) == 0)
+	if ((PORTD.IN & PIN6_bm) != 0)
 		{
 			PIC_ID_last = PIC_ID;
 			SetPictureId(PICID_WORK_ERROR1);
@@ -833,7 +833,7 @@ void CLaserControlApp::OnPWMTimerBLU()
 
 void CLaserControlApp::OnINT0()
 {
-	//static bool isstarted = false;
+	static bool isstarted = false;
 	
 	switch (state)
 	{

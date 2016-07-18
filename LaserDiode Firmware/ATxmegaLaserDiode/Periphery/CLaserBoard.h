@@ -13,6 +13,8 @@
 
 #include <avr/io.h>
 
+//#define USE_LDD
+
 typedef enum LASERBOARD_PINS_ENUM
 {
 	// Analog port

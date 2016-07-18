@@ -135,7 +135,7 @@ private :
 	volatile bool update;
 	volatile bool prepare;
 	volatile bool peltier_en;
-	volatile bool isstarted;
+	//volatile bool isstarted;
 	
 	// Limits
 	volatile uint16_t m_wMaxEnergy;
