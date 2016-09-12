@@ -15,7 +15,8 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-#define FLOW_CONTROL
+//#define FLOW_CONTROL
+//#define POWER_CHECK
 #define LED_LASER_INDICATOR
 
 extern CTimerC timer;
@@ -593,12 +594,14 @@ void CLaserControlApp::Run()
 			Database.UnMap();
 		break;
 	}
-	
+
+#ifdef POWER_CHECK
 	if ((PORTD.IN & PIN6_bm) != 0)
 		{
 			PIC_ID_last = PIC_ID;
 			SetPictureId(PICID_WORK_ERROR1);
 		}
+#endif
 	
 	if (update)
 	{		
