@@ -42,6 +42,16 @@ uint16_t PowerTable[110]      ={500,	480,	450,	432,	420,	411,	405,	0,		0,		0,		0
 								500,	500,	500,	500,	490,	485,	0,		0,		0,		0,		0,
 								500,	500,	500,	500,	490,	0,		0,		0,		0,		0,		0,
 								500,	500,	500,	500,	0,		0,		0,		0,		0,		0,		0};
+uint16_t EnergyTable[110]     ={38,		50,		63,		75,		88,		100,	112,	0,		0,		0,		0,
+								7,		10,		14,		17,		20,		23,		26,		29,		31,		34,		37,
+								7,		10,		14,		17,		20,		24,		27,		29,		32,		34,		37,
+								7,		10,		13,		17,		20,		24,		26,		29,		32,		0,		0,
+								4,		7,		10,		14,		17,		20,		23,		26,		0,		0,		0,
+								4,		7,		10,		14,		17,		20,		23,		0,		0,		0,		0,
+								4,		7,		10,		14,		17,		20,		23,		0,		0,		0,		0,
+								4,		7,		10,		14,		17,		20,		0,		0,		0,		0,		0,
+								4,		7,		10,		14,		17,		0,		0,		0,		0,		0,		0,
+								4,		7,		10,		14,		0,		0,		0,		0,		0,		0,		0};
 								
 uint16_t tableRED[8] = {1000, 1000, 10, 10, 10, 1000, 10, 1000};
 uint16_t tableGRN[8] = {10, 1000, 1000, 10, 1000, 10, 10, 1000};
@@ -204,26 +214,27 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	m_wMinutes = m_wSetMin;
 	m_wSeconds = m_wSetSec;
 	m_wDeadTime = 0;
+	m_wMaxEnergy_ = 6; // J/cm2
 	
 	// Fast profile
 	m_structLaserProfile[PROFILE_FAST].Frequency = 10;			// 10 Hz
 	m_structLaserProfile[PROFILE_FAST].Duration  = 40;			// ms
-	m_structLaserProfile[PROFILE_FAST].EnergyPercent = 100;		// W
+	m_structLaserProfile[PROFILE_FAST].EnergyPercent = 14;		// W
 	
 	// Medium profile
 	m_structLaserProfile[PROFILE_MEDIUM].Frequency = 5;			// 10 Hz
 	m_structLaserProfile[PROFILE_MEDIUM].Duration  = 80;		// ms
-	m_structLaserProfile[PROFILE_MEDIUM].EnergyPercent = 100;	// W
+	m_structLaserProfile[PROFILE_MEDIUM].EnergyPercent = 26;	// W
 	
 	// Slow profile
 	m_structLaserProfile[PROFILE_SLOW].Frequency = 2;			// 10 Hz
 	m_structLaserProfile[PROFILE_SLOW].Duration  = 120;			// ma
-	m_structLaserProfile[PROFILE_SLOW].EnergyPercent = 100;		// W
+	m_structLaserProfile[PROFILE_SLOW].EnergyPercent = 36;		// W
 	
 	// Single profile
 	m_structLaserProfile[PROFILE_SINGLE].Frequency = 1;			// 10 Hz
 	m_structLaserProfile[PROFILE_SINGLE].Duration  = 100;		// ms
-	m_structLaserProfile[PROFILE_SINGLE].EnergyPercent = 100;	// W
+	m_structLaserProfile[PROFILE_SINGLE].EnergyPercent = 38;	// W
 	
 	// Current profile
 	Profile = PROFILE_FAST;
@@ -280,6 +291,12 @@ void CLaserControlApp::Start()
 void CLaserControlApp::FastRun()
 {
 
+}
+
+void CLaserControlApp::SetLaserDiodePower()
+{
+	uint16_t data = ((uint16_t)((laserPower * 1024) / MAX_LASER_POWER)) << 2;  // (laserPower * 640) / 63)
+	dacSPI.Send((uint8_t*)&data, sizeof(data));
 }
 
 void CLaserControlApp::Run()
@@ -368,21 +385,23 @@ void CLaserControlApp::Run()
 				{
 					APP_PROFILE prof = (APP_PROFILE)laserDiodeData.mode;
 					if (Profile != prof)	{update = true; Profile = prof;}
-				
+					
 					memcpy((void*)&laserDiodeData.laserprofile, (void*)&m_structLaserProfile[Profile], sizeof(laserDiodeData.laserprofile));
 					laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[Profile]);
-					laserPower = m_structLaserProfile[Profile].EnergyPercent;
+					
+					// Calculate laser power
+					laserPower = (uint32_t)(m_structLaserProfile[Profile].EnergyPercent * 1440ul) / (uint32_t)m_structLaserProfile[Profile].Duration; // Convert Energy J/cm2 to Power in Watts
 				}
 				
 				update = CheckLimits(laserDiodeData.laserprofile.Frequency, laserDiodeData.laserprofile.Duration, Profile);
 				
-				laserPower = m_wMaxEnergy * laserPower / 100;
-				/*if (laserDiodeData.laserprofile.EnergyPercent > m_wMaxEnergy)
+				//laserPower = m_wMaxEnergy * laserPower / 100;
+				if (laserDiodeData.laserprofile.EnergyPercent > m_wMaxEnergy_)
 				{
-					laserDiodeData.laserprofile.EnergyPercent = m_wMaxEnergy;
-					laserPower = m_wMaxEnergy;
+					laserDiodeData.laserprofile.EnergyPercent = m_wMaxEnergy_;
+					laserPower = m_wMaxEnergy_;
 					update = true;
-				}*/
+				}
 			}
 		break;
 		case APP_WORKPREPARE:
@@ -429,8 +448,7 @@ void CLaserControlApp::Run()
 		case APP_WORKLIGHT:
 		case APP_WORKPOWERON:
 			{				
-				uint16_t data = ((uint16_t)((laserPower * 640) / 63)) << 2;  // (laserPower * 1024) / 1000)
-				dacSPI.Send((uint8_t*)&data, sizeof(data));
+				SetLaserDiodePower();
 							
 				if (!laserBoard.Footswitch())
 				{
@@ -524,8 +542,7 @@ void CLaserControlApp::Run()
 		break;
 		case APP_WORKOnPowerOn:
 			{
-				uint16_t data = ((uint16_t)((laserPower * 640) / 63)) << 2;  // (laserPower * 1024) / 1000)
-				dacSPI.Send((uint8_t*)&data, sizeof(data));
+				SetLaserDiodePower();
 				
 				SetPictureId(PICID_WORK_POWERON);
 			}
@@ -1148,6 +1165,7 @@ bool CLaserControlApp::CheckLimits(uint16_t &freq, uint16_t &duration, APP_PROFI
 	index = min(max(0, index), TableNum[freq] - 1);
 	
 	m_wMaxEnergy = PowerTable[11 * (freq - 1) + index] / 5;
+	m_wMaxEnergy_ = EnergyTable[11 * (freq - 1) + index];
 	
 	return update;
 }

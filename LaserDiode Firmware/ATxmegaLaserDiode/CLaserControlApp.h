@@ -90,6 +90,7 @@ public:
 	// Process GUI
 	void Run();
 	void FastRun();
+	void SetLaserDiodePower();
 	
 	// helper methods
 	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
@@ -139,6 +140,7 @@ private :
 	
 	// Limits
 	volatile uint16_t m_wMaxEnergy;
+	volatile uint16_t m_wMaxEnergy_;
 	volatile uint16_t m_wMaxDuration;
 	
 	// variables
