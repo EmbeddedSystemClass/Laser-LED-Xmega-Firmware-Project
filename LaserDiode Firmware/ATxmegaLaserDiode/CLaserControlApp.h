@@ -9,7 +9,7 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
-#define MAX_LASER_POWER		200 //W
+#define MAX_LASER_POWER		600 //W
 
 // Standard libraries
 #include <stdbool.h>
@@ -90,6 +90,7 @@ public:
 	// Process GUI
 	void Run();
 	void FastRun();
+	void SetLaserDiodePower();
 	
 	// helper methods
 	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
@@ -137,7 +138,9 @@ private :
 	volatile bool peltier_en;
 	
 	// Limits
+	volatile uint16_t m_wMaxEnergy_;
 	volatile uint16_t m_wMaxEnergy;
+	volatile uint16_t m_wMaxPower;
 	volatile uint16_t m_wMaxDuration;
 	
 	// variables
