@@ -72,6 +72,26 @@ typedef enum APP_STATE_ENUM
 	APP_TEMPERERR = 0x0700
 } APP_STATE, *PAPP_STATE;
 
+typedef struct GUI_PRESET_STRUCT
+{
+	// Limits
+	uint16_t m_wMaxEnergy;
+	uint16_t m_wMaxEnergy_;
+	uint16_t m_wMinEnergy_;
+	uint16_t m_wMaxDuration;
+	uint16_t m_wMinDuration;
+	uint16_t m_wMaxFreq;
+	uint16_t m_wMinFreq;
+
+	// Helper control
+	uint16_t m_wEnergyOffset;
+	uint16_t m_wEnergyStep;
+	uint16_t m_wEnergyNumSteps;
+	uint16_t m_wDurationOffset;
+	uint16_t m_wDurationStep;
+	uint16_t m_wDurationNumSteps;	
+} GUI_PRESET;
+
 class CLaserControlApp : public CMBEventsHandler
 {
 public:
@@ -123,7 +143,14 @@ protected :
 	
 	void MelaninPreset(uint16_t melanin);
 	void PhototypePreset(uint16_t phototype);
-	bool CheckLimits(uint16_t &freq, uint16_t &duration, APP_PROFILE mode);
+	
+	bool FreqLimits(uint16_t &freq, APP_PROFILE mode);
+	void UpdateLimits(uint16_t freq, uint16_t duration, uint16_t energy, APP_PROFILE mode);
+	bool CheckLimits(uint16_t &freq, uint16_t &duration, uint16_t &energy, APP_PROFILE mode);
+	void LaserPreset(uint16_t &freq, uint16_t &duration, uint16_t &energy, APP_PROFILE mode);
+	void CalculateDurationSteps(uint16_t &freq, uint16_t &duration);
+	void CalculateEnergySteps(uint16_t &freq, uint16_t &duration);
+	void CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP_PROFILE mode);
 	
 private :
 	// application state
@@ -138,14 +165,27 @@ private :
 	volatile bool peltier_en;
 	//volatile bool isstarted;
 	
-	// Limits
+	/*// Limits
 	volatile uint16_t m_wMaxEnergy;
 	volatile uint16_t m_wMaxEnergy_;
+	volatile uint16_t m_wMinEnergy_;
 	volatile uint16_t m_wMaxDuration;
+	volatile uint16_t m_wMinDuration;
+	volatile uint16_t m_wMaxFreq;
+	volatile uint16_t m_wMinFreq;
+	
+	// Helper control
+	volatile uint16_t m_wEnergyOffset;
+	volatile uint16_t m_wEnergyStep;
+	volatile uint16_t m_wEnergyNumSteps;
+	volatile uint16_t m_wDurationOffset;
+	volatile uint16_t m_wDurationStep;
+	volatile uint16_t m_wDurationNumSteps;*/
+	GUI_PRESET pstGUI[5];
 	
 	// variables
-	volatile DGUS_LASERPROFILE	m_structLaserProfile[4];
-	volatile DGUS_LASERSETTINGS	m_structLaserSettings;
+	volatile DGUS_LASERPROFILE	m_structLaserProfile[5];
+	volatile DGUS_LASERSETTINGS	m_structLaserSettings[5];
 	
 	// laser settings
 	uint16_t laserTimerPeriod;

@@ -24,8 +24,8 @@
 #define VARIABLE_ADDR_DURATION	0x0003
 #define VARIABLE_ADDR_ENERGYPCT	0x0004
 #define VARIABLE_ADDR_POWER		0x0005
-#define VARIABLE_ADDR_ENERGY	0x0006
-#define VARIABLE_ADDR_DUTYCYCLE	0x0007
+#define VARIABLE_ADDR_ENERGY	0x0006 // Energy
+#define VARIABLE_ADDR_DUTYCYCLE	0x0007 // Duration
 #define VARIABLE_ADDR_LASERCNT	0x0008
 #define VARIABLE_ADDR_MELANIN	0x000a
 #define VARIABLE_ADDR_PHOTOTYPE	0x000b
@@ -90,16 +90,16 @@ typedef struct DGUS_LASERPROFILE_STRUCT
 {
 	// Basic laser settings
 	uint16_t Frequency;		// Frequency of laser pulses
-	uint16_t Duration;		// Duration of laser pulse
-	uint16_t EnergyPercent; // Energy in percentage of one pulse
+	uint16_t DurationCnt;		// Duration of laser pulse
+	uint16_t EnergyCnt; // Energy in percentage of one pulse
 } DGUS_LASERPROFILE, *PDGUS_LASERPROFILE;
 
 typedef struct DGUS_LASERSETTINGS_STRUCT
 {
 	// Service settings
-	uint16_t Power;			// Power of laser light
+	uint16_t Power;			// Power of laser light depricated
+	uint16_t Duration;		// Duty cycle	
 	uint16_t Energy;		// Energy in J
-	uint16_t DutyCycle;		// Duty cycle	
 } DGUS_LASERSETTINGS, *PDGUS_LASERSETTINGS;
 
 typedef struct DGUS_LASERDIODE_STRUCT
