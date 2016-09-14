@@ -10,6 +10,7 @@
 #define __CLASERCONTROLAPP_H__
 
 #define MAX_LASER_POWER		200 //W
+#define NUM_PULSES	2
 
 // Standard libraries
 #include <stdbool.h>
@@ -72,10 +73,18 @@ typedef enum APP_STATE_ENUM
 	APP_TEMPERERR = 0x0700
 } APP_STATE, *PAPP_STATE;
 
+#define PROFILE_SLOW_MIN_FREQ	1
+#define PROFILE_SLOW_MAX_FREQ	6
+
+#define PROFILE_MEDIUM_MIN_FREQ	1
+#define PROFILE_MEDIUM_MAX_FREQ	3
+
+#define PROFILE_FAST_MIN_FREQ	6
+#define PROFILE_FAST_MAX_FREQ	10
+
 typedef struct GUI_PRESET_STRUCT
 {
 	// Limits
-	uint16_t m_wMaxEnergy;
 	uint16_t m_wMaxEnergy_;
 	uint16_t m_wMinEnergy_;
 	uint16_t m_wMaxDuration;
@@ -90,6 +99,10 @@ typedef struct GUI_PRESET_STRUCT
 	uint16_t m_wDurationOffset;
 	uint16_t m_wDurationStep;
 	uint16_t m_wDurationNumSteps;	
+	
+	// Helper status
+	bool updateDuration;
+	bool updateEnergy;
 } GUI_PRESET;
 
 class CLaserControlApp : public CMBEventsHandler
@@ -111,9 +124,12 @@ public:
 	void Run();
 	void FastRun();
 	void SetLaserDiodePower();
+	void StartLaser();
+	void StopLaser();
 	
 	// helper methods
-	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile);
+	DGUS_LASERSETTINGS CalculateLaserSettings(DGUS_LASERPROFILE *profile, DGUS_LASERSETTINGS *settings);
+	DGUS_LASERSETTINGS CalculateMultiPulseLaserSettings(DGUS_LASERPROFILE *profile, DGUS_LASERSETTINGS *settings);
 	void SetPictureId(uint16_t pic_id);
 	void SetPictureIdAsync(uint16_t pic_id);
 	void GetVariable(uint16_t addr, uint16_t size);
@@ -147,9 +163,10 @@ protected :
 	bool FreqLimits(uint16_t &freq, APP_PROFILE mode);
 	void UpdateLimits(uint16_t freq, uint16_t duration, uint16_t energy, APP_PROFILE mode);
 	bool CheckLimits(uint16_t &freq, uint16_t &duration, uint16_t &energy, APP_PROFILE mode);
+	bool CheckLimitsFastMode(uint16_t &freq, uint16_t &duration, uint16_t &energy);
 	void LaserPreset(uint16_t &freq, uint16_t &duration, uint16_t &energy, APP_PROFILE mode);
 	void CalculateDurationSteps(uint16_t &freq, uint16_t &duration);
-	void CalculateEnergySteps(uint16_t &freq, uint16_t &duration);
+	void CalculateEnergySteps(uint16_t &freq, uint16_t &energy);
 	void CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP_PROFILE mode);
 	
 private :
@@ -165,22 +182,6 @@ private :
 	volatile bool peltier_en;
 	//volatile bool isstarted;
 	
-	/*// Limits
-	volatile uint16_t m_wMaxEnergy;
-	volatile uint16_t m_wMaxEnergy_;
-	volatile uint16_t m_wMinEnergy_;
-	volatile uint16_t m_wMaxDuration;
-	volatile uint16_t m_wMinDuration;
-	volatile uint16_t m_wMaxFreq;
-	volatile uint16_t m_wMinFreq;
-	
-	// Helper control
-	volatile uint16_t m_wEnergyOffset;
-	volatile uint16_t m_wEnergyStep;
-	volatile uint16_t m_wEnergyNumSteps;
-	volatile uint16_t m_wDurationOffset;
-	volatile uint16_t m_wDurationStep;
-	volatile uint16_t m_wDurationNumSteps;*/
 	GUI_PRESET pstGUI[5];
 	
 	// variables
@@ -192,8 +193,12 @@ private :
 	uint16_t laserTimerDutyCycle;
 	uint16_t laserTimerDutyCyclems;
 	uint16_t laserPower;
-	uint32_t laserCounter;
+	uint32_t laserCounter; // Pulse counter
 	uint32_t laserCounterSession;
+	
+	// Laser extended settings
+	uint16_t laserMultiPulseState;
+	uint16_t laserMultiPulsePeriod[NUM_PULSES * 2];
 	
 	// all laser settings
 	DGUS_LASERDIODE laserDiodeData;

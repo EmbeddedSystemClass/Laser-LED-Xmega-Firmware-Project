@@ -88,7 +88,7 @@ void CTimerF::ChannelReset(TIMER_CHANNELS channels)
 
 void CTimerF::SetPeriod(uint16_t value)
 {
-	TCF0.PER = value;
+	TCF0.PERBUF = value;
 }
 
 void CTimerF::SetCOMPA(uint16_t value)

@@ -101,6 +101,10 @@ void CLaserBoard::InitializeIO()
 	
 	PORTC.INT0MASK = PIN0_bm;
 	PORTC.INTCTRL = PORT_INT0LVL_LO_gc;
+	
+	// Laser Off, laser LED indicator Off
+	PORTF.OUTSET = PIN0_bm;
+	PORTF.OUTSET = PIN1_bm;
 }
 
 void CLaserBoard::InitializeClock()

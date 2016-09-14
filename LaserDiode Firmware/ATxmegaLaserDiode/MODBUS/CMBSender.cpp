@@ -252,13 +252,15 @@ void CMBSender::StartMODBUSListener()
 
 MODBUS_STATE CMBSender::WaitMODBUSListener()
 {
-	while (modbus_receiver_state != rx_Complete)
+	/*int cnt = 0; */
+	while ((modbus_receiver_state != rx_Complete)/* && ((cnt++) < 10000)*/)
 	{
 		if (modbus_receiver_state == rx_Error)
 			return Error;
 		if (modbus_receiver_state == rx_TimeOut)
 			return TimeOut;
 	}
+	//if (cnt >= 10000) return TimeOut;
 	return Complete;
 }
 
@@ -277,7 +279,8 @@ void CMBSender::StartMODBUSTransmitter()
 
 MODBUS_STATE CMBSender::WaitMODBUSTransmitter()
 {
-	while (modbus_transmitter_state != tx_Complete)
+	//int cnt = 0; 
+	while ((modbus_transmitter_state != tx_Complete)/* && ((cnt++) < 10000)*/)
 	{
 		if (modbus_transmitter_state == tx_Error)
 		return Error;
