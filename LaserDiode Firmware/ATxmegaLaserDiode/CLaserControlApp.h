@@ -200,6 +200,8 @@ private :
 	// Laser extended settings
 	uint16_t laserMultiPulseState;
 	uint16_t laserMultiPulsePeriod[NUM_PULSES * 2];
+	uint16_t laserLimitMode;
+	uint16_t laserLimitCnt;
 	
 	// all laser settings
 	DGUS_LASERDIODE laserDiodeData;

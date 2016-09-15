@@ -97,7 +97,7 @@ typedef struct DGUS_LASERPROFILE_STRUCT
 typedef struct DGUS_LASERSETTINGS_STRUCT
 {
 	// Service settings
-	uint16_t Power;			// Power of laser light depricated
+	uint16_t FlushesLimit;	// Power of laser light depricated
 	uint16_t Duration;		// Duty cycle	
 	uint16_t Energy;		// Energy in J
 } DGUS_LASERSETTINGS, *PDGUS_LASERSETTINGS;
