@@ -9,7 +9,7 @@
 #ifndef __CLASERCONTROLAPP_H__
 #define __CLASERCONTROLAPP_H__
 
-#define MAX_LASER_POWER		200 //W
+#define MAX_LASER_POWER		500ul //W
 #define NUM_PULSES	2
 
 // Standard libraries
@@ -54,6 +54,7 @@ typedef enum APP_STATE_ENUM
 	APP_WORKPOWERON = 0x0010,
 	APP_WORKLIGHT = 0x0020,
 	APP_WORKTEMPERWAIT = 0x0040,
+	APP_MENU = 0x0080,
 	
 	// Events
 	APP_WORKOnReady = 0x0100,

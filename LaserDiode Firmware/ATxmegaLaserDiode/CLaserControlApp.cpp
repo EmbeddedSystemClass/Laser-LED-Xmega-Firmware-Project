@@ -137,6 +137,9 @@ void CLaserControlApp::OnRegisterReceived(uint8_t addr, uint8_t* data, uint8_t l
 	
 	switch (PIC_ID)
 	{
+		case PICID_MAINMENU:
+			state = APP_MENU;
+		break;
 		case PICID_LOGO:
 			state = APP_LOGO;
 		break;
@@ -215,8 +218,8 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	prepare = false;
 	peltier_en = false;
 	//isstarted = false;
-	m_wSetMin = 0;
-	m_wSetSec = 0;
+	m_wSetMin = 1;
+	m_wSetSec = 40;
 	m_wMillSec = 0;
 	m_wMinutes = m_wSetMin;
 	m_wSeconds = m_wSetSec;
@@ -303,7 +306,7 @@ void CLaserControlApp::FastRun()
 
 void CLaserControlApp::SetLaserDiodePower()
 {
-	uint16_t data = ((uint16_t)((laserPower * 1024) / MAX_LASER_POWER)) << 2;  // (laserPower * 640) / 63)
+	uint16_t data = min(uint16_t((uint32_t(laserPower) * 1024ul) / MAX_LASER_POWER) << 2, 4095);  // (laserPower * 640) / 63)
 	dacSPI.Send((uint8_t*)&data, sizeof(data));
 }
 
@@ -356,6 +359,16 @@ void CLaserControlApp::Run()
 				state = APP_WORKIDLE;
 			}
 		break;
+		case APP_MENU:
+			{
+				prepare = false;
+				StopLaser();
+				laserBoard.LaserPowerOff();
+				//pwmtimer.Stop();
+				peltier_en = false;
+				laserBoard.PWMOn(); // Cooling off
+			}
+		break;
 		case APP_WORKSETUP:
 			{
 				uint16_t melanin     = laserDiodeData.melanin;
@@ -384,13 +397,19 @@ void CLaserControlApp::Run()
 				if (phototype != laserDiodeData.phototype)
 				{
 					PhototypePreset(laserDiodeData.phototype);
+					memcpy((void*)&laserDiodeData.laserprofile , (void*)&m_structLaserProfile [Profile], sizeof(laserDiodeData.laserprofile));
+					memcpy((void*)&laserDiodeData.lasersettings, (void*)&m_structLaserSettings[Profile], sizeof(laserDiodeData.lasersettings));
 					update = true;
+					break;
 				}
 				else
 				if (melanin != laserDiodeData.melanin)
 				{
 					MelaninPreset(laserDiodeData.melanin);
+					memcpy((void*)&laserDiodeData.laserprofile , (void*)&m_structLaserProfile [Profile], sizeof(laserDiodeData.laserprofile));
+					memcpy((void*)&laserDiodeData.lasersettings, (void*)&m_structLaserSettings[Profile], sizeof(laserDiodeData.lasersettings));
 					update = true;
+					break;
 				}
 				else
 				if (Profile != (APP_PROFILE)laserDiodeData.mode)
@@ -411,11 +430,13 @@ void CLaserControlApp::Run()
 				{
 					freq = laserDiodeData.laserprofile.Frequency;
 					
-					if (FreqLimits(freq, (APP_PROFILE)laserDiodeData.mode))
+					if (!FreqLimits(freq, (APP_PROFILE)laserDiodeData.mode))
 					{
 						//laserDiodeData.laserprofile.Frequency = freq;
-						update = true;
+						//update = true;
 					}
+					
+					update = true;
 				}
 				
 				UpdateLimits(freq, duration, energy, Profile);
@@ -471,7 +492,7 @@ void CLaserControlApp::Run()
 				else
 					CalculateLaserSettings(&laserDiodeData.laserprofile, &laserDiodeData.lasersettings);
 					
-				laserPower = (uint32_t)(laserDiodeData.lasersettings.Energy * 1440ul) / (uint32_t)laserDiodeData.lasersettings.Duration; // Convert Energy J/cm2 to Power in Watts
+				laserPower = min((uint32_t)(laserDiodeData.lasersettings.Energy * 1440ul) / (uint32_t)laserDiodeData.lasersettings.Duration, MAX_LASER_POWER); // Convert Energy J/cm2 to Power in Watts
 				
 				// Copy data to profiles
 				if (update)
@@ -597,8 +618,8 @@ void CLaserControlApp::Run()
 				peltier_en = true;
 				
 				prepare = true;
-				m_wMinutes = m_wSetMin;
-				m_wSeconds = m_wSetSec;
+				/*m_wMinutes = m_wSetMin;
+				m_wSeconds = m_wSetSec;*/
 
 #ifdef FLOW_CONTROL				
 				if (m_wFlow < 30)
@@ -874,6 +895,28 @@ void CLaserControlApp::OnTimer()
 		m_wMillSec-=10;
 	}
 	
+	if (!peltier_en)
+	{
+		if (m_wMillSec == 70)
+		{
+			if ((m_wSeconds >= m_wSetSec) && (m_wMinutes >= m_wSetMin))
+				m_wSeconds = m_wSetSec;
+			else
+			{
+				if (m_wSeconds == 60)
+				{
+					if (m_wMinutes >= m_wSetMin)
+						m_wMinutes = m_wSetMin;
+					m_wSeconds = 0;
+					m_wMinutes++;
+				}
+				m_wSeconds++;
+			}
+			m_wMillSec = 0; // Every 10 ms
+		}
+		m_wMillSec += 10;
+	}
+	
 	// Flow sensor
 	{
 		static uint16_t millsec = 100;
@@ -1140,62 +1183,61 @@ void CLaserControlApp::OnINT0Static(void* sender)
 
 void CLaserControlApp::MelaninPreset(uint16_t melanin)
 {
-	Profile = PROFILE_DEFAULT;
+	uint16_t freq = 3;
+	uint16_t duration = 65;
+	uint16_t energy = 22;
+	
+	Profile = PROFILE_SLOW;
 	laserDiodeData.mode = Profile;
-	laserDiodeData.laserprofile.Frequency = 3;
 	if (melanin < 10)
 	{
 		laserDiodeData.phototype = 1;
-		pstGUI[Profile].m_wMaxDuration = 60;
-		//pstGUI[Profile].m_wMaxEnergy = 97;
+		freq = 3; duration = 75; energy = 22;
 	}
 	else
 	if (melanin < 20)
 	{
 		laserDiodeData.phototype = 2;
-		pstGUI[Profile].m_wMaxDuration = 60;
-		//pstGUI[Profile].m_wMaxEnergy = 97;
+		freq = 3; duration = 70; energy = 26;
 	}
 	else
 	if (melanin < 35)
 	{
 		laserDiodeData.phototype = 3;
-		pstGUI[Profile].m_wMaxDuration = 60;
-		//pstGUI[Profile].m_wMaxEnergy = 97;
+		freq = 3; duration = 70; energy = 26;
 	}
 	else
 	if (melanin < 49)
 	{
 		laserDiodeData.phototype = 4;
-		pstGUI[Profile].m_wMaxDuration = 100;
-		//pstGUI[Profile].m_wMaxEnergy = 97;
+		freq = 3; duration = 65; energy = 23;
 	}
 	else
 	if (melanin < 72)
 	{
 		laserDiodeData.phototype = 5;
-		pstGUI[Profile].m_wMaxDuration = 100;
-		//pstGUI[Profile].m_wMaxEnergy = 90;
+		freq = 3; duration = 100; energy = 22;
 	}
 	else
 	{
 		laserDiodeData.phototype = 6;
-		pstGUI[Profile].m_wMaxDuration = 100;
-		//pstGUI[Profile].m_wMaxEnergy = 87;
+		freq = 1; duration = 200; energy = 32;
 	}
 	
-	laserDiodeData.laserprofile.EnergyCnt = 100;//m_wMaxEnergy;
-	laserDiodeData.laserprofile.DurationCnt = pstGUI[Profile].m_wMaxDuration;
+	LaserPreset(freq, duration, energy, Profile);
 	
+	update = true;
 	laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[Profile], (DGUS_LASERSETTINGS*)&m_structLaserSettings[Profile]);
-	laserPower = m_structLaserProfile[Profile].EnergyCnt;
 }
 
 void CLaserControlApp::PhototypePreset(uint16_t phototype)
 {
-	Profile = PROFILE_DEFAULT;
+	uint16_t freq = 3;
+	uint16_t duration = 65;
+	uint16_t energy = 22;
+	
+	Profile = PROFILE_SLOW;
 	laserDiodeData.mode = Profile;
-	laserDiodeData.laserprofile.Frequency = 3;
 	laserDiodeData.phototype = phototype;
 	
 	switch (phototype)
@@ -1203,51 +1245,44 @@ void CLaserControlApp::PhototypePreset(uint16_t phototype)
 		case 1:
 		{
 			laserDiodeData.melanin = 5;
-			pstGUI[Profile].m_wMaxDuration = 60;
-			//pstGUI[Profile].m_wMaxEnergy = 97;
+			freq = 3; duration = 75; energy = 22;
 		}
 		break;
 		case 2:
 		{
 			laserDiodeData.melanin = 14;
-			pstGUI[Profile].m_wMaxDuration = 60;
-			//pstGUI[Profile].m_wMaxEnergy = 97;
+			freq = 3; duration = 70; energy = 26;
 		}
 		break;
 		case 3:
 		{
 			laserDiodeData.melanin = 27;
-			pstGUI[Profile].m_wMaxDuration = 60;
-			//pstGUI[Profile].m_wMaxEnergy = 97;
+			freq = 3; duration = 70; energy = 26;
 		}
 		break;
 		case 4:
 		{
 			laserDiodeData.melanin = 41;
-			pstGUI[Profile].m_wMaxDuration = 100;
-			//pstGUI[Profile].m_wMaxEnergy = 97;
+			freq = 3; duration = 65; energy = 23;
 		}
 		break;
 		case 5:
 		{
 			laserDiodeData.melanin = 61;
-			pstGUI[Profile].m_wMaxDuration = 100;
-			//pstGUI[Profile].m_wMaxEnergy = 90;
+			freq = 3; duration = 100; energy = 22;
 		}
 		break;
 		case 6:
 		{
 			laserDiodeData.melanin = 85;
-			pstGUI[Profile].m_wMaxDuration = 100;
-			//pstGUI[Profile].m_wMaxEnergy = 87;
+			freq = 1; duration = 200; energy = 32;
 		}
 	}
 	
-	laserDiodeData.laserprofile.EnergyCnt = 100;//m_wMaxEnergy;
-	laserDiodeData.laserprofile.DurationCnt = pstGUI[Profile].m_wMaxDuration;
+	LaserPreset(freq, duration, energy, Profile);
 	
+	update = true;	
 	laserDiodeData.lasersettings = CalculateLaserSettings((DGUS_LASERPROFILE*)&m_structLaserProfile[Profile], (DGUS_LASERSETTINGS*)&m_structLaserSettings[Profile]);
-	laserPower = m_structLaserProfile[Profile].EnergyCnt;
 }
 
 void CLaserControlApp::UpdateLimits(uint16_t freq, uint16_t duration, uint16_t energy, APP_PROFILE mode)
@@ -1288,6 +1323,12 @@ void CLaserControlApp::UpdateLimits(uint16_t freq, uint16_t duration, uint16_t e
 	uint16_t MinD = MinDurationTable[freq];
 	uint16_t MaxD = MaxDurationTable[freq];
 	uint16_t Delta = (MaxD - MinD) / (TableNum[freq]-1);
+	
+	if (mode == PROFILE_MEDIUM)
+	{
+		MinD = 10;
+		MaxD = 100;
+	}
 	
 	// Update duration helpers
 	if (duration < MinD)	duration = MinD;
@@ -1363,6 +1404,12 @@ bool CLaserControlApp::CheckLimits(uint16_t &freq, uint16_t &duration, uint16_t 
 	uint16_t MaxD = MaxDurationTable[freq];
 	uint16_t Delta = (MaxD - MinD) / (TableNum[freq]-1);
 	uint16_t step ;
+	
+	if (mode == PROFILE_MEDIUM)
+	{
+		MinD = 10;
+		MaxD = 100;	
+	}
 	
 	bool UpdateDuration = false;
 	if (duration < MinD)	{	duration = MinD;	UpdateDuration = true;	}
@@ -1450,6 +1497,11 @@ void CLaserControlApp::CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP
 {
 	uint16_t MinD = MinDurationTable[freq];
 	uint16_t MaxD = MaxDurationTable[freq];
+	if (mode == PROFILE_MEDIUM)
+	{
+		MinD = 10;
+		MaxD = 100;
+	}
 	uint16_t Delta = (MaxD - MinD) / (TableNum[freq]-1);
 	uint16_t step = 1;
 	
@@ -1598,6 +1650,9 @@ void CLaserControlApp::StartLaser()
 		TCF0.CCBBUF = laserTimerDutyCycle;
 		laserTimer.SetCOMPA(laserTimerDutyCycle);
 		laserTimer.SetCOMPB(laserTimerDutyCycle);
+		//TCF0.CNT = 0;
+		//laserTimer.ChannelReset(TIMER_CHANNEL_A);
+		//laserTimer.ChannelReset(TIMER_CHANNEL_B);
 		laserTimer.Start(laserTimerPeriod);
 	}
 }
