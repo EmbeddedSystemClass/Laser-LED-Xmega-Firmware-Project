@@ -94,10 +94,10 @@ typedef struct GUI_PRESET_STRUCT
 	uint16_t m_wMinFreq;
 
 	// Helper control
-	uint16_t m_wEnergyOffset;
-	uint16_t m_wEnergyStep;
-	uint16_t m_wEnergyNumSteps;
-	uint16_t m_wDurationOffset;
+	//uint16_t m_wEnergyOffset;
+	int16_t m_wEnergyStep;
+	int16_t m_wEnergyNumSteps;
+	//uint16_t m_wDurationOffset;
 	uint16_t m_wDurationStep;
 	uint16_t m_wDurationNumSteps;	
 	
