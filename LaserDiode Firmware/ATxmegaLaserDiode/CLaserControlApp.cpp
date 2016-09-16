@@ -223,8 +223,8 @@ void CLaserControlApp::Initialize(CMBSender* sender)
 	prepare = false;
 	peltier_en = false;
 	//isstarted = false;
-	m_wSetMin = 0;
-	m_wSetSec = 0;
+	m_wSetMin = 2;
+	m_wSetSec = 10;
 	m_wMillSec = 0;
 	m_wMinutes = m_wSetMin;
 	m_wSeconds = m_wSetSec;
@@ -1272,13 +1272,13 @@ void CLaserControlApp::MelaninPreset(uint16_t melanin)
 	if (melanin < 20)
 	{
 		laserDiodeData.phototype = 2;
-		freq = 3; duration = 70; energy = 23;
+		freq = 3; duration = 70; energy = 21;
 	}
 	else
 	if (melanin < 35)
 	{
 		laserDiodeData.phototype = 3;
-		freq = 3; duration = 70; energy = 23;
+		freq = 3; duration = 70; energy = 21;
 	}
 	else
 	if (melanin < 49)
@@ -1290,12 +1290,12 @@ void CLaserControlApp::MelaninPreset(uint16_t melanin)
 	if (melanin < 72)
 	{
 		laserDiodeData.phototype = 5;
-		freq = 3; duration = 100; energy = 22;
+		freq = 3; duration = 100; energy = 20;
 	}
 	else
 	{
 		laserDiodeData.phototype = 6;
-		freq = 1; duration = 200; energy = 32;
+		freq = 1; duration = 200; energy = 30;
 	}
 	
 	LaserPreset(freq, duration, energy, Profile);
@@ -1325,13 +1325,13 @@ void CLaserControlApp::PhototypePreset(uint16_t phototype)
 		case 2:
 		{
 			laserDiodeData.melanin = 14;
-			freq = 3; duration = 70; energy = 23;
+			freq = 3; duration = 70; energy = 21;
 		}
 		break;
 		case 3:
 		{
 			laserDiodeData.melanin = 27;
-			freq = 3; duration = 70; energy = 23;
+			freq = 3; duration = 70; energy = 21;
 		}
 		break;
 		case 4:
@@ -1343,13 +1343,13 @@ void CLaserControlApp::PhototypePreset(uint16_t phototype)
 		case 5:
 		{
 			laserDiodeData.melanin = 61;
-			freq = 3; duration = 100; energy = 22;
+			freq = 3; duration = 100; energy = 20;
 		}
 		break;
 		case 6:
 		{
 			laserDiodeData.melanin = 85;
-			freq = 1; duration = 200; energy = 32;
+			freq = 1; duration = 200; energy = 30;
 		}
 	}
 	
@@ -1421,11 +1421,11 @@ void CLaserControlApp::UpdateLimits(uint16_t freq, uint16_t duration, uint16_t e
 	pstGUI[mode].m_wMaxEnergy_ = EnergyTable[11 * (freq - 1) + index];
 		
 	uint16_t MaxEnergy = pstGUI[mode].m_wMaxEnergy_;
-	uint16_t Offset = pstGUI[mode].m_wEnergyOffset;
+	//uint16_t Offset = pstGUI[mode].m_wEnergyOffset;
 		
-	if ((pstGUI[mode].m_wMinEnergy_ != Offset) || (pstGUI[mode].m_wMaxEnergy_ != MaxEnergy))
+	if (/*(pstGUI[mode].m_wMinEnergy_ != Offset) ||*/ (pstGUI[mode].m_wMaxEnergy_ != MaxEnergy))
 	{
-		pstGUI[mode].m_wMinEnergy_ = Offset;
+		pstGUI[mode].m_wMinEnergy_ = 0;//Offset;
 		pstGUI[mode].m_wMaxEnergy_ = MaxEnergy;
 		pstGUI[mode].updateEnergy = true;
 	}
@@ -1496,12 +1496,12 @@ bool CLaserControlApp::CheckLimits(uint16_t &freq, uint16_t &duration, uint16_t 
 		NormalizeStep(MinD, MaxD, step, 20, step_table);
 		pstGUI[mode].m_wDurationStep = step;
 		pstGUI[mode].m_wDurationNumSteps = (MaxD - MinD)/step;
-		pstGUI[mode].m_wDurationOffset = MinD;
+		//pstGUI[mode].m_wDurationOffset = MinD;
 		pstGUI[mode].m_wMinDuration = MinD;
 		pstGUI[mode].m_wMaxDuration = MaxD;
 		
 		// Update Duration
-		laserDiodeData.laserprofile.DurationCnt = (duration - pstGUI[mode].m_wDurationOffset) / pstGUI[mode].m_wDurationStep;
+		laserDiodeData.laserprofile.DurationCnt = (duration/* - pstGUI[mode].m_wDurationOffset*/) / pstGUI[mode].m_wDurationStep;
 		laserDiodeData.lasersettings.Duration = duration;
 		
 		update = true;
@@ -1519,16 +1519,16 @@ bool CLaserControlApp::CheckLimits(uint16_t &freq, uint16_t &duration, uint16_t 
 		// Update energy helpers
 		step = 1;
 		uint16_t MaxEnergy = pstGUI[mode].m_wMaxEnergy_;
-		uint16_t Offset = pstGUI[mode].m_wEnergyOffset;
+		uint16_t Offset = 0;//pstGUI[mode].m_wEnergyOffset;
 		NormalizeStep(Offset, MaxEnergy, step, 20, step_table);
-		pstGUI[mode].m_wEnergyOffset = Offset;
+		//pstGUI[mode].m_wEnergyOffset = Offset;
 		pstGUI[mode].m_wEnergyStep = step;
-		pstGUI[mode].m_wEnergyNumSteps = (pstGUI[mode].m_wMaxEnergy_ - Offset)/step;
-		pstGUI[mode].m_wMinEnergy_ = Offset;
+		pstGUI[mode].m_wEnergyNumSteps = (pstGUI[mode].m_wMaxEnergy_/* - Offset*/)/step;
+		pstGUI[mode].m_wMinEnergy_ = 0;//Offset;
 		pstGUI[mode].m_wMaxEnergy_ = MaxEnergy;
 		
 		// Update Energy
-		laserDiodeData.laserprofile.EnergyCnt = (energy - pstGUI[mode].m_wEnergyOffset) / pstGUI[mode].m_wEnergyStep;
+		laserDiodeData.laserprofile.EnergyCnt = (energy/* - pstGUI[mode].m_wEnergyOffset*/) / pstGUI[mode].m_wEnergyStep;
 		laserDiodeData.lasersettings.Energy = energy;
 		
 		update = true;
@@ -1545,10 +1545,10 @@ void CLaserControlApp::CalculateDurationSteps(uint16_t &freq, uint16_t &duration
 	NormalizeStep(MinD, MaxD, step, 20, step_table);
 	pstGUI[Profile].m_wDurationStep = step;
 	pstGUI[Profile].m_wDurationNumSteps = (MaxD - MinD)/step;
-	pstGUI[Profile].m_wDurationOffset = MinD;
+	//pstGUI[Profile].m_wDurationOffset = MinD;
 	pstGUI[Profile].updateDuration = false;
 	// Update Duration
-	laserDiodeData.laserprofile.DurationCnt = (duration - pstGUI[Profile].m_wDurationOffset) / pstGUI[Profile].m_wDurationStep;
+	laserDiodeData.laserprofile.DurationCnt = (duration/* - pstGUI[Profile].m_wDurationOffset*/) / pstGUI[Profile].m_wDurationStep;
 	laserDiodeData.lasersettings.Duration = duration;
 }
 
@@ -1560,10 +1560,10 @@ void CLaserControlApp::CalculateEnergySteps(uint16_t &freq, uint16_t &energy)
 	NormalizeStep(MinEnergy, MaxEnergy, step, 20, step_table);
 	pstGUI[Profile].m_wEnergyStep = step;
 	pstGUI[Profile].m_wEnergyNumSteps = (pstGUI[Profile].m_wMaxEnergy_ - MinEnergy)/step;
-	pstGUI[Profile].m_wEnergyOffset = MinEnergy;
+	//pstGUI[Profile].m_wEnergyOffset = MinEnergy;
 	pstGUI[Profile].updateEnergy = false;
 	// Update Energy
-	laserDiodeData.laserprofile.EnergyCnt = (energy - pstGUI[Profile].m_wEnergyOffset) / pstGUI[Profile].m_wEnergyStep;
+	laserDiodeData.laserprofile.EnergyCnt = (energy/* - pstGUI[Profile].m_wEnergyOffset*/) / pstGUI[Profile].m_wEnergyStep;
 	laserDiodeData.lasersettings.Energy = energy;
 }
 
@@ -1582,14 +1582,14 @@ void CLaserControlApp::CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP
 	if (mode == PROFILE_FAST)
 	{
 		// Update energy helpers
-		pstGUI[PROFILE_FAST].m_wEnergyOffset = 6;
+		//pstGUI[PROFILE_FAST].m_wEnergyOffset = 6;
 		pstGUI[PROFILE_FAST].m_wEnergyStep = 1;
 		pstGUI[PROFILE_FAST].m_wEnergyNumSteps = 13 - 6;
 		pstGUI[PROFILE_FAST].m_wMinEnergy_ = 6;
 		pstGUI[PROFILE_FAST].m_wMaxEnergy_ = 12;
 		
 		// Update duration helpers
-		pstGUI[PROFILE_FAST].m_wDurationOffset = 18;
+		//pstGUI[PROFILE_FAST].m_wDurationOffset = 18;
 		pstGUI[PROFILE_FAST].m_wDurationStep = 1;
 		pstGUI[PROFILE_FAST].m_wDurationNumSteps = 35 - 18;
 		pstGUI[PROFILE_FAST].m_wMinDuration = 18;
@@ -1601,7 +1601,7 @@ void CLaserControlApp::CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP
 	NormalizeStep(MinD, MaxD, step, 20, step_table);
 	pstGUI[mode].m_wDurationStep = step;
 	pstGUI[mode].m_wDurationNumSteps = (MaxD - MinD)/step;
-	pstGUI[mode].m_wDurationOffset = MinD;
+	//pstGUI[mode].m_wDurationOffset = MinD;
 	pstGUI[mode].updateDuration = false;
 	
 	uint16_t index = (duration - MinD) / Delta;
@@ -1613,9 +1613,9 @@ void CLaserControlApp::CalculateAllSteps(uint16_t &freq, uint16_t &duration, APP
 	// Update energy helpers
 	step = 1;
 	uint16_t MaxEnergy = pstGUI[mode].m_wMaxEnergy_;
-	uint16_t Offset = pstGUI[mode].m_wEnergyOffset;
+	uint16_t Offset = 0;//pstGUI[mode].m_wEnergyOffset;
 	NormalizeStep(Offset, MaxEnergy, step, 20, step_table);
-	pstGUI[mode].m_wEnergyOffset = Offset;
+	//pstGUI[mode].m_wEnergyOffset = Offset;
 	pstGUI[mode].m_wEnergyStep = step;
 	pstGUI[mode].m_wEnergyNumSteps = (pstGUI[mode].m_wMaxEnergy_ - Offset)/step;
 	pstGUI[mode].updateEnergy = false;
@@ -1672,14 +1672,14 @@ bool CLaserControlApp::CheckLimitsFastMode(uint16_t &freq, uint16_t &duration, u
 	if (energy <  6) { energy = 6; }
 		
 	// Update energy helpers
-	pstGUI[PROFILE_FAST].m_wEnergyOffset = 6;
+	//pstGUI[PROFILE_FAST].m_wEnergyOffset = 6;
 	pstGUI[PROFILE_FAST].m_wEnergyStep = 1;
 	pstGUI[PROFILE_FAST].m_wEnergyNumSteps = 13 - 6;
 	pstGUI[PROFILE_FAST].m_wMinEnergy_ = 6;
 	pstGUI[PROFILE_FAST].m_wMaxEnergy_ = 13;
 	
 	// Update Energy
-	laserDiodeData.laserprofile.EnergyCnt = (energy - pstGUI[PROFILE_FAST].m_wEnergyOffset) / pstGUI[PROFILE_FAST].m_wEnergyStep;
+	laserDiodeData.laserprofile.EnergyCnt = (energy/* - pstGUI[PROFILE_FAST].m_wEnergyOffset*/) / pstGUI[PROFILE_FAST].m_wEnergyStep;
 	laserDiodeData.lasersettings.Energy = energy;	
 	
 	duration = (energy * 1440) / 500; // Calculate max duration
@@ -1689,14 +1689,14 @@ bool CLaserControlApp::CheckLimitsFastMode(uint16_t &freq, uint16_t &duration, u
 	if (duration >= 18) duration = 18;*/
 	
 	// Update duration helpers
-	pstGUI[PROFILE_FAST].m_wDurationOffset = 18;
+	//pstGUI[PROFILE_FAST].m_wDurationOffset = 18;
 	pstGUI[PROFILE_FAST].m_wDurationStep = 1;
 	pstGUI[PROFILE_FAST].m_wDurationNumSteps = 35 - 18;
 	pstGUI[PROFILE_FAST].m_wMinDuration = 18;
 	pstGUI[PROFILE_FAST].m_wMaxDuration = 35;
 		
 	// Update Duration
-	laserDiodeData.laserprofile.DurationCnt = (duration - pstGUI[PROFILE_FAST].m_wDurationOffset) / pstGUI[PROFILE_FAST].m_wDurationStep;
+	laserDiodeData.laserprofile.DurationCnt = (duration/* - pstGUI[PROFILE_FAST].m_wDurationOffset*/) / pstGUI[PROFILE_FAST].m_wDurationStep;
 	laserDiodeData.lasersettings.Duration = duration;
 	
 	return true;
