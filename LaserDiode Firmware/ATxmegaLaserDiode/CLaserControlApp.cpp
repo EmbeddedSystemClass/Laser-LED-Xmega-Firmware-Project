@@ -15,7 +15,7 @@
 #include <util/delay.h>
 #include <avr/eeprom.h>
 
-//#define FLOW_CONTROL
+#define FLOW_CONTROL
 //#define POWER_CHECK
 #define LED_LASER_INDICATOR
 

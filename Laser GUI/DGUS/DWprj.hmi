@@ -10,3 +10,5 @@ SPADDRESS=5000
 3=3_SlowMenu.bmp
 4=4_PressMenu.bmp
 5=5_ReadyMenu.bmp
+6=6_WorkingMenu.bmp
+7=7_WorkingMenuPress.bmp

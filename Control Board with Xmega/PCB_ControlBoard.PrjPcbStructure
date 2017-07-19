@@ -1,3 +1,4 @@
+Record=TopLevelDocument|FileName=Main.SchDoc
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=ADC GPIO|SchDesignator=ADC GPIO|FileName=ADC inputs.SchDoc|SymbolType=Normal|RawFileName=ADC inputs.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=AVRGPIO|SchDesignator=AVRGPIO|FileName=IsolatedGPIO.SchDoc|SymbolType=Normal|RawFileName=IsolatedGPIO.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=AVRKernel|SchDesignator=AVRKernel|FileName=AVRControlBoardMain.SchDoc|SymbolType=Normal|RawFileName=AVRControlBoardMain.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
@@ -5,4 +6,3 @@ Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=Cool|SchDesignator=Cool
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=DAC|SchDesignator=DAC|FileName=IsolatedDAC.SchDoc|SymbolType=Normal|RawFileName=IsolatedDAC.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=DarlingtonPortOut|SchDesignator=DarlingtonPortOut|FileName=IsolatedPortOut.SchDoc|SymbolType=Normal|RawFileName=IsolatedPortOut.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
 Record=SheetSymbol|SourceDocument=Main.SchDoc|Designator=Indication|SchDesignator=Indication|FileName=InPortIndication.SchDoc|SymbolType=Normal|RawFileName=InPortIndication.SchDoc|DesignItemId= |SourceLibraryName= |ObjectKind=Sheet Symbol|RevisionGUID= |ItemGUID= |VaultGUID= 
-Record=TopLevelDocument|FileName=Main.SchDoc
